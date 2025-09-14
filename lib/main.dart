@@ -3,7 +3,6 @@ import 'package:action_log_app/presentation/pages/location_groups_page.dart';
 import 'package:action_log_app/core/di/dependency_injection.dart';
 
 void main() {
-  // Setup all dependencies ONCE at app startup
   DependencyInjection.setup();
   
   runApp(const MainApp());

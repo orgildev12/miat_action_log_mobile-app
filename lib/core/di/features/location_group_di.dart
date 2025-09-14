@@ -30,6 +30,10 @@ class LocationGroupDI {
     _fetchLocationGroupsUseCase = FetchLocationGroupsUseCase(
       repository: _repository,
     );
+
+    _clearLocationGroupsCacheUseCase = ClearLocationGroupsCacheUseCase(
+      repository: _repository
+    );
   }
 
   // Getters for location group dependencies
