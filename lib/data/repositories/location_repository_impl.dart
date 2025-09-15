@@ -1,5 +1,5 @@
-import 'package:action_log_app/data/data_sources/location_local_data.dart';
-import 'package:action_log_app/data/data_sources/location_remote_data.dart';
+import 'package:action_log_app/data/data_sources/location/location_local_data.dart';
+import 'package:action_log_app/data/data_sources/location/location_remote_data.dart';
 import 'package:action_log_app/domain/entities/location.dart';
 import 'package:action_log_app/domain/repositories/location_repository.dart';
 import 'package:action_log_app/application/mappers/location_mapper.dart';
@@ -13,7 +13,8 @@ class LocationRepositoryImpl implements LocationRepository {
     required this.local,
     required this.remote
   });
-
+  
+  @override
   Future<List<Location>> fetchLocations() async {
     try{
       final List<LocationModel> localModels = await local.getLocations();
@@ -33,6 +34,15 @@ class LocationRepositoryImpl implements LocationRepository {
       return [remoteModel.toEntity()];
     }
     catch(e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> clearLocationCache() async {
+    try {
+      await local.clearLocations();
+    } catch (e) {
       rethrow;
     }
   }

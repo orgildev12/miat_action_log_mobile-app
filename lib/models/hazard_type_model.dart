@@ -20,7 +20,7 @@ class HazardTypeModel {
       nameEn: json['name_en'],
       nameMn: json['name_mn'],
       lastIndex: json['last_index']
-    )
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -30,6 +30,6 @@ class HazardTypeModel {
       'name_en': nameEn,
       'name_mn': nameMn,
       'last_index': lastIndex
-    }
+    };
   }
 }

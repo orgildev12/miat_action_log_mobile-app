@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:action_log_app/domain/entities/location_group.dart';
-import 'package:action_log_app/application/use_cases/fetch_location_groups_use_case.dart';
+import 'package:action_log_app/application/use_cases/location_use_cases/fetch_location_groups_use_case.dart';
 
 class LocationGroupsPage extends StatefulWidget {
   final FetchLocationGroupsUseCase fetchLocationGroupsUseCase;
@@ -225,12 +225,12 @@ class _LocationGroupsPageState extends State<LocationGroupsPage> {
                           ),
                         ],
                       ),
-                    )).toList(),
+                    )),
                     const Divider(),
                   ],
                 ),
               );
-            }).toList()
+            })
           else
             const Padding(
               padding: EdgeInsets.all(16),

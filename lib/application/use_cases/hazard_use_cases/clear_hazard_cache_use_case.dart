@@ -1,13 +1,13 @@
 import 'package:action_log_app/domain/repositories/hazard_repository.dart';
 
-class ClearHazardCache {
-  final HazardRepository hazardRepository;
-
-  ClearHazardCache({required this.hazardRepository});
+class ClearHazardCacheUseCase {
+  final HazardRepository repository;
+  
+  ClearHazardCacheUseCase({required this.repository});
 
   Future<void> call() async {
     try {
-      await hazardRepository.clearHazardCache();
+      await repository.clearHazardCache();
     } catch (e) {
       throw Exception('Failed to clear hazard cache: $e');
     }

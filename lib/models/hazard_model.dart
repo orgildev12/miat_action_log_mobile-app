@@ -9,24 +9,24 @@ class HazardModel {
   final String description;
   final String solution;
   final int isPrivate;
-  final Date dateCreated;
+  final DateTime dateCreated;
 
   HazardModel({
-    required.id;
-    required.code;
-    required.statusEn;
-    required.statusMn;
-    required.userId;
-    required.typeId;
-    required.locationId;
-    required.description;
-    required.solution;
-    required.isPrivate;
-    required.dateCreated;
+    required this.id,
+    required this.code,
+    required this.statusEn,
+    required this.statusMn,
+    this.userId,
+    required this.typeId,
+    required this.locationId,
+    required this.description,
+    required this.solution,
+    required this.isPrivate,
+    required this.dateCreated,
   });
 
-  factory LocationModel.fromJson(Map<String, dynamic> json) {
-    return LocationModel(
+  factory HazardModel.fromJson(Map<String, dynamic> json) {
+    return HazardModel(
       id: json['id'],
       code: json['code'],
       statusEn: json['status_en'],
@@ -37,7 +37,7 @@ class HazardModel {
       description: json['description'],
       solution: json['solution'],
       isPrivate: json['is_private'],
-      dateCreated: json['date_created'],
+      dateCreated: DateTime.parse(json['date_created']),
     );
   }
 
@@ -51,9 +51,9 @@ class HazardModel {
       'type_id': typeId,
       'location_id': locationId,
       'description': description,
-      'solution' : solution,
-      'isPrivate' : isPrivate,
-      'dateCreated' : dateCreated
-    }
+      'solution': solution,
+      'is_private': isPrivate,
+      'date_created': dateCreated.toIso8601String(),
+    };
   }
 }

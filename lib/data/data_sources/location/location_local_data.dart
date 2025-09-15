@@ -1,28 +1,42 @@
 import 'dart:convert';
 
 import 'package:action_log_app/models/location_model.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationLocalDataSource {
-  final _storage = FlutterSecureStorage();
-  final _key = 'locations_cache';
+  final String _key = 'locations_cache';
 
   Future<void> saveLocations(List<LocationModel> locations) async {
-    final jsonList = locations.map((location) => location.toJson()).toList();
-    final jsonString = jsonEncode(jsonList);
-    await _storage.write(key: _key, value: jsonString);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final jsonList = locations.map((location) => location.toJson()).toList();
+      final jsonString = jsonEncode(jsonList);
+      await prefs.setString(_key, jsonString);
+    } catch (e) {
+      throw Exception('Failed to save locations: $e');
+    }
   }
 
   Future<List<LocationModel>> getLocations() async {
-    final jsonString = await _storage.read(key: _key);
-    if (jsonString != null) {
-      final List<dynamic> jsonList = jsonDecode(jsonString);
-      return jsonList.map((json) => LocationModel.fromJson(json)).toList();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final jsonString = prefs.getString(_key);
+      if (jsonString != null) {
+        final List<dynamic> jsonList = jsonDecode(jsonString);
+        return jsonList.map((json) => LocationModel.fromJson(json)).toList();
+      }
+      return []; // Return empty list if no cached data
+    } catch (e) {
+      throw Exception('Failed to get locations: $e');
     }
-    return []; // Return empty list if no cached data
   }
 
   Future<void> clearLocations() async {
-    await _storage.delete(key: _key);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_key);
+    } catch (e) {
+      throw Exception('Failed to clear locations: $e');
+    }
   }
 }

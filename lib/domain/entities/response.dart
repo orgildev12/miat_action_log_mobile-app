@@ -4,7 +4,7 @@ class Response {
   final String? responseBody;
   final int? isRequestApproved;
   final int isResponseConfirmed;
-  final Date dateUpdated;
+  final DateTime dateUpdated;
 
   Response({
     required this.hazardId,

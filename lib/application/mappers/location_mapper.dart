@@ -7,6 +7,7 @@ extension LocationMapper on LocationModel {
       id: id,
       nameEn: nameEn,
       nameMn: nameMn,
+      locationGroupId: locationGroupId
     );
   }
 }

@@ -1,3 +1,7 @@
+import 'package:action_log_app/core/network/api_client.dart';
+import 'package:action_log_app/core/network/connectivity_checker.dart';
+import 'package:action_log_app/models/hazard_type_model.dart';
+
 class HazardTypeRemoteDataSource {
   final ConnectivityChecker connectivityChecker;
   final ApiClient apiClient;

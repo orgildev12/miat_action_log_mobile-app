@@ -5,12 +5,12 @@ class ResponseModel {
   final String responseBody;
   final int isRequestApproved;
   final int isResponseFinished;
-  final Date responseFinishedDate;
+  final DateTime responseFinishedDate;
   final int isCheckingResponse;
   final int isResponseConfirmed;
   final int isResponseDenied;
   final String reasonToDeny;
-  final Date dateUpdated;
+  final DateTime dateUpdated;
 
   ResponseModel({
     required this.hazardId,
@@ -22,7 +22,7 @@ class ResponseModel {
     required this.responseFinishedDate,
     required this.isCheckingResponse,
     required this.isResponseConfirmed,
-    required this.isResponseDenied;
+    required this.isResponseDenied,
     required this.reasonToDeny,
     required this.dateUpdated
   });
@@ -41,7 +41,7 @@ class ResponseModel {
       isResponseDenied : json['is_response_denied'],
       reasonToDeny : json['reason_to_deny'],
       dateUpdated : json['date_updated']
-    )
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -58,6 +58,6 @@ class ResponseModel {
       'is_response_denied' : isResponseDenied,
       'reason_to_deny' : reasonToDeny,
       'date_updated' : dateUpdated
-    }
+    };
   }
 }
