@@ -41,15 +41,16 @@ extension HazardMapper on HazardModel {
     return Hazard(
       id: id,
       code: code,
-      statusEn: statusEn,
-      statusMn: statusMn,
       userId: userId,
+      userName: userName,
+      email: email,
+      phoneNumber: phoneNumber,
       typeId: typeId,
-      typeNameEn: typeNameEn,           // Pulled from hazardTypes by typeId
-      typeNameMn: typeNameMn,           // Pulled from hazardTypes by typeId
+      typeNameEn: typeNameEn,           // Enriched: Pulled from hazardTypes by typeId
+      typeNameMn: typeNameMn,           // Enriched: Pulled from hazardTypes by typeId
       locationId: locationId,
-      locationNameEn: locationNameEn,   // Pulled from locations by locationId
-      locationNameMn: locationNameMn,   // Pulled from locations by locationId
+      locationNameEn: locationNameEn,   // Enriched: Pulled from locations by locationId
+      locationNameMn: locationNameMn,   // Enriched: Pulled from locations by locationId
       description: description,
       solution: solution,
       isPrivate: isPrivate,

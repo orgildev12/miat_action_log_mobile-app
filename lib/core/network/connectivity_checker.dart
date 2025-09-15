@@ -8,6 +8,7 @@ class ConnectivityCheckerImpl implements ConnectivityChecker {
   @override
   Future<bool> get isConnected async {
     final result = await Connectivity().checkConnectivity();
-    return result != ConnectivityResult.none;
+    // The connectivity package now returns a List<ConnectivityResult>
+    return !result.contains(ConnectivityResult.none);
   }
 }

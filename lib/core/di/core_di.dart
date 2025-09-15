@@ -8,7 +8,7 @@ class CoreDI {
 
   static void setup() {
     _connectivityChecker = ConnectivityCheckerImpl();
-    _apiClient = ApiClient(baseUrl: 'http://localhost:3000');
+    _apiClient = ApiClient(baseUrl: 'http://10.0.2.2:3000/api');
   }
 
   // Getters for core services

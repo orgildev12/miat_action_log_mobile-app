@@ -2,13 +2,13 @@ class LocationModel {
   final int id;
   final String nameEn;
   final String nameMn;
-  final int locationGroupId;
+  final int? locationGroupId; // Made nullable
 
   LocationModel({
     required this.id,
     required this.nameEn,
     required this.nameMn,
-    required this.locationGroupId,
+    this.locationGroupId, // Now optional
   });
 
   factory LocationModel.fromJson(Map<String, dynamic> json) {
@@ -16,7 +16,7 @@ class LocationModel {
       id: json['id'],
       nameEn: json['name_en'],
       nameMn: json['name_mn'],
-      locationGroupId: json['location_group_id'],
+      locationGroupId: json['location_group_id'], // Can be null
     );
   }
 

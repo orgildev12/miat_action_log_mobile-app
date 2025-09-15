@@ -11,11 +11,19 @@ class LocationRemoteDataSource {
     required this.apiClient,
   });
 
-  Future<LocationModel> fetchLocations() async {
+  Future<List<LocationModel>> fetchLocations() async {
     if(!await connectivityChecker.isConnected) {
       throw Exception('No internet connection');
     } 
-    final response = await apiClient.get('/location-group');
-    return LocationModel.fromJson(response);
+    final response = await apiClient.get('/locations');
+    
+    // The API returns a List<dynamic>, so we need to cast and map it
+    if (response is List) {
+      return response
+          .map((item) => LocationModel.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw Exception('Unexpected response format: expected List but got ${response.runtimeType}');
+    }
   }
 }

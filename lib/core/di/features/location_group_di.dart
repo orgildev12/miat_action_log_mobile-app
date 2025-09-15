@@ -4,6 +4,7 @@ import 'package:action_log_app/domain/repositories/location_group_repository.dar
 import 'package:action_log_app/data/repositories/location_group_repository_impl.dart';
 import 'package:action_log_app/data/data_sources/location/location_group_remote_data.dart';
 import 'package:action_log_app/core/di/core_di.dart';
+import 'package:action_log_app/core/di/features/location_di.dart';
 
 // Location Group feature dependencies
 class LocationGroupDI {
@@ -11,9 +12,6 @@ class LocationGroupDI {
   static late final LocationGroupRemoteDataSource _remoteDataSource;
   static late final LocationGroupRepository _repository;
   static late final FetchLocationGroupsUseCase _fetchLocationGroupsUseCase;
-  
-  // TODO: Create this use case when needed
-  // static late final ClearLocationGroupsCacheUseCase _clearLocationGroupsCacheUseCase;
 
   static void setup() {
     // Data sources
@@ -31,13 +29,9 @@ class LocationGroupDI {
 
     // Use cases
     _fetchLocationGroupsUseCase = FetchLocationGroupsUseCase(
-      repository: _repository,
+      locationGroupRepository: _repository,
+      locationRepository: LocationDI.repository, // Add location repository
     );
-
-    // TODO: Initialize this when use case is created
-    // _clearLocationGroupsCacheUseCase = ClearLocationGroupsCacheUseCase(
-    //   repository: _repository,
-    // );
   }
 
   // Getters for location group dependencies
@@ -45,7 +39,4 @@ class LocationGroupDI {
   static LocationGroupRemoteDataSource get remoteDataSource => _remoteDataSource;
   static LocationGroupRepository get repository => _repository;
   static FetchLocationGroupsUseCase get fetchLocationGroupsUseCase => _fetchLocationGroupsUseCase;
-  
-  // TODO: Uncomment this getter when use case is implemented
-  // static ClearLocationGroupsCacheUseCase get clearLocationGroupsCacheUseCase => _clearLocationGroupsCacheUseCase;
 }

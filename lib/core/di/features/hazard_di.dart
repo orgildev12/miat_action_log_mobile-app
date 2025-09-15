@@ -3,7 +3,6 @@ import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazar
 import 'package:action_log_app/application/use_cases/hazard_use_cases/clear_hazard_cache_use_case.dart';
 import 'package:action_log_app/application/use_cases/hazard_use_cases/fetch_hazard_response_use_case.dart';
 import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazard_response_use_case.dart';
-import 'package:action_log_app/application/use_cases/hazard_use_cases/clear_response_cache_use_case.dart';
 import 'package:action_log_app/core/di/core_di.dart';
 import 'package:action_log_app/data/data_sources/hazard/hazard_local_data.dart';
 import 'package:action_log_app/data/data_sources/hazard/hazard_remote_data.dart';
@@ -23,7 +22,6 @@ class HazardDI {
   // Response use cases (part of hazard feature)
   static late final FetchHazardResponseUseCase _fetchHazardResponseUseCase;
   static late final PostHazardResponseUseCase _postHazardResponseUseCase;
-  static late final ClearResponseCacheUseCase _clearResponseCacheUseCase;
 
   static void setup() {
     // Data sources
@@ -60,10 +58,6 @@ class HazardDI {
     _postHazardResponseUseCase = PostHazardResponseUseCase(
       repository: _repository,
     );
-    
-    _clearResponseCacheUseCase = ClearResponseCacheUseCase(
-      repository: _repository,
-    );
   }
 
   // Getters for dependencies
@@ -79,5 +73,4 @@ class HazardDI {
   // Response use case getters (part of hazard feature)
   static FetchHazardResponseUseCase get fetchHazardResponseUseCase => _fetchHazardResponseUseCase;
   static PostHazardResponseUseCase get postHazardResponseUseCase => _postHazardResponseUseCase;
-  static ClearResponseCacheUseCase get clearResponseCacheUseCase => _clearResponseCacheUseCase;
 }

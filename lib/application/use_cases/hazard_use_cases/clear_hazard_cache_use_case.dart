@@ -7,7 +7,11 @@ class ClearHazardCacheUseCase {
 
   Future<void> call() async {
     try {
+      // Clear hazard cache
       await repository.clearHazardCache();
+      
+      // Also clear response cache since responses are helper data for hazards
+      await repository.clearResponseCache();
     } catch (e) {
       throw Exception('Failed to clear hazard cache: $e');
     }

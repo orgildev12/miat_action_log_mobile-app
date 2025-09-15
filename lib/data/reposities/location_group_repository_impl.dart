@@ -1,3 +1,4 @@
+
 import 'package:action_log_app/data/data_sources/location/location_group_local_data.dart';
 import 'package:action_log_app/data/data_sources/location/location_group_remote_data.dart';
 import 'package:action_log_app/domain/entities/location_group.dart';

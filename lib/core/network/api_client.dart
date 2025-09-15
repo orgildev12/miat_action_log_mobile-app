@@ -7,15 +7,18 @@ class ApiClient {
 
   ApiClient({required this.baseUrl});
 
-  Future<Map<String, dynamic>> get(
+  Future<dynamic> get(
     String endpoint, {
       Map<String, String>? headers,
     }) async {
+      print('ApiClient: Making GET request to: $baseUrl$endpoint');
       final response = await http.get(Uri.parse('$baseUrl$endpoint'), headers: headers);
+      print('ApiClient: Response status: ${response.statusCode}');
+      print('ApiClient: Raw response body: ${response.body}');
       return _handleResponse(response);
     }
 
-  Future<Map<String, dynamic>> post(
+  Future<dynamic> post(
     String endpoint,
     Map<String, dynamic> body, {
     Map<String, String>? headers,
@@ -31,7 +34,7 @@ class ApiClient {
     return _handleResponse(response);
   }
 
-  Future<Map<String, dynamic>> put(
+  Future<dynamic> put(
     String endpoint,
     Map<String, dynamic> body, {
     Map<String, String>? headers,
@@ -47,7 +50,7 @@ class ApiClient {
     return _handleResponse(response);
   }
 
-    Map<String, dynamic> _handleResponse(http.Response response){
+    dynamic _handleResponse(http.Response response){
       final data = jsonDecode(response.body);
 
       if (response.statusCode >= 200 && response.statusCode < 300) {

@@ -1,4 +1,5 @@
 import 'package:action_log_app/application/use_cases/hazard_type_use_cases/fetch_hazard_types_use_case.dart';
+import 'package:action_log_app/application/use_cases/hazard_type_use_cases/clear_hazard_type_cache_use_case.dart';
 import 'package:action_log_app/core/di/core_di.dart';
 import 'package:action_log_app/data/data_sources/hazard_type/hazard_type_local_data.dart';
 import 'package:action_log_app/data/data_sources/hazard_type/hazard_type_remote_data.dart';
@@ -10,9 +11,7 @@ class HazardTypeDI {
   static late final HazardTypeRemoteDataSource _remoteDataSource;
   static late final HazardTypeRepository _repository;
   static late final FetchHazardTypesUseCase _fetchHazardTypesUseCase;
-  
-  // TODO: Create this use case when needed
-  // static late final ClearHazardTypesCacheUseCase _clearHazardTypesCacheUseCase;
+  static late final ClearHazardTypeCacheUseCase _clearHazardTypeCacheUseCase;
 
   static void setup() {
     // Data sources
@@ -33,10 +32,9 @@ class HazardTypeDI {
       repository: _repository,
     );
 
-    // TODO: Initialize this when use case is created
-    // _clearHazardTypesCacheUseCase = ClearHazardTypesCacheUseCase(
-    //   repository: _repository,
-    // );
+    _clearHazardTypeCacheUseCase = ClearHazardTypeCacheUseCase(
+      repository: _repository,
+    );
   }
 
   // Getters for dependencies
@@ -44,7 +42,5 @@ class HazardTypeDI {
   static HazardTypeRemoteDataSource get remoteDataSource => _remoteDataSource;
   static HazardTypeRepository get repository => _repository;
   static FetchHazardTypesUseCase get fetchHazardTypesUseCase => _fetchHazardTypesUseCase;
-  
-  // TODO: Uncomment this getter when use case is implemented
-  // static ClearHazardTypesCacheUseCase get clearHazardTypesCacheUseCase => _clearHazardTypesCacheUseCase;
+  static ClearHazardTypeCacheUseCase get clearHazardTypeCacheUseCase => _clearHazardTypeCacheUseCase;
 }

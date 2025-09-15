@@ -29,9 +29,9 @@ class LocationRepositoryImpl implements LocationRepository {
         return entities;
       }
       
-      final LocationModel remoteModel = await remote.fetchLocations();
-      await local.saveLocations([remoteModel]);
-      return [remoteModel.toEntity()];
+      final List<LocationModel> remoteModels = await remote.fetchLocations();
+      await local.saveLocations(remoteModels);
+      return remoteModels.map((model) => model.toEntity()).toList();
     }
     catch(e) {
       rethrow;

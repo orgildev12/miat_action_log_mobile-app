@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:action_log_app/domain/entities/location_group.dart';
 import 'package:action_log_app/application/use_cases/location_use_cases/fetch_location_groups_use_case.dart';
+import 'package:action_log_app/application/use_cases/location_use_cases/clear_location_cache.dart';
 
 class LocationGroupsPage extends StatefulWidget {
   final FetchLocationGroupsUseCase fetchLocationGroupsUseCase;
+  final ClearLocationCacheUseCase clearLocationCacheUseCase;
 
   const LocationGroupsPage({
     super.key,
     required this.fetchLocationGroupsUseCase,
+    required this.clearLocationCacheUseCase,
   });
 
   @override
@@ -49,35 +52,76 @@ class _LocationGroupsPageState extends State<LocationGroupsPage> {
     }
   }
 
+  Future<void> _clearCache() async {
+    try {
+      await widget.clearLocationCacheUseCase.call();
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Cache cleared successfully'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+      // Refresh the data
+      await _fetchLocationGroups();
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to clear cache: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Location Groups'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
+            onPressed: _clearCache,
             icon: const Icon(Icons.refresh),
-            onPressed: _fetchLocationGroups,
+            tooltip: 'Clear Cache & Refresh',
           ),
         ],
       ),
       body: Column(
         children: [
-          // Toggle for including empty groups
+          // Toggle for including empty groups and refresh button
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Checkbox(
-                  value: includeEmpty,
-                  onChanged: (value) {
-                    setState(() {
-                      includeEmpty = value ?? false;
-                    });
-                    _fetchLocationGroups();
-                  },
+                Row(
+                  children: [
+                    Checkbox(
+                      value: includeEmpty,
+                      onChanged: (value) {
+                        setState(() {
+                          includeEmpty = value ?? false;
+                        });
+                        _fetchLocationGroups();
+                      },
+                    ),
+                    const Text('Include empty groups'),
+                  ],
                 ),
-                const Text('Include empty groups'),
+                ElevatedButton.icon(
+                  onPressed: _fetchLocationGroups,
+                  icon: const Icon(Icons.refresh, size: 18),
+                  label: const Text('Refresh'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  ),
+                ),
               ],
             ),
           ),

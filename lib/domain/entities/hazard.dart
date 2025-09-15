@@ -3,9 +3,10 @@ import 'package:action_log_app/domain/entities/response.dart';
 class Hazard {
   final int id;
   final String? code;
-  final String? statusEn;
-  final String? statusMn;
   final int? userId;
+  final String? userName;
+  final String? email;
+  final String? phoneNumber;
   final int typeId;
   final String typeNameEn;
   final String typeNameMn;
@@ -21,9 +22,10 @@ class Hazard {
   Hazard({
     required this.id,
     required this.code,
-    required this.statusEn,
-    required this.statusMn,
     required this.userId,
+    required this.userName,
+    required this.email,
+    required this.phoneNumber,
     required this.typeId,
     required this.typeNameEn,
     required this.typeNameMn,

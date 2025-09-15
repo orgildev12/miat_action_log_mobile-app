@@ -25,15 +25,13 @@ class HazardRemoteDataSource {
     if(!await connectivityChecker.isConnected) {
       throw Exception('No internet connection');
     }
-    final result = await apiClient.get('/hazards');
+    final result = await apiClient.get('/hazard');
     
-    // Handle both single item and list responses
-    if (result['data'] is List) {
-      final List<dynamic> hazardsList = result['data'];
-      return hazardsList.map((json) => HazardModel.fromJson(json)).toList();
+    // Backend returns a direct array, not wrapped in data property
+    if (result is List) {
+      return result.map((json) => HazardModel.fromJson(json as Map<String, dynamic>)).toList();
     } else {
-      // Single hazard response
-      return [HazardModel.fromJson(result['data'])];
+      throw Exception('Unexpected response format: expected List but got ${result.runtimeType}');
     }
   }
 
@@ -50,7 +48,7 @@ class HazardRemoteDataSource {
       throw Exception('No internet connection');
     }
     try {
-      final result = await apiClient.get('/hazard/$hazardId/response');
+      final result = await apiClient.get('/response/$hazardId');
       return ResponseModel.fromJson(result);
     } catch (e) {
       // Return null if response doesn't exist yet

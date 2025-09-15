@@ -25,15 +25,21 @@ class HazardTypeRepositoryImpl implements HazardTypeRepository {
         return entities;
       }
 
-      final HazardTypeModel remoteModel = await remote.fetchHazardType();
-      await local.saveHazardTypes([remoteModel]);
-      return [remoteModel.toEntity()];
+      final List<HazardTypeModel> remoteModels = await remote.fetchHazardTypes();
+      await local.saveHazardTypes(remoteModels);
+      
+      final List<HazardType> entities = [];
+      for(var model in remoteModels) {
+        entities.add(model.toEntity());
+      }
+      return entities;
     } 
     catch(e){
       rethrow;
     }
   }
 
+  @override
   Future<void> clearHazardTypeCache() async {
     try {
       await local.clearHazardTypes();
