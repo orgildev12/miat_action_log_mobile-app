@@ -34,31 +34,15 @@ class ApiClient {
     return _handleResponse(response);
   }
 
-  Future<dynamic> put(
-    String endpoint,
-    Map<String, dynamic> body, {
-    Map<String, String>? headers,
-  }) async {
-    final defaultHeaders = {'Content-Type': 'application/json'};
-    final mergedHeaders = {...defaultHeaders, ...?headers};
-    
-    final response = await http.put(
-      Uri.parse('$baseUrl$endpoint'),
-      headers: mergedHeaders,
-      body: jsonEncode(body),
-    );
-    return _handleResponse(response);
-  }
-
     dynamic _handleResponse(http.Response response){
       final data = jsonDecode(response.body);
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.statusCode >= 201) {
         return data;
       } else {
         throw ServerException(
-          error: data['error'] ?? 'Unknown Error',
-          message: data['message'] ?? 'No message provided',
+          error: data['error'],
+          message: data['message'],
           statusCode: response.statusCode,
         );
       }
