@@ -1,6 +1,8 @@
 class HazardModel {
   final int id;
   final String code;
+  final String? statusEn;
+  final String? statusMn;
   final int? userId;
   final String? userName;
   final String? email;
@@ -9,12 +11,21 @@ class HazardModel {
   final int locationId;
   final String description;
   final String solution;
-  final int isPrivate;
   final DateTime dateCreated;
+  final String typeNameEn;
+  final String typeNameMn;
+  final String locationNameEn;
+  final String locationNameMn;
+  final int isResponseConfirmed;
+  final String? responseBody;
+  final int isPrivate;
+  final DateTime? dateUpdated;
 
   HazardModel({
     required this.id,
     required this.code,
+    this.statusEn,
+    this.statusMn,
     this.userId,
     this.userName,
     this.email,
@@ -23,33 +34,54 @@ class HazardModel {
     required this.locationId,
     required this.description,
     required this.solution,
-    required this.isPrivate,
     required this.dateCreated,
+    required this.typeNameEn,
+    required this.typeNameMn,
+    required this.locationNameEn,
+    required this.locationNameMn,
+    required this.isResponseConfirmed,
+    this.responseBody,
+    required this.isPrivate,
+    this.dateUpdated,
   });
 
   factory HazardModel.fromJson(Map<String, dynamic> json) {
-    return HazardModel(
-      id: json['id'],
-      code: json['code'] ?? '',
-      userId: json['user_id'],
-      userName: json['user_name'],
-      email: json['email'],
-      phoneNumber: json['phone_number'],
-      typeId: json['type_id'],
-      locationId: json['location_id'],
-      description: json['description'] ?? '',
-      solution: json['solution'] ?? '',
-      isPrivate: json['is_private'] ?? 0,
-      dateCreated: json['date_created'] != null 
-          ? DateTime.parse(json['date_created'].toString())
-          : DateTime.now(),
-    );
+  return HazardModel(
+    id: json['id'],
+    code: json['code'] ?? '',
+    statusEn: json['status_en'],
+    statusMn: json['status_mn'],
+    userId: json['user_id'],
+    userName: json['user_name'],
+    email: json['email'],
+    phoneNumber: json['phone_number'],
+    typeId: json['type_id'],
+    locationId: json['location_id'],
+    description: json['description'] ?? '',
+    solution: json['solution'] ?? '',
+    dateCreated: json['date_created'] != null
+      ? DateTime.parse(json['date_created'].toString())
+      : DateTime.now(),
+    typeNameEn: json['type_name_en'] ?? '',
+    typeNameMn: json['type_name_mn'] ?? '',
+    locationNameEn: json['location_name_en'] ?? '',
+    locationNameMn: json['location_name_mn'] ?? '',
+    isResponseConfirmed: json['is_response_confirmed'] ?? 0,
+    responseBody: json['response_body'],
+    isPrivate: json['is_private'] ?? 0,
+    dateUpdated: json['date_updated'] != null
+      ? DateTime.parse(json['date_updated'].toString())
+      : null,
+  );
   }
 
+// Татсан hazard-аа cache хийхэд хэрэгтэй.
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'code': code,
+      'status_en': statusEn,
+      'status_mn': statusMn,
       'user_id': userId,
       'user_name': userName,
       'email': email,
@@ -58,8 +90,15 @@ class HazardModel {
       'location_id': locationId,
       'description': description,
       'solution': solution,
-      'is_private': isPrivate,
       'date_created': dateCreated.toIso8601String(),
+      'type_name_en': typeNameEn,
+      'type_name_mn': typeNameMn,
+      'location_name_en': locationNameEn,
+      'location_name_mn': locationNameMn,
+      'is_response_confirmed': isResponseConfirmed,
+      'response_body': responseBody,
+      'is_private': isPrivate,
+      'date_updated': dateUpdated?.toIso8601String(),
     };
   }
 }

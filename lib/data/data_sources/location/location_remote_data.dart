@@ -15,7 +15,7 @@ class LocationRemoteDataSource {
     if(!await connectivityChecker.isConnected) {
       throw Exception('No internet connection');
     } 
-    final response = await apiClient.get('/locations');
+    final response = await apiClient.get('/locations?includeRef=true');
     
     // The API returns a List<dynamic>, so we need to cast and map it
     if (response is List) {

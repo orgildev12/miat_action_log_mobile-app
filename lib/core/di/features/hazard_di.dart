@@ -1,8 +1,6 @@
 import 'package:action_log_app/application/use_cases/hazard_use_cases/fetch_hazards_use_case.dart';
 import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazard_use_case.dart';
 import 'package:action_log_app/application/use_cases/hazard_use_cases/clear_hazard_cache_use_case.dart';
-import 'package:action_log_app/application/use_cases/hazard_use_cases/fetch_hazard_response_use_case.dart';
-import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazard_response_use_case.dart';
 import 'package:action_log_app/core/di/core_di.dart';
 import 'package:action_log_app/data/data_sources/hazard/hazard_local_data.dart';
 import 'package:action_log_app/data/data_sources/hazard/hazard_remote_data.dart';
@@ -19,10 +17,6 @@ class HazardDI {
   static late final PostHazardUseCase _postHazardUseCase;
   static late final ClearHazardCacheUseCase _clearHazardCacheUseCase;
   
-  // Response use cases (part of hazard feature)
-  static late final FetchHazardResponseUseCase _fetchHazardResponseUseCase;
-  static late final PostHazardResponseUseCase _postHazardResponseUseCase;
-
   static void setup() {
     // Data sources
     _localDataSource = HazardLocalDataSource();
@@ -49,15 +43,6 @@ class HazardDI {
     _clearHazardCacheUseCase = ClearHazardCacheUseCase(
       repository: _repository,
     );
-
-    // Response use cases (part of hazard feature)
-    _fetchHazardResponseUseCase = FetchHazardResponseUseCase(
-      repository: _repository,
-    );
-    
-    _postHazardResponseUseCase = PostHazardResponseUseCase(
-      repository: _repository,
-    );
   }
 
   // Getters for dependencies
@@ -69,8 +54,4 @@ class HazardDI {
   static FetchHazardsUseCase get fetchHazardsUseCase => _fetchHazardsUseCase;
   static PostHazardUseCase get postHazardUseCase => _postHazardUseCase;
   static ClearHazardCacheUseCase get clearHazardCacheUseCase => _clearHazardCacheUseCase;
-  
-  // Response use case getters (part of hazard feature)
-  static FetchHazardResponseUseCase get fetchHazardResponseUseCase => _fetchHazardResponseUseCase;
-  static PostHazardResponseUseCase get postHazardResponseUseCase => _postHazardResponseUseCase;
 }

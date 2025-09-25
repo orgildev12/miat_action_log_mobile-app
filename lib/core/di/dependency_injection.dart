@@ -1,6 +1,5 @@
 import 'package:action_log_app/core/di/core_di.dart';
 import 'package:action_log_app/core/di/features/location_di.dart';
-import 'package:action_log_app/core/di/features/location_group_di.dart';
 import 'package:action_log_app/core/di/features/hazard_di.dart';
 import 'package:action_log_app/core/di/features/hazard_type_di.dart';
 // import 'package:action_log_app/core/di/user_di.dart';
@@ -13,10 +12,9 @@ class DependencyInjection {
     
     // Setup feature-specific dependencies in order (avoiding circular dependencies)
     LocationDI.setup(); 
-    LocationGroupDI.setup(); // LocationGroupDI depends on LocationDI
     
     // Initialize LocationDI's clear cache with LocationGroupDI's repository
-    LocationDI.initializeClearCache(LocationGroupDI.repository);
+    // LocationDI.initializeClearCache(LocationGroupDI.repository);
     
     HazardDI.setup();
     HazardTypeDI.setup();
@@ -27,7 +25,6 @@ class DependencyInjection {
   // Convenience getters - delegates to feature DI classes
   
   // Location Group feature access
-  static Type get locationGroup => LocationGroupDI;
   
   // Hazard feature access (includes response operations)
   static Type get hazard => HazardDI;

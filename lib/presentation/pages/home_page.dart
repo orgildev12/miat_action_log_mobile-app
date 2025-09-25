@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:action_log_app/presentation/pages/location_groups_page.dart';
 import 'package:action_log_app/presentation/pages/locations_page.dart';
 import 'package:action_log_app/presentation/pages/hazard_types_page.dart';
 import 'package:action_log_app/presentation/pages/hazards_page.dart';
-import 'package:action_log_app/core/di/features/location_group_di.dart';
 import 'package:action_log_app/core/di/features/location_di.dart';
 import 'package:action_log_app/core/di/features/hazard_type_di.dart';
 import 'package:action_log_app/core/di/features/hazard_di.dart';
@@ -22,19 +20,6 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            _buildNavigationItem(
-              context,
-              title: 'Location Groups',
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LocationGroupsPage(
-                    fetchLocationGroupsUseCase: LocationGroupDI.fetchLocationGroupsUseCase,
-                    clearLocationCacheUseCase: LocationDI.clearLocationCacheUseCase,
-                  ),
-                ),
-              ),
-            ),
             _buildNavigationItem(
               context,
               title: 'Locations',

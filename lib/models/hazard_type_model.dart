@@ -3,14 +3,14 @@ class HazardTypeModel {
   final String shortCode;
   final String nameEn;
   final String nameMn;
-  final int lastIndex;
+  final int isPrivate;
 
   HazardTypeModel({
     required this.id,
     required this.shortCode,
     required this.nameEn,
     required this.nameMn,
-    required this.lastIndex
+    required this.isPrivate,
   });
 
   factory HazardTypeModel.fromJson(Map<String, dynamic> json) {
@@ -19,7 +19,7 @@ class HazardTypeModel {
       shortCode: json['short_code'],
       nameEn: json['name_en'],
       nameMn: json['name_mn'],
-      lastIndex: json['last_index']
+      isPrivate: json['isPrivate'],
     );
   }
 
@@ -29,7 +29,7 @@ class HazardTypeModel {
       'short_code': shortCode,
       'name_en': nameEn,
       'name_mn': nameMn,
-      'last_index': lastIndex
+      'isPrivate': isPrivate,
     };
   }
 }
