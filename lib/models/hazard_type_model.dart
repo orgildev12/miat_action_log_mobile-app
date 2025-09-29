@@ -4,6 +4,7 @@ class HazardTypeModel {
   final String nameEn;
   final String nameMn;
   final int isPrivate;
+  final int lastIndex; // <-- Add this field
 
   HazardTypeModel({
     required this.id,
@@ -11,15 +12,17 @@ class HazardTypeModel {
     required this.nameEn,
     required this.nameMn,
     required this.isPrivate,
+    required this.lastIndex, // <-- Add to constructor
   });
 
   factory HazardTypeModel.fromJson(Map<String, dynamic> json) {
     return HazardTypeModel(
-      id: json['id'],
-      shortCode: json['short_code'],
-      nameEn: json['name_en'],
-      nameMn: json['name_mn'],
-      isPrivate: json['isPrivate'],
+      id: int.parse(json['id'].toString()),
+      shortCode: json['short_code'] ?? '',
+      nameEn: json['name_en'] ?? '',
+      nameMn: json['name_mn'] ?? '',
+      isPrivate: int.parse(json['isPrivate'].toString()),
+      lastIndex: int.parse(json['last_index'].toString()), // <-- Parse last_index
     );
   }
 
@@ -30,6 +33,7 @@ class HazardTypeModel {
       'name_en': nameEn,
       'name_mn': nameMn,
       'isPrivate': isPrivate,
+      'last_index': lastIndex, // <-- Add to toJson
     };
   }
 }

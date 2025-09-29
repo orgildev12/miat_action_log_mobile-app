@@ -9,7 +9,7 @@ class UserModel {
   final String phoneNumber;
 
   UserModel({
-    required this.id,
+    this.id,
     required this.username,
     this.fnameEn,
     this.fnameMn,

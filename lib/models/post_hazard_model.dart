@@ -19,7 +19,12 @@ class PostHazardModel {
     required this.solution,
   });
 
-  Map<String, dynamic> toJson(bool isUserLoggedIn) {
+  @override
+  String toString() {
+    return 'PostHazardModel(userId: $userId, userName: $userName, email: $email, phoneNumber: $phoneNumber, typeId: $typeId, locationId: $locationId, description: $description, solution: $solution)';
+  }
+  
+  Map<String, Object?> toJson(bool isUserLoggedIn) {
 
     if (isUserLoggedIn != false) {
       return {

@@ -4,7 +4,7 @@ import 'package:action_log_app/data/data_sources/hazard/hazard_remote_data.dart'
 import 'package:action_log_app/domain/entities/hazard.dart';
 import 'package:action_log_app/domain/repositories/hazard_repository.dart';
 import 'package:action_log_app/models/hazard_model.dart';
-import 'package:action_log_app/models/hazard_model_for_post.dart';
+import 'package:action_log_app/models/post_hazard_model.dart';
 
 class HazardRepositoryImpl implements HazardRepository {
   final HazardLocalDataSource local;
@@ -16,26 +16,26 @@ class HazardRepositoryImpl implements HazardRepository {
   });
 
   // Hazard operations
-  @override
-  Future<List<Hazard>> fetchHazards() async {
-    try {
-      final List<HazardModel> localModels = await local.getHazards();
-      if (localModels.isNotEmpty) {
-        return localModels.map((model) => model.toEntity()).toList();
-      }
-
-      final List<HazardModel> remoteModels = await remote.fetchHazards();
-      await local.saveHazards(remoteModels);
-      return remoteModels.map((model) => model.toEntity()).toList();
-    } catch (e) {
-      rethrow;
+@override
+Future<List<Hazard>> fetchHazards(int userId, String token) async {
+  try {
+    final List<HazardModel> localModels = await local.getHazards();
+    if (localModels.isNotEmpty) {
+      return localModels.map((model) => model.toEntity()).toList();
     }
+
+    final List<HazardModel> remoteModels = await remote.fetchHazards(userId, token);
+    await local.saveHazards(remoteModels);
+    return remoteModels.map((model) => model.toEntity()).toList();
+  } catch (e) {
+    rethrow;
   }
+}
 
   @override
-  Future<void> postHazard(PostHazardModel hazard, {required bool isUserLoggedIn}) async {
+  Future<void> postHazard(PostHazardModel hazard, String? token, {required bool isUserLoggedIn}) async {
     try {
-      await remote.postHazard(hazard, isUserLoggedIn);
+      await remote.postHazard(hazard, token, isUserLoggedIn);
     } catch (e) {
       rethrow;
     }

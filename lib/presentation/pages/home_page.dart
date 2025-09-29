@@ -1,3 +1,9 @@
+import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazard_use_case.dart';
+import 'package:action_log_app/core/di/features/user_di.dart';
+import 'package:action_log_app/presentation/pages/login_page.dart';
+import 'package:action_log_app/presentation/pages/post_hazard_page.dart';
+import 'package:action_log_app/presentation/pages/user_info_page.dart';
+import 'package:action_log_app/presentation/pages/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:action_log_app/presentation/pages/locations_page.dart';
 import 'package:action_log_app/presentation/pages/hazard_types_page.dart';
@@ -20,6 +26,32 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
+            _buildNavigationItem(
+              context, 
+              title: 'Login', 
+              onTap: () => Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(
+                    loginUseCase: UserDI.loginUseCase,
+                  ),
+                ),
+              ),
+            ),
+            _buildNavigationItem(
+              context, 
+              title: 'User Info', 
+              onTap: () => Navigator.push(
+                context, 
+                MaterialPageRoute(
+                    builder: (context) => UserInfoPage(
+                      fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
+                      clearUserInfoCacheUsecase: UserDI.clearUserInfoCacheUsecase,
+                      logoutUseCase: UserDI.logoutUseCase,
+                  ),
+                ),
+              ),
+            ),
             _buildNavigationItem(
               context,
               title: 'Locations',
@@ -55,6 +87,36 @@ class HomePage extends StatelessWidget {
                   builder: (context) => HazardsPage(
                     fetchHazardsUseCase: HazardDI.fetchHazardsUseCase,
                     clearHazardCacheUseCase: HazardDI.clearHazardCacheUseCase,
+                  ),
+                ),
+              ),
+            ),
+            _buildNavigationItem(
+              context,
+              title: 'post hazard (no login)',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserInfoPageForm(
+                    fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
+                    saveUserInfoFromInputUseCase: UserDI.saveUserInfoFromInput,
+                    clearUserInfoCacheUseCase: UserDI.clearUserInfoCacheUsecase,
+                  ),
+                ),
+              ),
+            ),
+            _buildNavigationItem(
+              context,
+              title: 'post hazard (with login)',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HazardDetailsFormPage(
+                    postHazardUseCase: PostHazardUseCase(
+                      repository: HazardDI.repository,
+                      userLocalDataSource: UserDI.localDataSource,
+                    ),
+                    fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
                   ),
                 ),
               ),

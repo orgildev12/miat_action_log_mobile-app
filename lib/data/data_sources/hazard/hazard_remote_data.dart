@@ -1,7 +1,7 @@
 import 'package:action_log_app/core/network/api_client.dart';
 import 'package:action_log_app/core/network/connectivity_checker.dart';
 import 'package:action_log_app/models/hazard_model.dart';
-import 'package:action_log_app/models/hazard_model_for_post.dart';
+import 'package:action_log_app/models/post_hazard_model.dart';
 
 class HazardRemoteDataSource {
   final ConnectivityChecker connectivityChecker;
@@ -13,21 +13,16 @@ class HazardRemoteDataSource {
   });
 
   // Hazard operations
-  Future<HazardModel> fetchHazard() async {
-    if(!await connectivityChecker.isConnected) {
+  Future<List<HazardModel>> fetchHazards(int userId, String token) async {
+    if (!await connectivityChecker.isConnected) {
       throw Exception('No internet connection');
     }
-    final result = await apiClient.get('/hazard');
-    return HazardModel.fromJson(result);
-  }
+    final headers = {
+      'Authorization': 'Bearer $token',
+    };
+    print(headers);
+    final result = await apiClient.get('/hazard/byUserId/$userId', headers: headers);
 
-  Future<List<HazardModel>> fetchHazards() async {
-    if(!await connectivityChecker.isConnected) {
-      throw Exception('No internet connection');
-    }
-    final result = await apiClient.get('/hazard/byUserId/5366');
-    
-    // Backend returns a direct array, not wrapped in data property
     if (result is List) {
       return result.map((json) => HazardModel.fromJson(json as Map<String, dynamic>)).toList();
     } else {
@@ -35,14 +30,20 @@ class HazardRemoteDataSource {
     }
   }
 
-  Future<void> postHazard(PostHazardModel hazard, isUserLoggedIn) async {
-    if(!await connectivityChecker.isConnected) {
+  Future<void> postHazard(PostHazardModel hazard, String? token, bool isUserLoggedIn) async {
+    if (!await connectivityChecker.isConnected) {
       throw Exception('No internet connection');
     }
-    if(isUserLoggedIn != false){
-      await apiClient.post('/hazard/', hazard.toJson(true));
+
+    if (isUserLoggedIn) {
+      final headers = {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      };
+      await apiClient.post('/hazard/', hazard.toJson(true), headers: headers);
       return;
     }
+
     await apiClient.post('/hazard/noLogin', hazard.toJson(false));
   }
 
