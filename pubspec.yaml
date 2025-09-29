@@ -13,6 +13,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   get_it: ^8.2.0
   http: ^1.5.0
+  iconsax_plus: ^1.0.0
   shared_preferences: ^2.5.3
 
 dev_dependencies:
@@ -22,3 +23,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - lib/presentation/assets/images/

@@ -1,7 +1,7 @@
-import 'package:action_log_app/presentation_test/pages/home_page.dart';
+import 'package:action_log_app/presentation/pages/home_page.dart';
+import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:action_log_app/core/di/dependency_injection.dart';
-
 void main() {
   DependencyInjection.setup();
   
@@ -16,9 +16,17 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Action Log App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
+      useMaterial3: true,
+      scaffoldBackgroundColor: backgroundColor,
+      appBarTheme: AppBarTheme(
+        backgroundColor: white,
+        foregroundColor: white,
       ),
+      textTheme: const TextTheme(
+        titleLarge: TextStyle(color: black),
+        bodyMedium: TextStyle(color: black),
+      ),
+    ),
       home: const HomePage(),
 
     );
