@@ -5,7 +5,7 @@ import 'package:action_log_app/application/use_cases/user_use_cases/save_user_in
 import 'package:action_log_app/core/di/features/hazard_di.dart';
 import 'package:action_log_app/core/di/features/user_di.dart';
 import 'package:action_log_app/domain/entities/user.dart';
-import 'package:action_log_app/presentation_test/pages/post_hazard_page.dart';
+import 'package:action_log_app/presentation/pages/post_hazard_page.dart';
 import 'package:flutter/material.dart';
 
 class UserInfoPageForm extends StatefulWidget {
@@ -59,7 +59,7 @@ class _UserInfoPageState extends State<UserInfoPageForm> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HazardDetailsFormPage(
+          builder: (context) => PostHazardPage(
             postHazardUseCase: PostHazardUseCase(
               repository: HazardDI.repository,
               userLocalDataSource: UserDI.localDataSource, // <-- FIXED HERE

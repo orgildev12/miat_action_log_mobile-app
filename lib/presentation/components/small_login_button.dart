@@ -1,9 +1,25 @@
+import 'package:action_log_app/core/di/features/user_di.dart';
+import 'package:action_log_app/presentation/pages/login_page.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 
-class SmallTextButton extends StatelessWidget {
-  const SmallTextButton({super.key});
+class SmallLoginButton extends StatelessWidget {
+  const SmallLoginButton({
+    super.key,
+    });
+
+
+  void _pushToLogin(BuildContext context) async {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => LoginPage(
+          loginUseCase: UserDI.loginUseCase,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +30,7 @@ class SmallTextButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: TextButton(
-        onPressed: () {},
+        onPressed: () => _pushToLogin(context),
         style: TextButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           backgroundColor: Colors.transparent,
