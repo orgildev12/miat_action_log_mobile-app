@@ -17,12 +17,16 @@ class UserInfoPage extends StatefulWidget {
   final FetchUserInfoUseCase fetchUserInfoUseCase;
   final SaveUserInfoFromInputUseCase saveUserInfoFromInputUseCase;
   final ClearUserInfoCacheUsecase clearUserInfoCacheUseCase;
+  final int hazardTypeId;
+  final String hazardTypeName;
 
   const UserInfoPage({
     super.key,
     required this.fetchUserInfoUseCase,
     required this.saveUserInfoFromInputUseCase,
     required this.clearUserInfoCacheUseCase,
+    required this.hazardTypeId,
+    required this.hazardTypeName,
   });
 
   @override
@@ -72,6 +76,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
               userLocalDataSource: UserDI.localDataSource,
             ),
             fetchUserInfoUseCase: widget.fetchUserInfoUseCase,
+            hazardTypeId: widget.hazardTypeId,
+            hazardTypeName: widget.hazardTypeName,
           ),
         ),
       );

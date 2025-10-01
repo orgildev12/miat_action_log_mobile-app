@@ -105,22 +105,22 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            _buildNavigationItem(
-              context,
-              title: 'post hazard (with login)',
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PostHazardPage(
-                    postHazardUseCase: PostHazardUseCase(
-                      repository: HazardDI.repository,
-                      userLocalDataSource: UserDI.localDataSource,
-                    ),
-                    fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
-                  ),
-                ),
-              ),
-            ),
+            // _buildNavigationItem(
+            //   context,
+            //   title: 'post hazard (with login)',
+            //   onTap: () => Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => PostHazardPage(
+            //         postHazardUseCase: PostHazardUseCase(
+            //           repository: HazardDI.repository,
+            //           userLocalDataSource: UserDI.localDataSource,
+            //         ),
+            //         fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

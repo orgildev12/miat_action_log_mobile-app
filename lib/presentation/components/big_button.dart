@@ -5,12 +5,14 @@ class BigButton extends StatefulWidget {
   final String buttonText;
   final bool isActive;
   final VoidCallback? onTap;
+  final IconData? iconData;
 
   const BigButton({
     super.key,
     required this.buttonText,
     required this.isActive,
     this.onTap,
+    this.iconData
     });
 
   @override
@@ -22,7 +24,7 @@ class _BigButtonState extends State<BigButton> {
   Widget build(BuildContext context) {
     return Padding(padding: EdgeInsets.symmetric(horizontal: 0),
       child: InkWell(
-        onTap: widget.onTap,
+        onTap: widget.isActive ? widget.onTap : (){},
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -48,16 +50,23 @@ class _BigButtonState extends State<BigButton> {
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 18.0),
-            child: Center(
-              child: Text(
-                widget.buttonText,
-                style: TextStyle(
-                  color: widget.isActive ?Color(0xFFF5F5F5) : black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  widget.buttonText,
+                  style: TextStyle(
+                    color: widget.isActive ?Color(0xFFF5F5F5) : black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
+                if (widget.iconData != null) ...[
+                  SizedBox(width: 8),
+                  Icon(widget.iconData, color: widget.isActive ? Color(0xFFF5F5F5) : black, size: 24),
+                ],
+                ]
               ),
-            ),
           ),
         ),
       ),

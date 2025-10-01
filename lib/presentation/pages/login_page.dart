@@ -121,3 +121,27 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+// onTap: () {
+                //   widget.isUserLoggedIn ?
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => PostHazardPage(
+                //         postHazardUseCase: PostHazardUseCase(
+                //           repository: HazardDI.repository,
+                //           userLocalDataSource: UserDI.localDataSource,
+                //         ),
+                //         fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
+                //       ),
+                //     ),
+                //   ) :
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) =>  UserInfoPage(
+                //         fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
+                //         saveUserInfoFromInputUseCase: UserDI.saveUserInfoFromInput,
+                //         clearUserInfoCacheUseCase: UserDI.clearUserInfoCacheUsecase,
+                //       )),
+                //   );
+                // }

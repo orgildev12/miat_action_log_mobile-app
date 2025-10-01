@@ -1,8 +1,14 @@
 import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazard_use_case.dart';
+import 'package:action_log_app/application/use_cases/location_use_cases/clear_location_cache.dart';
+import 'package:action_log_app/application/use_cases/location_use_cases/fetch_locations_use_case.dart';
 import 'package:action_log_app/application/use_cases/user_use_cases/fetch_user_info_use_case.dart';
+import 'package:action_log_app/core/di/features/location_di.dart';
+import 'package:action_log_app/domain/entities/location.dart';
 import 'package:action_log_app/domain/entities/user.dart';
 import 'package:action_log_app/models/post_hazard_model.dart';
 import 'package:action_log_app/presentation/components/add_image_button.dart';
+import 'package:action_log_app/presentation/components/big_button.dart';
+import 'package:action_log_app/presentation/components/hazard_drop_down_form.dart';
 import 'package:action_log_app/presentation/components/hazard_form_item.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +17,15 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 class PostHazardPage extends StatefulWidget {
   final PostHazardUseCase postHazardUseCase;
   final FetchUserInfoUseCase fetchUserInfoUseCase;
+  final int hazardTypeId;
+  final String hazardTypeName;
 
   const PostHazardPage({
     super.key,
     required this.postHazardUseCase,
     required this.fetchUserInfoUseCase,
+    required this.hazardTypeId,
+    required this.hazardTypeName,
   });
 
   @override
@@ -24,21 +34,30 @@ class PostHazardPage extends StatefulWidget {
 
 class _PostHazardPageState extends State<PostHazardPage> {
   User user = User();
-
+  FetchLocationsUseCase fetchLocationUseCase = LocationDI.fetchLocationsUseCase;
+  ClearLocationCacheUseCase clearLocationCacheUseCase = LocationDI.clearLocationCacheUseCase;
+  List<Location> locations = [];
   final _formKey = GlobalKey<FormState>();
   int? typeId;
   int? locationId;
-  String? description;
-  String? solution;
+  String description = '';
+  String solution = '';
+  String firstLocationFormValue = '';
+  String secondLocationFormValue = '';
+  String selectedLocationGroupName = '';
 
   late String username;
   late String email;
   late String phoneNumber;
 
+  bool isSelectedLocationGroup = false;
+  int? selectedLocationGroupId;
+  
   @override
   void initState() {
     super.initState();
     _loadUserInfo();
+    _fetchLocations();
   }
 
   Future<void> _loadUserInfo() async {
@@ -55,6 +74,53 @@ class _PostHazardPageState extends State<PostHazardPage> {
     }
   }
 
+  Future<void> _fetchLocations() async {
+
+    try {
+      await clearLocationCacheUseCase.call();
+      final result = await fetchLocationUseCase.call(
+        includeLocationsWithLGroup: true,
+      );
+      setState(() {
+        locations = result;
+      });
+      // print(locations[1].nameEn);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _setFirstLocationFormValue(Location selectedLocation) {
+    if(selectedLocation.locationGroupId == null){
+      setState(() {
+        isSelectedLocationGroup = false;
+        firstLocationFormValue = '';
+        secondLocationFormValue = '';
+        selectedLocationGroupId = null;
+        firstLocationFormValue = selectedLocation.nameMn;
+        locationId = selectedLocation.id;
+      });
+    }else{
+      setState(() {
+        firstLocationFormValue = '';
+        secondLocationFormValue = '';
+        locationId = null;
+        firstLocationFormValue = selectedLocation.groupNameMn!;
+        selectedLocationGroupId = selectedLocation.locationGroupId;
+        selectedLocationGroupName = selectedLocation.groupNameMn!;
+        isSelectedLocationGroup = true;
+      });
+    }
+  }
+
+  void _setSecondLocationFormValue(Location selectedLocation) {
+      setState(() {
+        secondLocationFormValue = selectedLocation.nameMn;
+        locationId = selectedLocation.id;
+      });
+
+  }
+
   void _submitHazard() {
     if (_formKey.currentState!.validate()) {
       final hazardModel = PostHazardModel(
@@ -62,10 +128,10 @@ class _PostHazardPageState extends State<PostHazardPage> {
         userName: user.username,
         email: user.email,
         phoneNumber: user.phoneNumber,
-        typeId: typeId!,
+        typeId: widget.hazardTypeId,
         locationId: locationId!,
-        description: description ?? '',
-        solution: solution ?? '',
+        description: description,
+        solution: solution,
       );
       // print('Hazard Model: $hazardModel');
       widget.postHazardUseCase
@@ -76,6 +142,8 @@ class _PostHazardPageState extends State<PostHazardPage> {
       Navigator.pop(context);
     }
   }
+
+  bool get isActive => locationId != null && description.trim().isNotEmpty && solution.trim().isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +169,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 32),
-              Text('Аюулыг илрүүлсэн мэдээллийн маягт',
+              Text(widget.hazardTypeName.toString(),
                   style: TextStyle(
                       color: primaryColor,
                       fontSize: 16,
@@ -115,33 +183,118 @@ class _PostHazardPageState extends State<PostHazardPage> {
                 )
               ),
               SizedBox(height: 32),
-              HazardFormItem(
-                hintText: 'Байршил сонгох',
-                labelText: 'Байршил',
-                formValue: locationId?.toString() ?? '',
-                onValueChanged: (val) => setState(() {
-                  locationId = int.tryParse(val);
-                }),
-              ),
-              SizedBox(height: 24),
-              HazardFormItem(
-                labelText: 'Дэлгэрэнгүй мэдээлэл',
-                hintText: 'Аюул, зөрчил эсвэл алдааны талаар дэлгэрэнгүй тайлбарлана уу.',
-                formValue: locationId?.toString() ?? '',
-                onValueChanged: (val) => setState(() {
-                  locationId = int.tryParse(val);
-                }),
-              ),
-              SizedBox(height: 24),
-              HazardFormItem(
-                labelText: 'Эрсдэлийг бууруулах, арилгах талаар санал',
-                hintText: 'Ийм алдаа дахин давтагдахаас сэргийлж юу хийж болох талаар саналаа бичнэ үү.',
-                formValue: locationId?.toString() ?? '',
-                onValueChanged: (val) => setState(() {
-                  locationId = int.tryParse(val);
-                }),
-              ),
-              SizedBox(height: 24),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    HazardDropDownForm(
+                      hintText: 'Байршил сонгох',
+                      labelText: 'Байршил',
+                      formValue: firstLocationFormValue,
+                      dropDownItems: [
+                        // Main locations (no group)
+                        ...locations
+                            .where((location) => location.locationGroupId == null)
+                            .map((location) => {
+                                  'label': location.nameMn,
+                                  'isGroup': false,
+                                })
+                            .toList(),
+
+                        // Unique group names
+                        ...locations
+                            .where((location) => location.locationGroupId != null)
+                            .map((location) => location.groupNameMn ?? '')
+                            .toSet() // ✅ deduplicate group names
+                            .map((groupName) => {
+                                  'label': groupName,
+                                  'isGroup': true,
+                                })
+                            .toList(),
+                      ],
+                      onValueChanged: (val) {
+                        final selectedLocation = locations.firstWhere(
+                          (location) => location.nameMn == val || location.groupNameMn == val,
+                          orElse: () => Location( // ✅ avoid crash
+                            id: -1,
+                            nameMn: val,
+                            nameEn: val,
+                          ),
+                        );
+
+                        if (selectedLocation.id != -1) {
+                          _setFirstLocationFormValue(selectedLocation);
+                        } else {
+                          debugPrint("⚠️ Location not found for value: $val");
+                        }
+                      },
+                    ),
+                  
+                    if(isSelectedLocationGroup)
+                      Column(
+                        children: [
+                          SizedBox(height: 8),
+                          HazardDropDownForm(
+                            hintText: '$selectedLocationGroupName сонгох',
+                            formValue: locationId != null
+                                ? (locations.firstWhere(
+                                    (location) => location.id == locationId,
+                                    orElse: () => Location(
+                                      id: -1,
+                                      nameMn: '',
+                                      nameEn: '',
+                                    ),
+                                  ).nameMn)
+                                : '',
+
+                            dropDownItems: locations
+                                .where((location) => location.locationGroupId == selectedLocationGroupId)
+                                .map((location) => {
+                                      'label': location.nameMn,
+                                      'isGroup': false,
+                                    })
+                                .toList(),
+
+                            onValueChanged: (val) {
+                              final selectedLocation = locations.firstWhere(
+                                (location) => location.nameMn == val,
+                                orElse: () => Location(
+                                  id: -1,
+                                  nameMn: val,
+                                  nameEn: val,
+                                ),
+                              );
+
+                              if (selectedLocation.id != -1) {
+                                _setSecondLocationFormValue(selectedLocation);
+                              } else {
+                                debugPrint("⚠️ Location not found for value: $val");
+                              }
+                            },
+                          )
+                          ]
+                      ),
+                    SizedBox(height: 28),
+                    HazardFormItem(
+                      labelText: 'Дэлгэрэнгүй мэдээлэл',
+                      hintText: 'Аюул, зөрчил эсвэл алдааны талаар дэлгэрэнгүй тайлбарлана уу.',
+                      formValue: description,
+                      onValueChanged: (val) => setState(() {
+                        description = val;
+                      }),
+                    ),
+                    SizedBox(height: 28),
+                    HazardFormItem(
+                      labelText: 'Эрсдэлийг бууруулах, арилгах талаар санал',
+                      hintText: 'Ийм алдаа дахин давтагдахаас сэргийлж юу хийж болох талаар саналаа бичнэ үү.',
+                      formValue: solution,
+                      onValueChanged: (val) => setState(() {
+                        solution = val;
+                      }),
+                    ),
+                  ],
+                )),
+              SizedBox(height: 28),
               Text('Зураг', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: black)),
               SizedBox(height: 12),
               Row(
@@ -162,47 +315,9 @@ class _PostHazardPageState extends State<PostHazardPage> {
 
                 ],
               ),
-
-              SizedBox(height: 40),
-              Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextFormField(
-                      decoration: const InputDecoration(labelText: 'Type ID'),
-                      keyboardType: TextInputType.number,
-                      onChanged: (val) => typeId = int.tryParse(val),
-                      validator: (val) =>
-                          val == null || val.isEmpty ? 'Enter type ID' : null,
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(labelText: 'Location ID'),
-                      keyboardType: TextInputType.number,
-                      onChanged: (val) => locationId = int.tryParse(val),
-                      validator: (val) =>
-                          val == null || val.isEmpty ? 'Enter location ID' : null,
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(labelText: 'Description'),
-                      onChanged: (val) => description = val,
-                      validator: (val) =>
-                          val == null || val.isEmpty ? 'Enter description' : null,
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(labelText: 'Solution'),
-                      onChanged: (val) => solution = val,
-                      validator: (val) =>
-                          val == null || val.isEmpty ? 'Enter solution' : null,
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: _submitHazard,
-                      child: const Text('Submit Hazard'),
-                    ),
-                  ],
-                ),
-              )
+              SizedBox(height: 64),
+              BigButton(buttonText: 'Илгээх', isActive: isActive, onTap: _submitHazard, iconData: IconsaxPlusLinear.send_2),
+              SizedBox(height: 100),
             ],
           ),
         ),

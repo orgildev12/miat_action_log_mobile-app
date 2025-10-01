@@ -73,7 +73,11 @@ class _HazardFormItemState extends State<HazardFormItem> {
           validator: (val) => val == null || val.isEmpty ? null : null,
           minLines: 1,
           maxLines: null,
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            
+            ),
         ),
       ],
     );

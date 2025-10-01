@@ -1,11 +1,11 @@
-import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazard_use_case.dart';
+import 'package:action_log_app/application/use_cases/hazard_type_use_cases/fetch_hazard_types_use_case.dart';
 import 'package:action_log_app/core/di/features/hazard_di.dart';
-import 'package:action_log_app/core/di/features/user_di.dart';
+import 'package:action_log_app/core/di/features/hazard_type_di.dart';
+import 'package:action_log_app/domain/entities/hazard_type.dart';
 import 'package:action_log_app/presentation/components/app_bar.dart';
+import 'package:action_log_app/presentation/components/hazard_type_selector.dart';
 import 'package:action_log_app/presentation/components/home_big_button.dart';
-import 'package:action_log_app/presentation/pages/post_hazard_page.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
-import 'package:action_log_app/presentation/pages/user_info_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
@@ -23,6 +23,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isExpanded = false;
+
+  FetchHazardTypesUseCase fetchHazardTypesUseCase = HazardTypeDI.fetchHazardTypesUseCase;
+  List<HazardType> hazardTypes = [];
+  Future <void> _fetchHazardTypes () async {
+    try {
+      final result = await fetchHazardTypesUseCase.call();
+      setState(() {
+        hazardTypes = result;
+      });
+    } catch (e) {
+      print('Error fetching hazard types: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchHazardTypes();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,29 +102,21 @@ class _HomePageState extends State<HomePage> {
               HomeBigButton(
                 isColored: true, buttonText: 'Мэдээлэл өгөх', buttonIcon: IconsaxPlusLinear.message, 
                 onTap: () {
-                  widget.isUserLoggedIn ?
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PostHazardPage(
-                        postHazardUseCase: PostHazardUseCase(
-                          repository: HazardDI.repository,
-                          userLocalDataSource: UserDI.localDataSource,
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        padding: EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: hazardTypes.map((hazardType) => 
+                            HazardTypeSelector(hazardType: hazardType, isUserLoggedIn: widget.isUserLoggedIn)
+                          ).toList(),
                         ),
-                        fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
-                      ),
-                    ),
-                  ) :
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>  UserInfoPage(
-                        fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
-                        saveUserInfoFromInputUseCase: UserDI.saveUserInfoFromInput,
-                        clearUserInfoCacheUseCase: UserDI.clearUserInfoCacheUsecase,
-                      )),
+                      );
+                    },
                   );
-                }
+                },
               ),
               SizedBox(height: 12),
               HomeBigButton(isColored: false, buttonText: 'Нэрээ нууцлаж мэдээллэх', buttonIcon: IconsaxPlusLinear.shield),

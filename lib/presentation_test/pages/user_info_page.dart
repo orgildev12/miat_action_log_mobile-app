@@ -56,18 +56,18 @@ class _UserInfoPageState extends State<UserInfoPageForm> {
   void _continue() async {
     if (_userFormKey.currentState!.validate()) {
       await widget.saveUserInfoFromInputUseCase.call(username, email, phoneNumber);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PostHazardPage(
-            postHazardUseCase: PostHazardUseCase(
-              repository: HazardDI.repository,
-              userLocalDataSource: UserDI.localDataSource, // <-- FIXED HERE
-            ),
-            fetchUserInfoUseCase: widget.fetchUserInfoUseCase,
-          ),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => PostHazardPage(
+      //       postHazardUseCase: PostHazardUseCase(
+      //         repository: HazardDI.repository,
+      //         userLocalDataSource: UserDI.localDataSource, // <-- FIXED HERE
+      //       ),
+      //       fetchUserInfoUseCase: widget.fetchUserInfoUseCase,
+      //     ),
+      //   ),
+      // );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('User info saved! Continue to hazard details.')),
       );
