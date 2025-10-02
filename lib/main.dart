@@ -1,6 +1,4 @@
-import 'package:action_log_app/application/use_cases/user_use_cases/fetch_user_info_use_case.dart';
-import 'package:action_log_app/core/di/features/user_di.dart';
-import 'package:action_log_app/presentation/pages/home_page.dart';
+import 'package:action_log_app/presentation/pages/main_navigator.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:action_log_app/core/di/dependency_injection.dart';
@@ -8,22 +6,16 @@ import 'package:action_log_app/core/di/dependency_injection.dart';
 final ValueNotifier<bool> isLoggedInNotifier = ValueNotifier(false);
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensure bindings are initialized
+  // WidgetsFlutterBinding.ensureInitialized(); // Ensure bindings are initialized
   DependencyInjection.setup();
 
-  final fetchUserInfoUseCase = UserDI.fetchUserInfoUseCase;
-  final user = await fetchUserInfoUseCase.call();
-  isLoggedInNotifier.value = user.id != null; // Set login state based on user.id
-
-  runApp(MainApp(fetchUserInfoUseCase: fetchUserInfoUseCase));
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  final FetchUserInfoUseCase fetchUserInfoUseCase;
 
   const MainApp({
     super.key,
-    required this.fetchUserInfoUseCase,
   });
 
   @override
@@ -46,7 +38,8 @@ class MainApp extends StatelessWidget {
               bodyMedium: TextStyle(color: black),
             ),
           ),
-          home: HomePage(isUserLoggedIn: isLoggedIn),
+          home: MainNavigator()
+          // HomePage(isUserLoggedIn: isLoggedIn),
         );
       },
     );

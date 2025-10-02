@@ -1,3 +1,4 @@
+import 'package:action_log_app/data/data_sources/hazard/hazard_local_data.dart';
 import 'package:action_log_app/data/data_sources/user/user_local_data.dart';
 import 'package:action_log_app/data/data_sources/user/user_remote_data.dart';
 import 'package:action_log_app/domain/entities/user.dart';
@@ -14,6 +15,7 @@ class UserRepositoryImpl implements UserRepository {
     required this.remote,
   });
 
+  final HazardLocalDataSource hazardLocal = HazardLocalDataSource();
   @override
   Future<void> login(String username, String password) async {
     try {
@@ -42,9 +44,14 @@ class UserRepositoryImpl implements UserRepository {
     try {
       await local.clearUserInfo();
       await local.clearToken();
+      await hazardLocal.clearHazards();
     } catch (e) {
       rethrow;
     }
+  }
+
+  User createEmptyUser() {
+    return User(); // Adjust fields as per your User entity
   }
 
   @override
@@ -66,7 +73,7 @@ class UserRepositoryImpl implements UserRepository {
 
       // If localModel is null, you may want to throw or handle accordingly
       if (localModel == null) {
-        throw Exception('No user info found');
+        return createEmptyUser(); // Return an empty user if no data is found
       }
 
       // Otherwise, fetch from remote
@@ -74,7 +81,7 @@ class UserRepositoryImpl implements UserRepository {
       await local.saveUserInfo(remoteModel);
       return remoteModel.toEntity();
     } catch (e) {
-      rethrow;
+      return createEmptyUser(); // Handle exceptions by returning an empty user
     }
   }
 

@@ -1,7 +1,5 @@
-import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazard_use_case.dart';
 import 'package:action_log_app/core/di/features/user_di.dart';
 import 'package:action_log_app/presentation/pages/login_page.dart';
-import 'package:action_log_app/presentation/pages/post_hazard_page.dart';
 import 'package:action_log_app/presentation_test/pages/user_info_page.dart';
 import 'package:action_log_app/presentation_test/pages/user_page.dart';
 import 'package:flutter/material.dart';

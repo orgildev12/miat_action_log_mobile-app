@@ -1,11 +1,7 @@
-import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazard_use_case.dart';
 import 'package:action_log_app/application/use_cases/user_use_cases/clear_user_info_use_case.dart';
 import 'package:action_log_app/application/use_cases/user_use_cases/fetch_user_info_use_case.dart';
 import 'package:action_log_app/application/use_cases/user_use_cases/save_user_info_from_input_user_case.dart';
-import 'package:action_log_app/core/di/features/hazard_di.dart';
-import 'package:action_log_app/core/di/features/user_di.dart';
 import 'package:action_log_app/domain/entities/user.dart';
-import 'package:action_log_app/presentation/pages/post_hazard_page.dart';
 import 'package:flutter/material.dart';
 
 class UserInfoPageForm extends StatefulWidget {

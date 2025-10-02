@@ -1,8 +1,6 @@
 import 'package:action_log_app/application/use_cases/hazard_type_use_cases/fetch_hazard_types_use_case.dart';
-import 'package:action_log_app/core/di/features/hazard_di.dart';
 import 'package:action_log_app/core/di/features/hazard_type_di.dart';
 import 'package:action_log_app/domain/entities/hazard_type.dart';
-import 'package:action_log_app/presentation/components/app_bar.dart';
 import 'package:action_log_app/presentation/components/hazard_type_selector.dart';
 import 'package:action_log_app/presentation/components/home_big_button.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
@@ -16,7 +14,7 @@ class HomePage extends StatefulWidget {
     super.key,
     required this.isUserLoggedIn,
   });
-  
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -45,13 +43,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: ActionLogAppBar(isLoggedIn: widget.isUserLoggedIn),
-      ),
-      body: SafeArea(
-        top: true,
-        child: SingleChildScrollView(
+    return SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(height: 32),
@@ -124,8 +116,7 @@ class _HomePageState extends State<HomePage> {
               HomeBigButton(isColored: false, buttonText: 'Бусад сувгууд', buttonIcon: IconsaxPlusLinear.arrow_right_3, otherRecources: true),
             ],
           ),
-        ),
-      ),
-    );
+        );
+      
   }
 }

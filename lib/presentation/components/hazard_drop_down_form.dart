@@ -37,7 +37,7 @@ class HazardDropDownForm extends StatelessWidget {
             color: Colors.transparent,
             child: DropdownButtonHideUnderline(
               child: DropdownButtonFormField<String>(
-                value: formValue.isNotEmpty ? formValue : null, // <-- null shows hint
+                initialValue: formValue.isNotEmpty ? formValue : null, // <-- null shows hint
                 isExpanded: true,
                 menuMaxHeight: 300, // Ensure dropdown menu height is limited
                 dropdownColor: Colors.white, // Optional: Set dropdown background color
@@ -45,7 +45,7 @@ class HazardDropDownForm extends StatelessWidget {
                       value: item['label'],
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                        child: Container(
+                        child: SizedBox(
                           width: double.infinity, 
                           child: Row(
                             children: [

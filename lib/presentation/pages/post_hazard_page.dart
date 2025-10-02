@@ -118,7 +118,6 @@ class _PostHazardPageState extends State<PostHazardPage> {
         secondLocationFormValue = selectedLocation.nameMn;
         locationId = selectedLocation.id;
       });
-
   }
 
   void _submitHazard() {
@@ -199,7 +198,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
                                   'label': location.nameMn,
                                   'isGroup': false,
                                 })
-                            .toList(),
+                            ,
 
                         // Unique group names
                         ...locations
@@ -210,7 +209,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
                                   'label': groupName,
                                   'isGroup': true,
                                 })
-                            .toList(),
+                            ,
                       ],
                       onValueChanged: (val) {
                         final selectedLocation = locations.firstWhere(
