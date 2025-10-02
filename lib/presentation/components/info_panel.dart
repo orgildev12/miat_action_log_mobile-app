@@ -33,7 +33,7 @@ class InfoPanel extends StatelessWidget {
                 color: black
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 4),
           ],
           Text(
             content,

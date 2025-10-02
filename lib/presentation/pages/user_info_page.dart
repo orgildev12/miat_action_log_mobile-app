@@ -106,7 +106,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
               children: [
                 SizedBox(height: 32),
                 Text( 
-                  'Аюулыг илрүүлсэн мэдээллийн маягт', 
+                  widget.hazardTypeName, 
                   style: TextStyle(
                     color: primaryColor,
                     fontSize: 16,

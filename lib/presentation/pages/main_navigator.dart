@@ -30,11 +30,76 @@ class _MainNavigatorState extends State<MainNavigator> {
     isLoggedInNotifier.value = user.id != null; // Set login state based on user.id
   }
 
+  Widget _buildBottomNavigationBar(bool isUserLoggedIn) {
+    final items = isUserLoggedIn
+        ? [
+            BottomNavigationBarItem(
+              icon: Icon(
+                _currentIndex == 0 ? IconsaxPlusBold.home_2 : IconsaxPlusLinear.home_2,
+                size: 28,
+              ),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                _currentIndex == 1 ? IconsaxPlusBold.note_text : IconsaxPlusLinear.note_text,
+                size: 28,
+              ),
+              label: 'My Hazards',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                _currentIndex == 2 ? IconsaxPlusBold.category : IconsaxPlusLinear.category,
+                size: 28,
+              ),
+              label: 'Settings',
+            ),
+          ]
+        : [
+            BottomNavigationBarItem(
+              icon: Icon(
+                _currentIndex == 0 ? IconsaxPlusBold.home_2 : IconsaxPlusLinear.home_2,
+                size: 28,
+              ),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                _currentIndex == 1 ? IconsaxPlusBold.category : IconsaxPlusLinear.category,
+                size: 28,
+              ),
+              label: 'Settings',
+            ),
+          ];
+
+    return BottomNavigationBar(
+      onTap: (tabIndex) {
+        setState(() {
+          _currentIndex = tabIndex;
+        });
+      },
+      currentIndex: _currentIndex,
+      showSelectedLabels: false, // Hide labels for selected items
+      showUnselectedLabels: false, // Hide labels for unselected items
+      selectedItemColor: black,
+      items: items,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final body = [
+    final loggedInBody = [
       HomePage(isUserLoggedIn: isLoggedInNotifier.value),
       MyHazardsPage(),
+      SettingsPage(
+        onLogout: () {
+          isLoggedInNotifier.value = false; // Update login state
+        },
+      ),
+    ];
+
+    final loggedOutBody = [
+      HomePage(isUserLoggedIn: isLoggedInNotifier.value),
       SettingsPage(
         onLogout: () {
           isLoggedInNotifier.value = false; // Update login state
@@ -45,55 +110,22 @@ class _MainNavigatorState extends State<MainNavigator> {
     return ValueListenableBuilder<bool>(
       valueListenable: isLoggedInNotifier,
       builder: (context, isUserLoggedIn, child) {
+        // Adjust _currentIndex only if it is out of bounds for the current state
+        if (!isUserLoggedIn && _currentIndex >= loggedOutBody.length) {
+          _currentIndex = loggedOutBody.length - 1; // Set to the last valid index
+        }
+
         return Scaffold(
           appBar: AppBar(
             title: ActionLogAppBar(isLoggedIn: isUserLoggedIn),
           ),
           body: SafeArea(
             top: true,
-            child: body[_currentIndex],
+            child: isUserLoggedIn
+                ? loggedInBody[_currentIndex]
+                : loggedOutBody[_currentIndex],
           ),
-          bottomNavigationBar: isUserLoggedIn
-              ? BottomNavigationBar(
-                  onTap: (tabIndex) {
-                    setState(() {
-                      _currentIndex = tabIndex;
-                    });
-                  },
-                  currentIndex: _currentIndex,
-                  showSelectedLabels: false, // Hide labels for selected items
-                  showUnselectedLabels: false, // Hide labels for unselected items
-                  selectedItemColor: black,
-                  // unselectedItemColor: ,
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: _currentIndex == 0 ?
-                      Icon(IconsaxPlusBold.home_2, size: 28) : 
-                      Icon(IconsaxPlusLinear.home_2, size: 28),
-
-                      label: 'Home',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: _currentIndex == 1 ?
-                      Icon(
-                        IconsaxPlusBold.note_text,
-                        size: 28,
-                      )
-                      : Icon(
-                        IconsaxPlusLinear.note_text,
-                        size: 28,
-                      ),
-                      label: 'My Hazards',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: _currentIndex == 2 ?
-                      Icon(IconsaxPlusBold.category, size: 28) : 
-                      Icon(IconsaxPlusLinear.category, size: 28),
-                      label: 'Settings',
-                    ),
-                  ],
-                )
-              : null, // Hide bottom navigation bar if not logged in
+          bottomNavigationBar: _buildBottomNavigationBar(isUserLoggedIn),
         );
       },
     );
