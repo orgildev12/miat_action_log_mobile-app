@@ -67,7 +67,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
         user = fetchedUser;
       });
     } catch (e) {
-      // Handle error, e.g., show a snackbar
+      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to load user info: $e')),
       );
@@ -84,7 +84,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
       setState(() {
         locations = result;
       });
-      // print(locations[1].nameEn);
+
     } catch (e) {
       print(e);
     }
@@ -132,7 +132,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
         description: description,
         solution: solution,
       );
-      // print('Hazard Model: $hazardModel');
+
       widget.postHazardUseCase
           .call(hazardModel, isUserLoggedIn: user.id != null);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -191,7 +191,6 @@ class _PostHazardPageState extends State<PostHazardPage> {
                       labelText: 'Байршил',
                       formValue: firstLocationFormValue,
                       dropDownItems: [
-                        // Main locations (no group)
                         ...locations
                             .where((location) => location.locationGroupId == null)
                             .map((location) => {
@@ -200,11 +199,10 @@ class _PostHazardPageState extends State<PostHazardPage> {
                                 })
                             ,
 
-                        // Unique group names
                         ...locations
                             .where((location) => location.locationGroupId != null)
                             .map((location) => location.groupNameMn ?? '')
-                            .toSet() // ✅ deduplicate group names
+                            .toSet() // deduplicate group names
                             .map((groupName) => {
                                   'label': groupName,
                                   'isGroup': true,
@@ -214,7 +212,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
                       onValueChanged: (val) {
                         final selectedLocation = locations.firstWhere(
                           (location) => location.nameMn == val || location.groupNameMn == val,
-                          orElse: () => Location( // ✅ avoid crash
+                          orElse: () => Location(
                             id: -1,
                             nameMn: val,
                             nameEn: val,
@@ -224,7 +222,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
                         if (selectedLocation.id != -1) {
                           _setFirstLocationFormValue(selectedLocation);
                         } else {
-                          debugPrint("⚠️ Location not found for value: $val");
+                          debugPrint("Location not found for value: $val");
                         }
                       },
                     ),
@@ -267,7 +265,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
                               if (selectedLocation.id != -1) {
                                 _setSecondLocationFormValue(selectedLocation);
                               } else {
-                                debugPrint("⚠️ Location not found for value: $val");
+                                debugPrint("Location not found for value: $val");
                               }
                             },
                           )

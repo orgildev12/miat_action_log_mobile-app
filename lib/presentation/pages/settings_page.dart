@@ -1,5 +1,5 @@
 import 'package:action_log_app/core/di/features/user_di.dart';
-import 'package:action_log_app/presentation/pages/home_page.dart';
+import 'package:action_log_app/presentation/pages/main_navigator.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -18,14 +18,15 @@ class SettingsPage extends StatelessWidget {
           TextButton(
             onPressed: () {
               logoutUseCase.call(); // Perform logout
-              onLogout(); // Notify MainNavigator
+              // onLogout(); // Notify MainNavigator
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(isUserLoggedIn: false),
+                  builder: (context) => MainNavigator(),
                 ),
                 (route) => false, // Clear navigation stack
               );
+              onLogout(); // Notify MainNavigator
             },
             child: Text('Log out'),
           ),

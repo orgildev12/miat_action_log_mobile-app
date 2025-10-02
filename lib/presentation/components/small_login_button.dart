@@ -23,39 +23,41 @@ class SmallLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        gradient: mainGradient,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: TextButton(
-        onPressed: () => _pushToLogin(context),
-        style: TextButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          backgroundColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+    return FittedBox(
+      child: Container(
+        height: 40,
+        decoration: BoxDecoration(
+          gradient: mainGradient,
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Center content
-          children: const [
-            Text(
-              'Нэвтрэх',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: white,
+        child: TextButton(
+          onPressed: () => _pushToLogin(context),
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            backgroundColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center, // Center content
+            children: const [
+              Text(
+                'Нэвтрэх',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: white,
+                ),
               ),
-            ),
-            SizedBox(width: 8),
-            Icon(
-              IconsaxPlusLinear.login,
-              color: white,
-              size: 20.0,
-            ),
-          ],
+              SizedBox(width: 8),
+              Icon(
+                IconsaxPlusLinear.login,
+                color: white,
+                size: 20.0,
+              ),
+            ],
+          ),
         ),
       ),
     );

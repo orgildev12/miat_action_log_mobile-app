@@ -1,13 +1,14 @@
 import 'package:action_log_app/application/use_cases/user_use_cases/login_user_case.dart';
+import 'package:action_log_app/main.dart';
 import 'package:action_log_app/presentation/components/user_form_item.dart';
 import 'package:action_log_app/presentation/components/big_button.dart';
+import 'package:action_log_app/presentation/pages/main_navigator.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 
 class LoginPage extends StatefulWidget {
   final LoginUseCase loginUseCase;
-
   const LoginPage({super.key, required this.loginUseCase});
 
   @override
@@ -15,6 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // bool isUserLoggedIn =  isLoggedInNotifier.value;
   final _formKey = GlobalKey<FormState>();
   String username = '';
   String password = '';
@@ -36,7 +38,14 @@ class _LoginPageState extends State<LoginPage> {
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.pop(context);
+      await Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainNavigator(),
+        ),
+        (route) => false, // Clear navigation stack
+      );
+      isLoggedInNotifier.value = true;
       }
     } catch (e) {
       setState(() {

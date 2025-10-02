@@ -1,9 +1,12 @@
 import 'package:action_log_app/core/di/features/user_di.dart';
+import 'package:action_log_app/main.dart';
 import 'package:action_log_app/presentation/components/app_bar.dart';
 import 'package:action_log_app/presentation/pages/home_page.dart';
 import 'package:action_log_app/presentation/pages/my_hazards_page.dart';
 import 'package:action_log_app/presentation/pages/settings_page.dart';
+import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 
 class MainNavigator extends StatefulWidget {
   const MainNavigator({super.key});
@@ -13,7 +16,6 @@ class MainNavigator extends StatefulWidget {
 }
 
 class _MainNavigatorState extends State<MainNavigator> {
-  final ValueNotifier<bool> isLoggedInNotifier = ValueNotifier(false);
   int _currentIndex = 0;
 
   @override
@@ -59,17 +61,34 @@ class _MainNavigatorState extends State<MainNavigator> {
                     });
                   },
                   currentIndex: _currentIndex,
-                  items: const [
+                  showSelectedLabels: false, // Hide labels for selected items
+                  showUnselectedLabels: false, // Hide labels for unselected items
+                  selectedItemColor: black,
+                  // unselectedItemColor: ,
+                  items: [
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
+                      icon: _currentIndex == 0 ?
+                      Icon(IconsaxPlusBold.home_2, size: 28) : 
+                      Icon(IconsaxPlusLinear.home_2, size: 28),
+
                       label: 'Home',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.warning),
+                      icon: _currentIndex == 1 ?
+                      Icon(
+                        IconsaxPlusBold.note_text,
+                        size: 28,
+                      )
+                      : Icon(
+                        IconsaxPlusLinear.note_text,
+                        size: 28,
+                      ),
                       label: 'My Hazards',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.settings),
+                      icon: _currentIndex == 2 ?
+                      Icon(IconsaxPlusBold.user_square, size: 28) : 
+                      Icon(IconsaxPlusLinear.user_square, size: 28),
                       label: 'Settings',
                     ),
                   ],
@@ -78,11 +97,5 @@ class _MainNavigatorState extends State<MainNavigator> {
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    isLoggedInNotifier.dispose();
-    super.dispose();
   }
 }

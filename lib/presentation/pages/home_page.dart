@@ -1,8 +1,14 @@
 import 'package:action_log_app/application/use_cases/hazard_type_use_cases/fetch_hazard_types_use_case.dart';
+import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazard_use_case.dart';
+import 'package:action_log_app/core/di/features/hazard_di.dart';
 import 'package:action_log_app/core/di/features/hazard_type_di.dart';
+import 'package:action_log_app/core/di/features/user_di.dart';
 import 'package:action_log_app/domain/entities/hazard_type.dart';
 import 'package:action_log_app/presentation/components/hazard_type_selector.dart';
 import 'package:action_log_app/presentation/components/home_big_button.dart';
+import 'package:action_log_app/presentation/pages/other_resources_page.dart';
+import 'package:action_log_app/presentation/pages/post_hazard_page.dart';
+import 'package:action_log_app/presentation/pages/secret_hazard_page_for_temp_user.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +45,57 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _fetchHazardTypes();
+  }
+
+  void _handleHazardButtonTap({required bool isPrivate}) {
+    if (isPrivate && !widget.isUserLoggedIn) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SecretHazardPageForTempUser(),
+        ),
+      );
+      return;
+    }
+
+    final filteredHazardTypes = hazardTypes
+        .where((hazardType) => hazardType.isPrivate == (isPrivate ? 1 : 0))
+        .toList();
+
+    if (filteredHazardTypes.length == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PostHazardPage(
+            postHazardUseCase: PostHazardUseCase(
+              repository: HazardDI.repository,
+              userLocalDataSource: UserDI.localDataSource,
+            ),
+            fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
+            hazardTypeId: filteredHazardTypes.first.id,
+            hazardTypeName: filteredHazardTypes.first.nameMn,
+          ),
+        ),
+      );
+    } else {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: filteredHazardTypes
+                  .map((hazardType) => HazardTypeSelector(
+                        hazardType: hazardType,
+                        isUserLoggedIn: widget.isUserLoggedIn,
+                      ))
+                  .toList(),
+            ),
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -93,27 +150,30 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 40),
               HomeBigButton(
                 isColored: true, buttonText: 'Мэдээлэл өгөх', buttonIcon: IconsaxPlusLinear.message, 
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                        padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: hazardTypes.map((hazardType) => 
-                            HazardTypeSelector(hazardType: hazardType, isUserLoggedIn: widget.isUserLoggedIn)
-                          ).toList(),
-                        ),
-                      );
-                    },
-                  );
-                },
+                onTap: () => _handleHazardButtonTap(isPrivate: false),
               ),
               SizedBox(height: 12),
-              HomeBigButton(isColored: false, buttonText: 'Нэрээ нууцлаж мэдээллэх', buttonIcon: IconsaxPlusLinear.shield),
+              HomeBigButton(
+                isColored: false, 
+                buttonText: 'Нэрээ нууцлаж мэдээллэх', 
+                buttonIcon: IconsaxPlusLinear.shield,
+                onTap: () => _handleHazardButtonTap(isPrivate: true),
+              ),
               SizedBox(height: 12),
-              HomeBigButton(isColored: false, buttonText: 'Бусад сувгууд', buttonIcon: IconsaxPlusLinear.arrow_right_3, otherRecources: true),
+              HomeBigButton(
+                isColored: false, 
+                buttonText: 'Бусад сувгууд', 
+                buttonIcon: IconsaxPlusLinear.arrow_right_3, 
+                otherRecources: true,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => OtherChannelsPage()
+                    )
+                  );
+                },
+                
+                ),
             ],
           ),
         );
