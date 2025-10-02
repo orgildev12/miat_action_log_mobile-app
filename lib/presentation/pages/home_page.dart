@@ -1,3 +1,4 @@
+import 'package:action_log_app/application/use_cases/hazard_type_use_cases/clear_hazard_type_cache_use_case.dart';
 import 'package:action_log_app/application/use_cases/hazard_type_use_cases/fetch_hazard_types_use_case.dart';
 import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazard_use_case.dart';
 import 'package:action_log_app/core/di/features/hazard_di.dart';
@@ -29,9 +30,11 @@ class _HomePageState extends State<HomePage> {
   bool isExpanded = false;
 
   FetchHazardTypesUseCase fetchHazardTypesUseCase = HazardTypeDI.fetchHazardTypesUseCase;
+  ClearHazardTypeCacheUseCase clearHazardTypeUseCase = HazardTypeDI.clearHazardTypeCacheUseCase;
   List<HazardType> hazardTypes = [];
   Future <void> _fetchHazardTypes () async {
     try {
+      // await clearHazardTypeUseCase.call();
       final result = await fetchHazardTypesUseCase.call();
       setState(() {
         hazardTypes = result;
@@ -80,11 +83,12 @@ class _HomePageState extends State<HomePage> {
     } else {
       showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         builder: (BuildContext context) {
-          return Container(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              shrinkWrap: true, 
               children: filteredHazardTypes
                   .map((hazardType) => HazardTypeSelector(
                         hazardType: hazardType,
@@ -95,6 +99,7 @@ class _HomePageState extends State<HomePage> {
           );
         },
       );
+
     }
   }
 

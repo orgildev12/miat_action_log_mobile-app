@@ -87,8 +87,8 @@ class _MainNavigatorState extends State<MainNavigator> {
                     ),
                     BottomNavigationBarItem(
                       icon: _currentIndex == 2 ?
-                      Icon(IconsaxPlusBold.user_square, size: 28) : 
-                      Icon(IconsaxPlusLinear.user_square, size: 28),
+                      Icon(IconsaxPlusBold.category, size: 28) : 
+                      Icon(IconsaxPlusLinear.category, size: 28),
                       label: 'Settings',
                     ),
                   ],

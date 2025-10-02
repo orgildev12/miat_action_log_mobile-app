@@ -10,14 +10,13 @@ class HelloText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          width: 30,
-          height: 30,
+        // Icon(IconsaxPlusBold.headphone, size: 32, color: black,),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
           child: Image.asset(
             'lib/presentation/assets/images/pro.png',
+            width: 36,
+            height: 36,
             fit: BoxFit.cover,
           ),
         ),

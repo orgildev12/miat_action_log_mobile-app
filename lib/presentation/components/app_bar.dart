@@ -25,7 +25,7 @@ class _ActionLogAppBarState extends State<ActionLogAppBar> {
           color: backgroundColor,
           alignment: Alignment.center,
           child: 
-          Padding(padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 16),
+          Padding(padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 24),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,7 +35,7 @@ class _ActionLogAppBarState extends State<ActionLogAppBar> {
                       Row(
                         children: [
                           LanguageSwitcher(),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: 24),
                           Icon(
                             IconsaxPlusLinear.notification,
                             color: black, // Set icon color
