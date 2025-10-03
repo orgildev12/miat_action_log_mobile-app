@@ -40,11 +40,13 @@ class HazardRemoteDataSource {
         'Content-Type': 'application/json',
         if (token != null) 'Authorization': 'Bearer $token',
       };
-      await apiClient.post('/hazard/', hazard.toJson(true), headers: headers);
-      return;
+      final result =  await apiClient.post('/hazard/', hazard.toJson(true), headers: headers);
+      return result;
     }
 
-    await apiClient.post('/hazard/noLogin', hazard.toJson(false));
+    final result = await apiClient.post('/hazard/noLogin', hazard.toJson(false));
+    return result;
+
   }
 
 }

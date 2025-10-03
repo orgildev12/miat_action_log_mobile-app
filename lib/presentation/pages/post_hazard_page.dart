@@ -10,6 +10,8 @@ import 'package:action_log_app/presentation/components/add_image_button.dart';
 import 'package:action_log_app/presentation/components/big_button.dart';
 import 'package:action_log_app/presentation/components/hazard_drop_down_form.dart';
 import 'package:action_log_app/presentation/components/hazard_form_item.dart';
+import 'package:action_log_app/presentation/components/pop_up.dart';
+import 'package:action_log_app/presentation/pages/main_navigator.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
@@ -119,26 +121,72 @@ class _PostHazardPageState extends State<PostHazardPage> {
         locationId = selectedLocation.id;
       });
   }
-
+  void _openSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PopUp(
+            icon: IconsaxPlusLinear.tick_circle,
+            colorTheme: 'success',
+            title: 'Амжилттай',
+            content: 'Таны хүсэлт амжилттай илгээгдсэн бөгөөд бид танд тун удахгүй үйл явцын талаар мэдээллэх болно.',
+            onPress: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainNavigator(),
+                ),
+                (route) => false,
+              );
+            }
+          );
+      },
+    );
+  }
+  void _openErrorDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PopUp(
+          icon: IconsaxPlusLinear.close_circle,
+          colorTheme: 'danger',
+          title: 'Алдаа гарлаа',
+          content: 'Таны хүсэлт амжилтгүй боллоо. Дахин оролдоно уу.',
+          onPress: () {
+              Navigator.pop(context);
+          }
+        );
+      },
+    );
+  }
+  
   void _submitHazard() {
     if (_formKey.currentState!.validate()) {
-      final hazardModel = PostHazardModel(
-        userId: user.id,
-        userName: user.username,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        typeId: widget.hazardTypeId,
-        locationId: locationId!,
-        description: description,
-        solution: solution,
-      );
+      try{
+        final hazardModel = PostHazardModel(
+          userId: user.id,
+          userName: user.username,
+          email: user.email,
+          phoneNumber: user.phoneNumber,
+          typeId: widget.hazardTypeId,
+          locationId: locationId!,
+          description: description,
+          solution: solution,
+        );
 
-      widget.postHazardUseCase
-          .call(hazardModel, isUserLoggedIn: user.id != null);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Hazard submitted!')),
-      );
-      Navigator.pop(context);
+        final result = widget.postHazardUseCase.call(hazardModel, isUserLoggedIn: user.id != null);
+        // if(result.asdf != null){
+        //   print('Hazard submitted: $result');
+        // }
+        _openSuccessDialog();
+      } catch(e){
+        _openErrorDialog();
+      }
+
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text('Hazard submitted!')),
+      // );
+      // Navigator.pop(context);
     }
   }
 

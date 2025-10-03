@@ -61,7 +61,10 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(IconsaxPlusLinear.arrow_left_1, color: black),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
         ),
         title: Text(
           'Нэвтрэх',

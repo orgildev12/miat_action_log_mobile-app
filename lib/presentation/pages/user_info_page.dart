@@ -6,6 +6,7 @@ import 'package:action_log_app/core/di/features/hazard_di.dart';
 import 'package:action_log_app/core/di/features/user_di.dart';
 import 'package:action_log_app/domain/entities/user.dart';
 import 'package:action_log_app/presentation/components/big_button.dart';
+import 'package:action_log_app/presentation/components/login_pop_up.dart';
 import 'package:action_log_app/presentation/pages/post_hazard_page.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -206,15 +207,23 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Нэвтрэх',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            decoration: TextDecoration.underline, 
-                            decorationColor: primaryColor,
+                        // const SizedBox(height: 16),
+                        TextButton(
+                          onPressed: (){
+                            showDialog(
+                              context: context, 
+                              builder: (BuildContext context) => const LoginPopUp(),
+                            );
+                          },
+                          child: Text(
+                            'Нэвтрэх',
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.underline, 
+                              decorationColor: primaryColor,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 64),

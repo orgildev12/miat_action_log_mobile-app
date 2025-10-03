@@ -1,5 +1,6 @@
 import 'package:action_log_app/core/di/features/user_di.dart';
 import 'package:action_log_app/main.dart';
+import 'package:action_log_app/presentation/components/pop_up.dart';
 import 'package:action_log_app/presentation/components/settings_page_item.dart';
 import 'package:action_log_app/presentation/pages/main_navigator.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
@@ -10,10 +11,23 @@ class SettingsPage extends StatelessWidget {
   final VoidCallback onLogout; // Add a callback for logout
   const SettingsPage({super.key, required this.onLogout});
 
+
   @override
   Widget build(BuildContext context) {
     final logoutUseCase = UserDI.logoutUseCase;
     final isUserLoggedIn = isLoggedInNotifier.value;
+
+    void _logout () {
+      logoutUseCase.call();
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainNavigator(),
+        ),
+        (route) => false,
+      );
+      onLogout();
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal:  16.0, vertical: 16.0),
@@ -63,16 +77,41 @@ class SettingsPage extends StatelessWidget {
                   isRed: true,
                   hasNoTrailingIcon: true,
                   onTap: () {
-                    logoutUseCase.call(); // Perform logout
-                    // onLogout(); // Notify MainNavigator
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainNavigator(),
-                      ),
-                      (route) => false, // Clear navigation stack
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return PopUp(
+                          icon: IconsaxPlusLinear.logout,
+                          colorTheme: 'danger',
+                          title: 'Та гарахдаа итгэлтэй байна уу?',
+                          // content: 'Үргэлжлүүлэхийн тулд нэвтрэх шаардлагатай.',
+                          hasTwoButtons: true,
+                          onPress: () => _logout(),
+                        );
+                        // return PopUp(
+                        //   icon: IconsaxPlusLinear.tick_circle,
+                        //   colorTheme: 'success',
+                        //   title: 'Амжилттай',
+                        //   content: 'Таны хүсэлт амжилттай илгээгдсэн бөгөөд бид танд тун удахгүй үйл явцын талаар мэдээллэх болно.',
+                        //   // content: 'Үргэлжлүүлэхийн тулд нэвтрэх шаардлагатай.',
+                        //   // hasTwoButtons: true,
+                        //   onPress: () {
+                        //     Navigator.of(context).pop();
+                        //   }
+                        // );
+                        // return PopUp(
+                        //   icon: IconsaxPlusLinear.close_circle,
+                        //   colorTheme: 'danger',
+                        //   title: 'Алдаа гарлаа',
+                        //   content: 'Таны хүсэлт амжилтгүй боллоо. Дахин оролдоно уу.',
+                        //   // content: 'Үргэлжлүүлэхийн тулд нэвтрэх шаардлагатай.',
+                        //   // hasTwoButtons: true,
+                        //   onPress: () {
+                        //     Navigator.of(context).pop();
+                        //   }
+                        // );
+                      },
                     );
-                    onLogout(); // Notify MainNavigator
                   },
                 ),
               ],

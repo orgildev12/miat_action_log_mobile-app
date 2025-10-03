@@ -17,7 +17,8 @@ class PostHazardUseCase {
       if (isUserLoggedIn) {
         token = await userLocalDataSource.getToken();
       }
-      await repository.postHazard(hazard, token, isUserLoggedIn: isUserLoggedIn);
+      final result =  await repository.postHazard(hazard, token, isUserLoggedIn: isUserLoggedIn);
+      return result;
     } catch (e) {
       throw Exception('Failed to post hazard: $e');
     }
