@@ -22,7 +22,7 @@ class _ActionLogAppBarState extends State<ActionLogAppBar> {
   Widget build(BuildContext context) {
     return Container(
           // height: 100,
-          color: backgroundColor,
+          // color: backgroundColor,
           alignment: Alignment.center,
           child: 
           Padding(padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 24),

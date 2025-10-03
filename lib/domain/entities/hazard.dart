@@ -1,7 +1,7 @@
 class Hazard {
   final String code;
-  final String? statusEn;
-  final String? statusMn;
+  final String statusEn;
+  final String statusMn;
   final String typeNameEn;
   final String typeNameMn;
   final String locationNameEn;
@@ -16,8 +16,8 @@ class Hazard {
 
   Hazard({
   required this.code,
-  this.statusEn,
-  this.statusMn,
+  required this.statusEn,
+  required this.statusMn,
   required this.typeNameEn,
   required this.typeNameMn,
   required this.locationNameEn,

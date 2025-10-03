@@ -38,7 +38,7 @@ class HazardLocalDataSource {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_hazardsKey);
-      await prefs.remove(_responsesKey);
+      // await prefs.remove(_responsesKey);
     } catch (e) {
       throw Exception('Failed to clear hazards: $e');
     }

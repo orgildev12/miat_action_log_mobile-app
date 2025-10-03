@@ -1,0 +1,65 @@
+import 'package:action_log_app/domain/entities/hazard.dart';
+import 'package:action_log_app/presentation/components/hazard_image.dart';
+import 'package:action_log_app/presentation/components/info_panel.dart';
+import 'package:action_log_app/presentation/styles/colors.dart';
+import 'package:flutter/material.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:action_log_app/presentation/components/hazart_details_item.dart';
+import 'package:intl/intl.dart';
+
+class HazardDetailsPage extends StatelessWidget {
+  final Hazard hazard;
+  const HazardDetailsPage({
+    super.key,
+    required this.hazard,
+    });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(IconsaxPlusLinear.arrow_left_1, color: black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          'Хүсэлтийн дэлгэрэнгүй',
+          style: TextStyle(
+            color: black,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HazartDetailsItem(text1: 'Хүсэлтийн дугаар', text2: hazard.code),
+              SizedBox(height: 8),
+              HazartDetailsItem(
+                text1: 'Илгээгдсэн огноо',
+                text2: DateFormat('yyyy.MM.dd').format(hazard.dateCreated),
+              ),
+              SizedBox(height: 8),
+              HazartDetailsItem(text1: 'Төлөв', text2: hazard.statusMn),
+              SizedBox(height: 24),
+              InfoPanel(content: 'Таны хүсэлт илгээгдсэн бөгөөд бид тун удахгүй үйл явцын талаар мэдээллэх болно.'),
+              SizedBox(height: 56),
+              Text('Агуулга', style: TextStyle(fontSize:20, fontWeight: FontWeight.w600, color: black)),
+              SizedBox(height: 12),
+              Text(hazard.description, style: TextStyle(fontSize:14,  color: black)),
+              SizedBox(height: 8),
+              Text('Санал болгосон шийдэл:', style: TextStyle(fontSize:16,  color: black, fontWeight: FontWeight.w500)),
+              Text(hazard.solution, style: TextStyle(fontSize:14,  color: black)),
+              SizedBox(height: 32),
+              HazardImage()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

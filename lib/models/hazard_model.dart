@@ -1,8 +1,8 @@
 class HazardModel {
   final int id;
   final String code;
-  final String? statusEn;
-  final String? statusMn;
+  final String statusEn;
+  final String statusMn;
   final int? userId;
   final String? userName;
   final String? email;
@@ -24,8 +24,8 @@ class HazardModel {
   HazardModel({
     required this.id,
     required this.code,
-    this.statusEn,
-    this.statusMn,
+    required this.statusEn,
+    required this.statusMn,
     this.userId,
     this.userName,
     this.email,
@@ -48,9 +48,9 @@ class HazardModel {
   factory HazardModel.fromJson(Map<String, dynamic> json) {
   return HazardModel(
     id: json['id'],
-    code: json['code'] ?? '',
-    statusEn: json['status_en'],
-    statusMn: json['status_mn'],
+    code: json['code'],
+    statusEn: json['statusEn'],
+    statusMn: json['statusMn'],
     userId: json['user_id'],
     userName: json['user_name'],
     email: json['email'],
@@ -62,26 +62,26 @@ class HazardModel {
     dateCreated: json['date_created'] != null
       ? DateTime.parse(json['date_created'].toString())
       : DateTime.now(),
-    typeNameEn: json['type_name_en'] ?? '',
-    typeNameMn: json['type_name_mn'] ?? '',
-    locationNameEn: json['location_name_en'] ?? '',
-    locationNameMn: json['location_name_mn'] ?? '',
-    isResponseConfirmed: json['is_response_confirmed'] ?? 0,
+    typeNameEn: json['type_name_en'],
+    typeNameMn: json['type_name_mn'],
+    locationNameEn: json['location_name_en'],
+    locationNameMn: json['location_name_mn'],
+    isResponseConfirmed: json['is_response_confirmed'],
     responseBody: json['response_body'],
-    isPrivate: json['is_private'] ?? 0,
+    isPrivate: json['is_private'],
     dateUpdated: json['date_updated'] != null
       ? DateTime.parse(json['date_updated'].toString())
       : null,
   );
   }
 
-// Татсан hazard-аа cache хийхэд хэрэгтэй.
+// Татсан hazard-аа cache хийхэд хэрэглэнэ.
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'code': code,
-      'status_en': statusEn,
-      'status_mn': statusMn,
+      'statusEn': statusEn,
+      'statusMn': statusMn,
       'user_id': userId,
       'user_name': userName,
       'email': email,
