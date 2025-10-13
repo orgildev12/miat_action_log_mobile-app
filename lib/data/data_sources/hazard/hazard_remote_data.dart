@@ -1,3 +1,4 @@
+import 'package:action_log_app/core/error/server_exception.dart';
 import 'package:action_log_app/core/network/api_client.dart';
 import 'package:action_log_app/core/network/connectivity_checker.dart';
 import 'package:action_log_app/models/hazard_model.dart';
@@ -23,14 +24,17 @@ class HazardRemoteDataSource {
     print(headers);
     final result = await apiClient.get('/hazard/byUserId/$userId', headers: headers);
 
-    if (result is List) {
+    try{
       return result.map((json) => HazardModel.fromJson(json as Map<String, dynamic>)).toList();
-    } else {
-      throw Exception('Unexpected response format: expected List but got ${result.runtimeType}');
+    } catch(e){
+      if(e is ServerException){
+        rethrow;
+      }
+      throw Exception('Unexpected error occurred: $e');
     }
   }
 
-  Future<void> postHazard(PostHazardModel hazard, String? token, bool isUserLoggedIn) async {
+  Future<bool> postHazard(PostHazardModel hazard, String? token, bool isUserLoggedIn) async {
     if (!await connectivityChecker.isConnected) {
       throw Exception('No internet connection');
     }
@@ -40,13 +44,25 @@ class HazardRemoteDataSource {
         'Content-Type': 'application/json',
         if (token != null) 'Authorization': 'Bearer $token',
       };
-      final result =  await apiClient.post('/hazard/', hazard.toJson(true), headers: headers);
-      return result;
+      try{
+        final result = await apiClient.post('/hazard/', hazard.toJson(true), headers: headers);
+        return result;
+      } catch(e){
+        if(e is ServerException){
+          rethrow;
+        }
+        throw Exception('Failed to post hazard');
+      }
     }
 
-    final result = await apiClient.post('/hazard/noLogin', hazard.toJson(false));
-    return result;
-
+    try{
+      final result = await apiClient.post('/hazard/noLogin', hazard.toJson(false));
+      return result;
+    } catch(e){
+      if(e is ServerException){
+        rethrow;
+      }
+      throw Exception('Failed to post hazard');
+    }
   }
-
 }

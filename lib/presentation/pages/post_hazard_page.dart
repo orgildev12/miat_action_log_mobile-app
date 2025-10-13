@@ -3,6 +3,7 @@ import 'package:action_log_app/application/use_cases/location_use_cases/clear_lo
 import 'package:action_log_app/application/use_cases/location_use_cases/fetch_locations_use_case.dart';
 import 'package:action_log_app/application/use_cases/user_use_cases/fetch_user_info_use_case.dart';
 import 'package:action_log_app/core/di/features/location_di.dart';
+import 'package:action_log_app/core/error/server_exception.dart';
 import 'package:action_log_app/domain/entities/location.dart';
 import 'package:action_log_app/domain/entities/user.dart';
 import 'package:action_log_app/models/post_hazard_model.dart';
@@ -143,7 +144,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
       },
     );
   }
-  void _openErrorDialog() {
+  void _openErrorDialog(ServerException e) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -151,7 +152,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
           icon: IconsaxPlusLinear.close_circle,
           colorTheme: 'danger',
           title: 'Алдаа гарлаа',
-          content: 'Таны хүсэлт амжилтгүй боллоо. Дахин оролдоно уу.',
+          content: e.error,
           onPress: () {
               Navigator.pop(context);
           }
@@ -175,12 +176,13 @@ class _PostHazardPageState extends State<PostHazardPage> {
         );
 
         final result = widget.postHazardUseCase.call(hazardModel, isUserLoggedIn: user.id != null);
-        // if(result.asdf != null){
-        //   print('Hazard submitted: $result');
-        // }
-        _openSuccessDialog();
+        if(result == true){
+          _openSuccessDialog();
+        }
       } catch(e){
-        _openErrorDialog();
+        if(e is ServerException){
+          _openErrorDialog(e);
+        }
       }
 
       // ScaffoldMessenger.of(context).showSnackBar(

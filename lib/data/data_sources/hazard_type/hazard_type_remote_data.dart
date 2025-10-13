@@ -1,3 +1,4 @@
+import 'package:action_log_app/core/error/server_exception.dart';
 import 'package:action_log_app/core/network/api_client.dart';
 import 'package:action_log_app/core/network/connectivity_checker.dart';
 import 'package:action_log_app/models/hazard_type_model.dart';
@@ -15,17 +16,17 @@ class HazardTypeRemoteDataSource {
     if (!await connectivityChecker.isConnected) {
       throw Exception('No internet connection');
     }
-
-    final data = await apiClient.get('/hazardType'); // already decoded
-
-    if (data is List) {
+    
+    try{
+      final data = await apiClient.get('/hazardType');
       return data
           .map((item) => HazardTypeModel.fromJson(item as Map<String, dynamic>))
           .toList();
-    } else {
-      throw Exception(
-        'Unexpected response format: expected List but got ${data.runtimeType}',
-      );
+    }catch(e){
+      if(e is ServerException){
+        rethrow;
+      }
+      throw Exception('Unexpected error occurred: $e');
     }
   }
 

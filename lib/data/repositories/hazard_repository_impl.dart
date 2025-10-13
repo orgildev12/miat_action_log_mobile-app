@@ -33,9 +33,10 @@ Future<List<Hazard>> fetchHazards(int userId, String token) async {
 }
 
   @override
-  Future<void> postHazard(PostHazardModel hazard, String? token, {required bool isUserLoggedIn}) async {
+  Future<bool> postHazard(PostHazardModel hazard, String? token, {required bool isUserLoggedIn}) async {
     try {
-      await remote.postHazard(hazard, token, isUserLoggedIn);
+      final result = await remote.postHazard(hazard, token, isUserLoggedIn);
+      return result;
     } catch (e) {
       rethrow;
     }
