@@ -6,6 +6,7 @@ class HazardFormItem extends StatefulWidget {
   final String labelText;
   final Function(String) onValueChanged;
   final String formValue;
+  final FormFieldValidator<String>? validator;
 
   const HazardFormItem({
     super.key,
@@ -13,6 +14,7 @@ class HazardFormItem extends StatefulWidget {
     required this.labelText,
     required this.onValueChanged,
     required this.formValue,
+    this.validator,
   });
 
   @override
@@ -39,45 +41,56 @@ class _HazardFormItemState extends State<HazardFormItem> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.labelText, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: black)),
-        SizedBox(height: 12),
-        TextFormField(
-          controller: _controller,
-          decoration: InputDecoration(
-            hintText: widget.hintText,
-            hintStyle: TextStyle(
-              color: hintText,
-              fontSize: 14,
-            ),
-            labelStyle: TextStyle(
-              color: black,
-              fontWeight: FontWeight.w500,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(
-                color: Colors.transparent,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(
-                color: primaryColor,
-              ),
-            ),
-            filled: true,
-            fillColor: white,
-          ),
-          cursorColor: black,
-          onChanged: widget.onValueChanged,
-          validator: (val) => val == null || val.isEmpty ? null : null,
-          minLines: 1,
-          maxLines: null,
-          style: TextStyle(
+        Text(
+          widget.labelText,
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            
-            ),
+            color: black,
+          ),
+        ),
+        const SizedBox(height: 12),
+        TextFormField(
+          controller: _controller,
+          keyboardType: TextInputType.multiline,
+          decoration: InputDecoration(
+          hintText: widget.hintText,
+          hintStyle: const TextStyle(
+            color: hintText,
+            fontSize: 14,
+          ),
+          labelStyle: const TextStyle(
+            color: black,
+            fontWeight: FontWeight.w500,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: const BorderSide(color: Colors.transparent),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: const BorderSide(color: primaryColor),
+          ),
+          errorBorder: OutlineInputBorder( // 🔥 add this
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: const BorderSide(color: danger),
+          ),
+          focusedErrorBorder: OutlineInputBorder( // 🔥 add this too
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: const BorderSide(color: danger, width: 1.5),
+          ),
+          filled: true,
+          fillColor: white,
+        ),
+          cursorColor: black,
+          onChanged: widget.onValueChanged,
+          validator: widget.validator,
+          minLines: 1,
+          maxLines: null,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );

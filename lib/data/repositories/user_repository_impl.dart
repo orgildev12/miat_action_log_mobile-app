@@ -51,7 +51,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   User createEmptyUser() {
-    return User(); // Adjust fields as per your User entity
+    return User();
   }
 
   @override
@@ -62,26 +62,22 @@ class UserRepositoryImpl implements UserRepository {
         return localModel.toEntity();
       }
 
-      // If localModel exists but id is null, try to build User from temp info
       if (localModel != null && localModel.id == null) {
-        // Get temp user info from local storage
         final tempUser = await local.getUserInfo();
         if (tempUser != null) {
           return tempUser.toEntity();
         }
       }
 
-      // If localModel is null, you may want to throw or handle accordingly
       if (localModel == null) {
-        return createEmptyUser(); // Return an empty user if no data is found
+        return createEmptyUser();
       }
 
-      // Otherwise, fetch from remote
       final UserModel remoteModel = await remote.fetchUserInfo(localModel.id!);
       await local.saveUserInfo(remoteModel);
       return remoteModel.toEntity();
     } catch (e) {
-      return createEmptyUser(); // Handle exceptions by returning an empty user
+      return createEmptyUser();
     }
   }
 

@@ -150,6 +150,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                         UserFormItem(
                           labelText: 'Овог, нэр',
                           iconData: IconsaxPlusLinear.user,
+                          keyboardType: TextInputType.name,
                           formValue: username,
                           onValueChanged: (val) {
                             setState(() {
@@ -161,6 +162,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                         UserFormItem(
                           labelText: 'И-мэйл',
                           iconData: IconsaxPlusLinear.sms,
+                          keyboardType: TextInputType.emailAddress,
                           formValue: email,
                           onValueChanged: (val) {
                             setState(() {
@@ -172,6 +174,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                         UserFormItem(
                           labelText: 'Утасны дугаар',
                           iconData: IconsaxPlusLinear.call,
+                          keyboardType: TextInputType.phone,
                           formValue: phoneNumber,
                           onValueChanged: (val) {
                             setState(() {

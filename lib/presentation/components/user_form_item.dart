@@ -7,6 +7,7 @@ class UserFormItem extends StatefulWidget {
   final Function(String) onValueChanged;
   final String formValue;
   final bool isPassword; // New optional parameter
+  final TextInputType keyboardType; // New optional parameter
 
   const UserFormItem({
     super.key,
@@ -14,7 +15,8 @@ class UserFormItem extends StatefulWidget {
     required this.iconData,
     required this.onValueChanged,
     required this.formValue,
-    this.isPassword = false, // Default to false
+    this.isPassword = false,
+    this.keyboardType = TextInputType.text,
   });
 
   @override
@@ -52,6 +54,7 @@ class _UserFormItemState extends State<UserFormItem> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: _controller,
+      keyboardType: widget.keyboardType,
       obscureText: widget.isPassword, // Use the isPassword flag to obscure text
       decoration: InputDecoration(
         labelText: widget.labelText,

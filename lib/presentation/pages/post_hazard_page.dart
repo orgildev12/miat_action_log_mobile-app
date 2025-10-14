@@ -78,9 +78,8 @@ class _PostHazardPageState extends State<PostHazardPage> {
   }
 
   Future<void> _fetchLocations() async {
-
     try {
-      await clearLocationCacheUseCase.call();
+      // await clearLocationCacheUseCase.call();
       final result = await fetchLocationUseCase.call(
         includeLocationsWithLGroup: true,
       );
@@ -88,8 +87,11 @@ class _PostHazardPageState extends State<PostHazardPage> {
         locations = result;
       });
 
+    } on ServerException catch (e) {
+        _openErrorDialog(e.name);
+        return;
     } catch (e) {
-      print(e);
+      _openErrorDialog(e.toString());
     }
   }
 
@@ -122,6 +124,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
         locationId = selectedLocation.id;
       });
   }
+
   void _openSuccessDialog() {
     showDialog(
       context: context,
@@ -144,24 +147,27 @@ class _PostHazardPageState extends State<PostHazardPage> {
       },
     );
   }
-  void _openErrorDialog(ServerException e) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return PopUp(
-          icon: IconsaxPlusLinear.close_circle,
-          colorTheme: 'danger',
-          title: 'Алдаа гарлаа',
-          content: e.error,
-          onPress: () {
-              Navigator.pop(context);
-          }
-        );
-      },
-    );
+
+  void _openErrorDialog(String errorMessage) {
+    if(mounted){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return PopUp(
+            icon: IconsaxPlusLinear.close_circle,
+            colorTheme: 'danger',
+            title: 'Алдаа гарлаа',
+            content: errorMessage,
+            onPress: () {
+                Navigator.pop(context);
+            }
+          );
+        },
+      );
+    }
   }
   
-  void _submitHazard() {
+  void _submitHazard() async {
     if (_formKey.currentState!.validate()) {
       try{
         final hazardModel = PostHazardModel(
@@ -175,14 +181,14 @@ class _PostHazardPageState extends State<PostHazardPage> {
           solution: solution,
         );
 
-        final result = widget.postHazardUseCase.call(hazardModel, isUserLoggedIn: user.id != null);
+        final result = await widget.postHazardUseCase.call(hazardModel, isUserLoggedIn: user.id != null);
         if(result == true){
           _openSuccessDialog();
         }
-      } catch(e){
-        if(e is ServerException){
-          _openErrorDialog(e);
-        }
+      } on ServerException catch(e){
+          _openErrorDialog(e.name.toString());
+      } catch (e) {
+        _openErrorDialog(e.toString());
       }
 
       // ScaffoldMessenger.of(context).showSnackBar(
@@ -323,13 +329,19 @@ class _PostHazardPageState extends State<PostHazardPage> {
                       ),
                     SizedBox(height: 28),
                     HazardFormItem(
-                      labelText: 'Дэлгэрэнгүй мэдээлэл',
-                      hintText: 'Аюул, зөрчил эсвэл алдааны талаар дэлгэрэнгүй тайлбарлана уу.',
-                      formValue: description,
-                      onValueChanged: (val) => setState(() {
-                        description = val;
-                      }),
-                    ),
+                    labelText: 'Дэлгэрэнгүй мэдээлэл',
+                    hintText: 'Аюул, зөрчил эсвэл алдааны талаар дэлгэрэнгүй тайлбарлана уу.',
+                    formValue: description,
+                    onValueChanged: (val) => setState(() {
+                      description = val;
+                    }),
+                    validator: (val) {
+                      if (val == null || val.trim().length < 10) {
+                        return 'Мэдээлэл хэт богино байна';
+                      }
+                      return null;
+                    },
+                  ),
                     SizedBox(height: 28),
                     HazardFormItem(
                       labelText: 'Эрсдэлийг бууруулах, арилгах талаар санал',
@@ -338,6 +350,12 @@ class _PostHazardPageState extends State<PostHazardPage> {
                       onValueChanged: (val) => setState(() {
                         solution = val;
                       }),
+                      validator: (val) {
+                      if (val == null || val.trim().length < 10) {
+                        return 'Мэдээлэл хэт богино байна';
+                      }
+                      return null;
+                    },
                     ),
                   ],
                 )),

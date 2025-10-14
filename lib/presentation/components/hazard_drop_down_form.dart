@@ -39,6 +39,7 @@ class HazardDropDownForm extends StatelessWidget {
               child: DropdownButtonFormField<String>(
                 initialValue: formValue.isNotEmpty ? formValue : null, // <-- null shows hint
                 isExpanded: true,
+                borderRadius: BorderRadius.circular(20),
                 menuMaxHeight: 300, // Ensure dropdown menu height is limited
                 dropdownColor: Colors.white, // Optional: Set dropdown background color
                 items: dropDownItems.map((item) => DropdownMenuItem<String>(

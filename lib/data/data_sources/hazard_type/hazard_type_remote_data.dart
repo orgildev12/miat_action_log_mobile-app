@@ -19,6 +19,9 @@ class HazardTypeRemoteDataSource {
     
     try{
       final data = await apiClient.get('/hazardType');
+      if(data is! List){
+        throw Exception('Invalid data format received');
+      }
       return data
           .map((item) => HazardTypeModel.fromJson(item as Map<String, dynamic>))
           .toList();
@@ -29,5 +32,4 @@ class HazardTypeRemoteDataSource {
       throw Exception('Unexpected error occurred: $e');
     }
   }
-
 }

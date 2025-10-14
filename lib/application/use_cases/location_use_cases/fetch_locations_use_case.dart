@@ -9,14 +9,11 @@ class FetchLocationsUseCase {
     try {
       final locations = await repository.fetchLocations();
       
-      // Business logic: filter locations based on location group association
       if (!includeLocationsWithLGroup) {
-        // Return only locations WITHOUT location groups (null locationGroupId)
         final ungroupedLocations = locations.where((location) => location.locationGroupId == null).toList();
         return ungroupedLocations;
       }
       
-      // Return all locations (with and without groups)
       return locations;
     } catch (e) {
       rethrow;

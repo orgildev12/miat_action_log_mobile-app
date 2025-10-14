@@ -25,6 +25,9 @@ class HazardRemoteDataSource {
     final result = await apiClient.get('/hazard/byUserId/$userId', headers: headers);
 
     try{
+      if(result is! List){
+        throw Exception('Invalid data format received');
+      }
       return result.map((json) => HazardModel.fromJson(json as Map<String, dynamic>)).toList();
     } catch(e){
       if(e is ServerException){

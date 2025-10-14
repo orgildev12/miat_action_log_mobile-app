@@ -8,8 +8,8 @@ extension LocationMapper on LocationModel {
       nameEn: nameEn,
       nameMn: nameMn,
       locationGroupId: locationGroupId,
-      groupNameEn: groupNameEn, // Map group name in English
-      groupNameMn: groupNameMn, // Map group name in Mongolian
+      groupNameEn: groupNameEn,
+      groupNameMn: groupNameMn,
     );
   }
 }

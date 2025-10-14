@@ -43,16 +43,17 @@ class ApiClient {
     dynamic _handleResponse(http.Response response){
       final data = jsonDecode(response.body);
 
-      if(response.request?.method == 'POST'){
-        return response.statusCode;
-      }
+      // if(response.request?.method == 'POST'){
+      //   return response.statusCode;
+      // }
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return data;
       } else {
         throw ServerException(
-          error: data['name'],
           statusCode: response.statusCode,
+          name: data['name'],
+          message: data['message']
         );
       }
     }

@@ -1,5 +1,7 @@
 import 'package:action_log_app/application/use_cases/user_use_cases/login_user_case.dart';
+import 'package:action_log_app/core/error/server_exception.dart';
 import 'package:action_log_app/main.dart';
+import 'package:action_log_app/presentation/components/pop_up.dart';
 import 'package:action_log_app/presentation/components/user_form_item.dart';
 import 'package:action_log_app/presentation/components/big_button.dart';
 import 'package:action_log_app/presentation/pages/main_navigator.dart';
@@ -22,6 +24,23 @@ class _LoginPageState extends State<LoginPage> {
   String password = '';
   bool isLoading = false;
   String? errorMessage;
+
+  void _openErrorDialog(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PopUp(
+          icon: IconsaxPlusLinear.close_circle,
+          colorTheme: 'danger',
+          title: 'Алдаа гарлаа',
+          content: errorMessage,
+          onPress: () {
+              Navigator.pop(context);
+          }
+        );
+      },
+    );
+  }
 
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
@@ -47,13 +66,17 @@ class _LoginPageState extends State<LoginPage> {
       );
       isLoggedInNotifier.value = true;
       }
-    } catch (e) {
+    } on ServerException catch (e) {
       setState(() {
-        errorMessage = 'Failed to login: $e';
+        // errorMessage = 'Failed to login: $e';
         isLoading = false;
       });
+      if (mounted) {
+        _openErrorDialog(e.message);
+      }
     }
   }
+
   bool get isActive => username.trim().isNotEmpty && password.trim().isNotEmpty;
   @override
   Widget build(BuildContext context) {

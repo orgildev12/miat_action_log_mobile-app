@@ -1,12 +1,14 @@
-class ServerException  implements Exception {
-  final String error;
+class ServerException implements Exception {
   final int statusCode;
+  final String name;
+  final String message;
 
   ServerException({
-    required this.error,
     required this.statusCode,
+    required this.name,
+    required this.message,
   });
 
   @override
-  String toString() => '$error ($statusCode)';
+  String toString() => '($statusCode) $name: $message';
 }
