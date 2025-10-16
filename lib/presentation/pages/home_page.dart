@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _fetchHazardTypes();
-    bool isUserlogogo = widget.isUserLoggedIn;
+    // bool isUserlogogo = widget.isUserLoggedIn;
     // print('homepage is thinking isUserLoggedIn: $isUserlogogo');
   }
 

@@ -210,7 +210,6 @@ class _PostHazardPageState extends State<PostHazardPage> {
         );
 
         final result = await widget.postHazardUseCase.call(hazardModel, isUserLoggedIn: user.id != null);
-        bool isUserIdHere = user.id != null;
         if(result == true){
           _openSuccessDialog(context, 'Таны мэдээлэл амжилттай илгээгдлээ. Баярлалаа!');
         }
