@@ -4,13 +4,11 @@ import 'package:action_log_app/application/use_cases/user_use_cases/recover_toke
 import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:action_log_app/application/use_cases/user_use_cases/login_user_case.dart';
 import 'package:action_log_app/application/use_cases/user_use_cases/logout_user_use_case.dart';
 import 'package:action_log_app/application/use_cases/user_use_cases/end_connection_use_case.dart';
 import 'package:action_log_app/core/utils/idle_manager.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 
 class AuthController {

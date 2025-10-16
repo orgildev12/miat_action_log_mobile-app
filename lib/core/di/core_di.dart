@@ -29,7 +29,7 @@ class CoreDI {
           await authController.autoLogout();
         }
       },
-      idleDuration: const Duration(minutes: 1),
+      idleDuration: const Duration(minutes: 10),
     );
 
   }

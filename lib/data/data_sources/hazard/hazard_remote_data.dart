@@ -60,8 +60,8 @@ class HazardRemoteDataSource {
     }
 
     try{
-      final result = await apiClient.post('/hazard/noLogin', hazard.toJson(false));
-      return result;
+      await apiClient.post('/hazard/noLogin', hazard.toJson(false));
+      return true;
     } catch(e){
       if(e is ServerException){
         rethrow;
