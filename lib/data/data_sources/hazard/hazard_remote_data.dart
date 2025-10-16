@@ -1,4 +1,4 @@
-import 'package:action_log_app/core/error/server_exception.dart';
+import 'package:action_log_app/core/error/exceptions.dart';
 import 'package:action_log_app/core/network/api_client.dart';
 import 'package:action_log_app/core/network/connectivity_checker.dart';
 import 'package:action_log_app/models/hazard_model.dart';
@@ -16,7 +16,7 @@ class HazardRemoteDataSource {
   // Hazard operations
   Future<List<HazardModel>> fetchHazards(int userId, String token) async {
     if (!await connectivityChecker.isConnected) {
-      throw Exception('No internet connection');
+      throw SocketException();
     }
     final headers = {
       'Authorization': 'Bearer $token',
@@ -48,8 +48,9 @@ class HazardRemoteDataSource {
         if (token != null) 'Authorization': 'Bearer $token',
       };
       try{
-        final result = await apiClient.post('/hazard/', hazard.toJson(true), headers: headers);
-        return result;
+        await apiClient.post('/hazard/', hazard.toJson(true), headers: headers);
+        return true;
+        // response 300-аас дээш status code-той ирвэл expection болоод handle хийгдэнэ.
       } catch(e){
         if(e is ServerException){
           rethrow;

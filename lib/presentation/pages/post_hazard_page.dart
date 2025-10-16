@@ -3,9 +3,10 @@ import 'package:action_log_app/application/use_cases/location_use_cases/clear_lo
 import 'package:action_log_app/application/use_cases/location_use_cases/fetch_locations_use_case.dart';
 import 'package:action_log_app/application/use_cases/user_use_cases/fetch_user_info_use_case.dart';
 import 'package:action_log_app/core/di/features/location_di.dart';
-import 'package:action_log_app/core/error/server_exception.dart';
+import 'package:action_log_app/core/error/exceptions.dart';
 import 'package:action_log_app/domain/entities/location.dart';
 import 'package:action_log_app/domain/entities/user.dart';
+import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/models/post_hazard_model.dart';
 import 'package:action_log_app/presentation/components/add_image_button.dart';
 import 'package:action_log_app/presentation/components/big_button.dart';
@@ -63,6 +64,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
     _fetchLocations();
   }
 
+
   Future<void> _loadUserInfo() async {
     try {
       final fetchedUser = await widget.fetchUserInfoUseCase.call();
@@ -77,6 +79,73 @@ class _PostHazardPageState extends State<PostHazardPage> {
     }
   }
 
+
+  void _openSuccessDialog(BuildContext context, String description) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PopUp(
+          icon: IconsaxPlusLinear.tick_circle,
+          colorTheme: 'success',
+          title: AppLocalizations.of(context)!.success,
+          content: description,
+          onPress: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainNavigator(),
+              ),
+              (route) => false,
+            );
+          },
+        );
+      },
+    );
+  }
+
+
+  Future<void> _openErrorDialog(
+    BuildContext context, {
+    int? statusCode,
+    String? dialogTitle,
+    String? dialogDescription,
+  }) {
+    String? title = dialogTitle;
+    String? description = dialogDescription;
+
+    if (statusCode != null) {
+      switch (statusCode) {
+        case 401:
+          title = AppLocalizations.of(context)!.warning;
+          description = AppLocalizations.of(context)!.description500;
+          break;
+        case 503:
+          title = AppLocalizations.of(context)!.weAreSorry;
+          description = AppLocalizations.of(context)!.description503;
+          break;
+        default:
+          title = AppLocalizations.of(context)!.sorry;
+          description = AppLocalizations.of(context)!.description500;;
+      }
+    }
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PopUp(
+          icon: IconsaxPlusLinear.close_circle,
+          colorTheme: 'danger',
+          title: title ?? 'Уучлаарай',
+          content: description ?? 'Алдаа гарлаа. Дахин оролдоно уу',
+          onPress: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+  }
+
+
   Future<void> _fetchLocations() async {
     try {
       // await clearLocationCacheUseCase.call();
@@ -88,12 +157,12 @@ class _PostHazardPageState extends State<PostHazardPage> {
       });
 
     } on ServerException catch (e) {
-        _openErrorDialog(e.name);
-        return;
+        _openErrorDialog(context, statusCode: e.statusCode);
     } catch (e) {
-      _openErrorDialog(e.toString());
+      _openErrorDialog(context);
     }
   }
+
 
   void _setFirstLocationFormValue(Location selectedLocation) {
     if(selectedLocation.locationGroupId == null){
@@ -118,53 +187,12 @@ class _PostHazardPageState extends State<PostHazardPage> {
     }
   }
 
+
   void _setSecondLocationFormValue(Location selectedLocation) {
       setState(() {
         secondLocationFormValue = selectedLocation.nameMn;
         locationId = selectedLocation.id;
       });
-  }
-
-  void _openSuccessDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return PopUp(
-            icon: IconsaxPlusLinear.tick_circle,
-            colorTheme: 'success',
-            title: 'Амжилттай',
-            content: 'Таны хүсэлт амжилттай илгээгдсэн бөгөөд бид танд тун удахгүй үйл явцын талаар мэдээллэх болно.',
-            onPress: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MainNavigator(),
-                ),
-                (route) => false,
-              );
-            }
-          );
-      },
-    );
-  }
-
-  void _openErrorDialog(String errorMessage) {
-    if(mounted){
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return PopUp(
-            icon: IconsaxPlusLinear.close_circle,
-            colorTheme: 'danger',
-            title: 'Алдаа гарлаа',
-            content: errorMessage,
-            onPress: () {
-                Navigator.pop(context);
-            }
-          );
-        },
-      );
-    }
   }
   
   void _submitHazard() async {
@@ -182,19 +210,16 @@ class _PostHazardPageState extends State<PostHazardPage> {
         );
 
         final result = await widget.postHazardUseCase.call(hazardModel, isUserLoggedIn: user.id != null);
+        bool isUserIdHere = user.id != null;
         if(result == true){
-          _openSuccessDialog();
+          _openSuccessDialog(context, 'Таны мэдээлэл амжилттай илгээгдлээ. Баярлалаа!');
         }
-      } on ServerException catch(e){
-          _openErrorDialog(e.name.toString());
+      } on ServerException catch (e) {
+        
+        _openErrorDialog(context, statusCode: e.statusCode);
       } catch (e) {
-        _openErrorDialog(e.toString());
+        _openErrorDialog(context);
       }
-
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(content: Text('Hazard submitted!')),
-      // );
-      // Navigator.pop(context);
     }
   }
 

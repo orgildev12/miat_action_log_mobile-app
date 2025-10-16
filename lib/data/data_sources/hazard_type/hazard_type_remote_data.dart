@@ -1,4 +1,3 @@
-import 'package:action_log_app/core/error/server_exception.dart';
 import 'package:action_log_app/core/network/api_client.dart';
 import 'package:action_log_app/core/network/connectivity_checker.dart';
 import 'package:action_log_app/models/hazard_type_model.dart';
@@ -26,10 +25,7 @@ class HazardTypeRemoteDataSource {
           .map((item) => HazardTypeModel.fromJson(item as Map<String, dynamic>))
           .toList();
     }catch(e){
-      if(e is ServerException){
-        rethrow;
-      }
-      throw Exception('Unexpected error occurred: $e');
+      rethrow;
     }
   }
 }

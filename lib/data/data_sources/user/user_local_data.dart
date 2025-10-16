@@ -53,7 +53,7 @@ class UserLocalDataSource {
         phoneNumber: phoneNumber,
       );
       final jsonString = jsonEncode(user.toJson());
-      print(jsonString);
+      // print(jsonString);
       await _secureStorage.write(key: _key, value: jsonString);
     } catch (e) {
       throw Exception('Failed to save user: $e');

@@ -5,5 +5,7 @@ abstract class UserRepository {
   Future<void> saveTempUserInfoFromForm(String username, String email, String phoneNumber);
   Future<void> clearUserCache();
   Future<void> login(String email, String password);
+  Future<void> recoverToken();
   Future<void> logout();
+  Future<void> endConnection();
 }

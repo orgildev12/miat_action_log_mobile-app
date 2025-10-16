@@ -10,7 +10,7 @@ const Color hintText = Color(0xFF4C5868);
 const Color danger = Color(0xFFA10D00);
 const Color warning = Color(0xFFDE8405);
 const Color success= Color(0xFF16AC25);
-
+const Color playfulYellow= Color(0xFFFCB919);
 const LinearGradient mainGradient = LinearGradient(
   colors: [gradientStart, gradientEnd],
   begin: Alignment.topLeft,

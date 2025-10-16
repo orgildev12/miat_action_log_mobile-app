@@ -1,5 +1,4 @@
 import 'package:action_log_app/core/di/features/user_di.dart';
-import 'package:action_log_app/main.dart';
 import 'package:action_log_app/presentation/components/pop_up.dart';
 import 'package:action_log_app/presentation/components/settings_page_item.dart';
 import 'package:action_log_app/presentation/pages/main_navigator.dart';
@@ -14,11 +13,10 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final logoutUseCase = UserDI.logoutUseCase;
-    final isUserLoggedIn = isLoggedInNotifier.value;
-
+    final authController = UserDI.controller;
+    final isUserLoggedIn = authController.isLoggedIn.value;
     void _logout () {
-      logoutUseCase.call();
+      authController.logout();
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -88,28 +86,6 @@ class SettingsPage extends StatelessWidget {
                           hasTwoButtons: true,
                           onPress: () => _logout(),
                         );
-                        // return PopUp(
-                        //   icon: IconsaxPlusLinear.tick_circle,
-                        //   colorTheme: 'success',
-                        //   title: 'Амжилттай',
-                        //   content: 'Таны хүсэлт амжилттай илгээгдсэн бөгөөд бид танд тун удахгүй үйл явцын талаар мэдээллэх болно.',
-                        //   // content: 'Үргэлжлүүлэхийн тулд нэвтрэх шаардлагатай.',
-                        //   // hasTwoButtons: true,
-                        //   onPress: () {
-                        //     Navigator.of(context).pop();
-                        //   }
-                        // );
-                        // return PopUp(
-                        //   icon: IconsaxPlusLinear.close_circle,
-                        //   colorTheme: 'danger',
-                        //   title: 'Алдаа гарлаа',
-                        //   content: 'Таны хүсэлт амжилтгүй боллоо. Дахин оролдоно уу.',
-                        //   // content: 'Үргэлжлүүлэхийн тулд нэвтрэх шаардлагатай.',
-                        //   // hasTwoButtons: true,
-                        //   onPress: () {
-                        //     Navigator.of(context).pop();
-                        //   }
-                        // );
                       },
                     );
                   },

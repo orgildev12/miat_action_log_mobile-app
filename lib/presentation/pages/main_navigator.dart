@@ -1,5 +1,4 @@
 import 'package:action_log_app/core/di/features/user_di.dart';
-import 'package:action_log_app/main.dart';
 import 'package:action_log_app/presentation/components/app_bar.dart';
 import 'package:action_log_app/presentation/pages/home_page.dart';
 import 'package:action_log_app/presentation/pages/my_hazards_page.dart';
@@ -17,6 +16,8 @@ class MainNavigator extends StatefulWidget {
 
 class _MainNavigatorState extends State<MainNavigator> {
   int _currentIndex = 0;
+  final authController = UserDI.controller;
+  bool isUserLoggedIn = false;
 
   @override
   void initState() {
@@ -25,9 +26,11 @@ class _MainNavigatorState extends State<MainNavigator> {
   }
 
   Future<void> _initializeUserState() async {
-    final fetchUserInfoUseCase = UserDI.fetchUserInfoUseCase;
-    final user = await fetchUserInfoUseCase.call();
-    isLoggedInNotifier.value = user.id != null; // Set login state based on user.id
+    final user = await UserDI.fetchUserInfoUseCase.call();
+    bool isThereUserId = authController.isLoggedIn.value = user.id != null;
+    setState(() {
+      isUserLoggedIn = isThereUserId;
+    });
   }
 
   Widget _buildBottomNavigationBar(bool isUserLoggedIn) {
@@ -79,8 +82,8 @@ class _MainNavigatorState extends State<MainNavigator> {
         });
       },
       currentIndex: _currentIndex,
-      showSelectedLabels: false, // Hide labels for selected items
-      showUnselectedLabels: false, // Hide labels for unselected items
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
       selectedItemColor: black,
       items: items,
     );
@@ -89,30 +92,29 @@ class _MainNavigatorState extends State<MainNavigator> {
   @override
   Widget build(BuildContext context) {
     final loggedInBody = [
-      HomePage(isUserLoggedIn: isLoggedInNotifier.value),
+      HomePage(isUserLoggedIn: isUserLoggedIn),
       MyHazardsPage(),
       SettingsPage(
-        onLogout: () {
-          isLoggedInNotifier.value = false; // Update login state
+        onLogout: () async {
+          await authController.logout();
         },
       ),
     ];
 
     final loggedOutBody = [
-      HomePage(isUserLoggedIn: isLoggedInNotifier.value),
+      HomePage(isUserLoggedIn: isUserLoggedIn),
       SettingsPage(
-        onLogout: () {
-          isLoggedInNotifier.value = false; // Update login state
+        onLogout: () async {
+          await authController.logout();
         },
       ),
     ];
 
     return ValueListenableBuilder<bool>(
-      valueListenable: isLoggedInNotifier,
+      valueListenable: authController.isLoggedIn,
       builder: (context, isUserLoggedIn, child) {
-        // Adjust _currentIndex only if it is out of bounds for the current state
         if (!isUserLoggedIn && _currentIndex >= loggedOutBody.length) {
-          _currentIndex = loggedOutBody.length - 1; // Set to the last valid index
+          _currentIndex = loggedOutBody.length - 1;
         }
 
         return Scaffold(

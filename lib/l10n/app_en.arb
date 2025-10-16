@@ -1,0 +1,32 @@
+{
+    "@@locale": "en",
+    "warning": "Warning",
+    "@warning": {
+        "description": "will be used in auth error dialog"
+    },
+    "weAreSorry": "We're sorry",
+    "@weAreSorry": {
+        "description": "will be used in dialog"
+    },
+    "sorry": "Sorry",
+    "@sorry": {
+        "description": "will be used in dialog"
+    },
+    "description401": "Username or password is incorrect",
+    "@description401": {
+        "description": "will be used in auth error dialog"
+    },
+    "description503": "This action is currently not possible. Please try again later.",
+    "@description503": {
+        "description": "will be used in database error dialog"
+    },
+    "description500": "Something went wrong. Please try again later.",
+    "@description500": {
+        "description": "will be used in general error dialog"
+    },
+    "loginSuccess": "Logged in successfully",
+    "noInternet": "Check your internet connection",
+    "incorrectUserPass": "Username or password is incorrect.",
+    "success": "Success",
+    "connectionRecovered": "Connection Recovered"
+}

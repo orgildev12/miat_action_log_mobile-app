@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:action_log_app/core/error/server_exception.dart';
+import 'package:action_log_app/core/error/exceptions.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
@@ -40,21 +40,20 @@ class ApiClient {
     return _handleResponse(response);
   }
 
-    dynamic _handleResponse(http.Response response){
-      final data = jsonDecode(response.body);
+  dynamic _handleResponse(http.Response response) {
+    final data = jsonDecode(response.body);
 
-      // if(response.request?.method == 'POST'){
-      //   return response.statusCode;
-      // }
-
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        return data;
-      } else {
-        throw ServerException(
-          statusCode: response.statusCode,
-          name: data['name'],
-          message: data['message']
-        );
-      }
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return data;
+      
+    } else {
+      throw ServerException(
+        statusCode: response.statusCode,
+        // daraa ni helnees hamaarch uurchilj ugnu
+        title: '',
+        message: '',
+      );
     }
+  }
+
 }

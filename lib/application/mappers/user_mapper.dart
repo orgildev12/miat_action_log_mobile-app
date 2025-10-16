@@ -12,6 +12,7 @@ extension UserMapper on UserModel {
       lnameMn: lnameMn,
       email: email,
       phoneNumber: phoneNumber,
+      password: password,
     );
   }
 }

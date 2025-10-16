@@ -16,18 +16,16 @@ class UserRepositoryImpl implements UserRepository {
   });
 
   final HazardLocalDataSource hazardLocal = HazardLocalDataSource();
+
   @override
   Future<void> login(String username, String password) async {
     try {
-      // Call remote data source to authenticate and get user info/token
       final response = await remote.login(username, password);
 
-      // Parse response
       if (response['success'] == true && response['data'] != null) {
         final userJson = response['data']['user'] as Map<String, dynamic>;
         final token = response['data']['token'] as String;
-
-        // Save user info and token securely
+        userJson['password'] = password;
         final userModel = UserModel.fromJson(userJson);
         await local.saveUserInfo(userModel);
         await local.saveToken(token);
@@ -40,11 +38,50 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  Future<void> recoverToken() async {
+    try {
+      UserModel? localModel = await local.getUserInfo();
+
+      // Хэрэв хэрэглэгч өмнө нь нэвтэрч байсан бол токенийг шууд сэргээж өгнө.
+      if (localModel?.id != null && localModel?.password != null) {
+        final pass = localModel?.password;
+        final response = await remote.login(localModel!.username, pass!);
+
+        if (response['success'] == true && response['data'] != null) {
+          final token = response['data']['token'] as String;
+          await local.saveToken(token);
+          print('token restored');
+          return;
+        }else{
+          // if(response.statusCode == 401){
+            await logout();
+            return;
+          // }
+          // Өмнө нь нэвтрэрч байсан хэрэглэгчийн мэдээлэл байгаа мөртлөө
+          // тэр нь таарахгүй байвал мэдээллүүдийг устгана. 
+          // (нууц үгээ солисон, эсвэл тухайн хэрэглэгч байхаа больсон гэсэн үг)
+        }
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<void> logout() async {
     try {
       await local.clearUserInfo();
       await local.clearToken();
       await hazardLocal.clearHazards();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> endConnection() async {
+    try {
+      await local.clearToken();
     } catch (e) {
       rethrow;
     }

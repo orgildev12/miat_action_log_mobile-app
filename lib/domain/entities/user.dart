@@ -7,6 +7,7 @@ class User {
   final String? lnameMn;
   final String? email;
   final String? phoneNumber;
+  final String? password;
 
   User({
     this.id,
@@ -17,5 +18,6 @@ class User {
     this.lnameMn,
     this.email,
     this.phoneNumber,
+    this.password,
   });
 }

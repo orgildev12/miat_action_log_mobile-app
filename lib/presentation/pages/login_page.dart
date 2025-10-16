@@ -1,6 +1,7 @@
+import 'package:action_log_app/application/controllers/auth_controller.dart';
 import 'package:action_log_app/application/use_cases/user_use_cases/login_user_case.dart';
-import 'package:action_log_app/core/error/server_exception.dart';
-import 'package:action_log_app/main.dart';
+import 'package:action_log_app/core/di/features/user_di.dart';
+import 'package:action_log_app/core/error/exceptions.dart';
 import 'package:action_log_app/presentation/components/pop_up.dart';
 import 'package:action_log_app/presentation/components/user_form_item.dart';
 import 'package:action_log_app/presentation/components/big_button.dart';
@@ -8,6 +9,7 @@ import 'package:action_log_app/presentation/pages/main_navigator.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:action_log_app/l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   final LoginUseCase loginUseCase;
@@ -25,23 +27,48 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
   String? errorMessage;
 
-  void _openErrorDialog(String errorMessage) {
+  void _openErrorDialog(
+    BuildContext context, {
+    int? statusCode,
+    String? dialogTitle,
+    String? dialogDescription
+  }) {
+    String? title = dialogTitle;
+    String? description = dialogDescription;
+    
+    if(statusCode != null){
+        switch (statusCode) {
+      case 401:
+        title = AppLocalizations.of(context)!.warning;
+        description = AppLocalizations.of(context)!.incorrectUserPass;
+        break;
+      case 503:
+        title = AppLocalizations.of(context)!.weAreSorry;
+        description = AppLocalizations.of(context)!.description503;
+        break;
+      default:
+        title = AppLocalizations.of(context)!.sorry;
+        description = AppLocalizations.of(context)!.description500;
+      }
+    }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return PopUp(
           icon: IconsaxPlusLinear.close_circle,
           colorTheme: 'danger',
-          title: 'Алдаа гарлаа',
-          content: errorMessage,
+          title: title ?? 'Уучлаарай',
+          content: description ?? 'Алдаа гарлаа. Дахин оролдоно уу',
           onPress: () {
-              Navigator.pop(context);
-          }
+            Navigator.pop(context);
+          },
         );
       },
     );
   }
 
+  AuthController authController = UserDI.controller;
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() {
@@ -49,30 +76,41 @@ class _LoginPageState extends State<LoginPage> {
       errorMessage = null;
     });
     try {
-      await widget.loginUseCase.call(username, password);
+      await authController.login(username, password);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Logged in successfully'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.loginSuccess),
             backgroundColor: Colors.green,
           ),
         );
-      await Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MainNavigator(),
-        ),
-        (route) => false, // Clear navigation stack
-      );
-      isLoggedInNotifier.value = true;
+        await Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MainNavigator(),
+          ),
+          (route) => false, // Clear navigation stack
+        );
+        final authController = UserDI.controller;
+        authController.isLoggedIn.value = true;
+      }
+    } on SocketException {
+      if (mounted) {
+        _openErrorDialog(
+          context, 
+          dialogTitle: AppLocalizations.of(context)!.warning, 
+          dialogDescription: AppLocalizations.of(context)!.noInternet,
+        );
       }
     } on ServerException catch (e) {
-      setState(() {
-        // errorMessage = 'Failed to login: $e';
-        isLoading = false;
-      });
       if (mounted) {
-        _openErrorDialog(e.message);
+        _openErrorDialog( context, statusCode: e.statusCode);
+      }
+    }finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
       }
     }
   }
@@ -156,27 +194,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-// onTap: () {
-                //   widget.isUserLoggedIn ?
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => PostHazardPage(
-                //         postHazardUseCase: PostHazardUseCase(
-                //           repository: HazardDI.repository,
-                //           userLocalDataSource: UserDI.localDataSource,
-                //         ),
-                //         fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
-                //       ),
-                //     ),
-                //   ) :
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) =>  UserInfoPage(
-                //         fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
-                //         saveUserInfoFromInputUseCase: UserDI.saveUserInfoFromInput,
-                //         clearUserInfoCacheUseCase: UserDI.clearUserInfoCacheUsecase,
-                //       )),
-                //   );
-                // }

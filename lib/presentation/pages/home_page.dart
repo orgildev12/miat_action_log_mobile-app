@@ -27,6 +27,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   bool isExpanded = false;
 
   FetchHazardTypesUseCase fetchHazardTypesUseCase = HazardTypeDI.fetchHazardTypesUseCase;
@@ -44,10 +45,14 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+ 
+
   @override
   void initState() {
     super.initState();
     _fetchHazardTypes();
+    bool isUserlogogo = widget.isUserLoggedIn;
+    // print('homepage is thinking isUserLoggedIn: $isUserlogogo');
   }
 
   void _handleHazardButtonTap({required bool isPrivate}) {

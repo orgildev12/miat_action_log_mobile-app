@@ -1,4 +1,3 @@
-import 'package:action_log_app/core/error/server_exception.dart';
 import 'package:action_log_app/core/network/api_client.dart';
 import 'package:action_log_app/core/network/connectivity_checker.dart';
 import 'package:action_log_app/models/location_model.dart';
@@ -27,10 +26,7 @@ class LocationRemoteDataSource {
         .map((item) => LocationModel.fromJson(item as Map<String, dynamic>))
         .toList();
     }catch(e){
-      if(e is ServerException){
-        rethrow;
-      }
-      throw Exception('Failed to load locations: $e');
+      rethrow;
     }
   }
 }

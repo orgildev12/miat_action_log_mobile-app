@@ -8,12 +8,15 @@ environment:
 
 dependencies:
   connectivity_plus: ^7.0.0
+  get: ^4.7.2
   flutter:
     sdk: flutter
   flutter_secure_storage: ^9.2.4
   get_it: ^8.2.0
   http: ^1.5.0
   iconsax_plus: ^1.0.0
+  flutter_localizations:
+    sdk: flutter
   intl: ^0.20.2
   shared_preferences: ^2.5.3
 
@@ -23,6 +26,14 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 flutter:
+  generate: true
   uses-material-design: true
+
   assets:
     - lib/presentation/assets/images/
+
+l10n:
+  arb-dir: lib/l10n
+  template-arb-file: app_en.arb
+  output-dir: lib/gen_l10n
+  output-localization-file: app_localizations.dart
