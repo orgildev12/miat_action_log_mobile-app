@@ -1,3 +1,4 @@
+import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
@@ -19,7 +20,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text(
-            'Мэдэгдлүүд',
+            AppLocalizations.of(context)!.notifications,
             style: TextStyle(
               color: black,
               fontSize: 18,
@@ -44,7 +45,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 SizedBox(
                   width: 250,
                   child: Text(
-                    'Танд одоогоор мэдэгдэл ирээгүй байна.',
+                    AppLocalizations.of(context)!.youDontHaveNotif,
                     textAlign: TextAlign.center, 
                     style: TextStyle(
                       fontSize:20, 

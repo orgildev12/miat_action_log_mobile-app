@@ -5,6 +5,7 @@ import 'package:action_log_app/application/use_cases/user_use_cases/save_user_in
 import 'package:action_log_app/core/di/features/hazard_di.dart';
 import 'package:action_log_app/core/di/features/user_di.dart';
 import 'package:action_log_app/domain/entities/user.dart';
+import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/presentation/components/big_button.dart';
 import 'package:action_log_app/presentation/components/login_pop_up.dart';
 import 'package:action_log_app/presentation/pages/post_hazard_page.dart';
@@ -95,7 +96,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
             icon: Icon(IconsaxPlusLinear.arrow_left_1, color: black),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: const Text('Мэдээлэл өгөх',
+          title:  Text(AppLocalizations.of(context)!.reportHazard,
               style: TextStyle(
                   color: black, fontSize: 18, fontWeight: FontWeight.w500)),
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
@@ -116,7 +117,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                 ),
                 SizedBox(height: 16),
                 Text( 
-                  'Таны өгсөн мэдээллийг зөвхөн нислэгийн аюулгүй ажиллагаа, болон аюулгүй байдлыг дээшлүүлэхэд ашиглана.', 
+                  AppLocalizations.of(context)!.weWillUseThisForOnly,
                   style: TextStyle(
                     color: black,
                     fontSize: 14,
@@ -125,7 +126,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                 ),
                 SizedBox(height: 32),
                 Text( 
-                  'Холбогдох мэдээлэл', 
+                  AppLocalizations.of(context)!.contactInfo, 
                   style: TextStyle(
                     color: black,
                     fontSize: 16,
@@ -134,7 +135,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                 ),
                 SizedBox(height: 8),
                 Text( 
-                  'Мэдээллийг тодруулах, авсан арга хэмжээний талаар эргэж мэдээллэх шаардлагатай тул та холбогдох мэдээллээ оруулна уу.', 
+                  AppLocalizations.of(context)!.weNeedToAskYou, 
                   style: TextStyle(
                     color: black,
                     fontSize: 14,
@@ -148,7 +149,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         UserFormItem(
-                          labelText: 'Овог, нэр',
+                          labelText: AppLocalizations.of(context)!.fullName,
                           iconData: IconsaxPlusLinear.user,
                           keyboardType: TextInputType.name,
                           formValue: username,
@@ -160,7 +161,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                         ),
                         SizedBox(height: 12),
                         UserFormItem(
-                          labelText: 'И-мэйл',
+                          labelText: AppLocalizations.of(context)!.email,
                           iconData: IconsaxPlusLinear.sms,
                           keyboardType: TextInputType.emailAddress,
                           formValue: email,
@@ -172,7 +173,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                         ),
                         SizedBox(height: 12),
                         UserFormItem(
-                          labelText: 'Утасны дугаар',
+                          labelText: AppLocalizations.of(context)!.phone,
                           iconData: IconsaxPlusLinear.call,
                           keyboardType: TextInputType.phone,
                           formValue: phoneNumber,
@@ -194,7 +195,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 32.0),
                               child: Text(
-                                'Эсвэл',
+                                AppLocalizations.of(context)!.or,
                                 style: TextStyle(
                                   color: Color(0xFF949494),
                                   fontSize: 16,
@@ -219,7 +220,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                             );
                           },
                           child: Text(
-                            'Нэвтрэх',
+                            AppLocalizations.of(context)!.login,
                             style: TextStyle(
                               color: primaryColor,
                               fontSize: 16,
@@ -230,7 +231,7 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                           ),
                         ),
                         const SizedBox(height: 64),
-                        BigButton(buttonText: 'Үргэлжлүүлэх', isActive: isActive, onTap: _continue,)
+                        BigButton(buttonText: AppLocalizations.of(context)!.continueee, isActive: isActive, onTap: _continue,)
                       ],
                     ),
                   ),

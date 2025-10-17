@@ -1,3 +1,4 @@
+import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/presentation/components/info_panel.dart';
 import 'package:action_log_app/presentation/components/small_login_button.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
@@ -30,21 +31,24 @@ class SecretHazardPageForTempUser extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
                           SizedBox(height: 32),
-              Text('Нэрээ нууцлаж мэдээллэх маягт',
+              Text(AppLocalizations.of(context)!.confidentialHazardReport,
                   style: TextStyle(
                       color: primaryColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
               SizedBox(height: 16),
               Text(
-                'Нэрээ нууцлаж илгээсэн тохиолдолд таны хувийн мэдээлэл зөвхөн онцгой эрхтэй албан тушаалтанд харагдах болно.',
+                AppLocalizations.of(context)!.ifYouHideYourIdentity,
                 style: TextStyle(
                   color: black,
                   fontSize: 14,
                 )
               ),
-              SizedBox(height: 32),
-              InfoPanel(heading: 'Санамж', content: 'Энэхүү тусгай маягтыг зөвхөн дотоод ажилтнууд илгээх боломжтой бөгөөд хэрвээ та ажилтан бол нэвтэрсэн байх шаардлагатай.'),
+              SizedBox(height: 32), //TODO: sanamjiig yu gej orchuulah we
+              InfoPanel(
+                heading: AppLocalizations.of(context)!.attention, 
+                content: AppLocalizations.of(context)!.thisReportCanOnly
+              ),
               SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,

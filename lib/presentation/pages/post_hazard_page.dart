@@ -135,8 +135,8 @@ class _PostHazardPageState extends State<PostHazardPage> {
         return PopUp(
           icon: IconsaxPlusLinear.close_circle,
           colorTheme: 'danger',
-          title: title ?? 'Уучлаарай',
-          content: description ?? 'Алдаа гарлаа. Дахин оролдоно уу',
+          title: title ?? AppLocalizations.of(context)!.sorry,
+          content: description ?? AppLocalizations.of(context)!.description500,
           onPress: () {
             Navigator.pop(context);
           },
@@ -211,7 +211,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
 
         final result = await widget.postHazardUseCase.call(hazardModel, isUserLoggedIn: user.id != null);
         if(result == true){
-          _openSuccessDialog(context, 'Таны мэдээлэл амжилттай илгээгдлээ. Баярлалаа!');
+          _openSuccessDialog(context, AppLocalizations.of(context)!.sentSuccessfully);
         }
       } on ServerException catch (e) {
         
@@ -233,7 +233,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Мэдээлэл өгөх',
+          AppLocalizations.of(context)!.reportHazard,
           style: TextStyle(
             color: black,
             fontSize: 18,
@@ -255,7 +255,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
                       fontWeight: FontWeight.w500)),
               SizedBox(height: 16),
               Text(
-                'Таны өгсөн мэдээллийг зөвхөн нислэгийн аюулгүй ажиллагаа, болон аюулгүй байдлыг дээшлүүлэхэд ашиглана.',
+                AppLocalizations.of(context)!.weWillUseThisForOnly,
                 style: TextStyle(
                   color: black,
                   fontSize: 14,
@@ -267,8 +267,8 @@ class _PostHazardPageState extends State<PostHazardPage> {
                 child: Column(
                   children: [
                     HazardDropDownForm(
-                      hintText: 'Байршил сонгох',
-                      labelText: 'Байршил',
+                      hintText: AppLocalizations.of(context)!.selectLocation,
+                      labelText: AppLocalizations.of(context)!.location,
                       formValue: firstLocationFormValue,
                       dropDownItems: [
                         ...locations
@@ -312,7 +312,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
                         children: [
                           SizedBox(height: 8),
                           HazardDropDownForm(
-                            hintText: '$selectedLocationGroupName сонгох',
+                            hintText: '$selectedLocationGroupName сонгох', //fix it later
                             formValue: locationId != null
                                 ? (locations.firstWhere(
                                     (location) => location.id == locationId,
@@ -353,30 +353,30 @@ class _PostHazardPageState extends State<PostHazardPage> {
                       ),
                     SizedBox(height: 28),
                     HazardFormItem(
-                    labelText: 'Дэлгэрэнгүй мэдээлэл',
-                    hintText: 'Аюул, зөрчил эсвэл алдааны талаар дэлгэрэнгүй тайлбарлана уу.',
+                    labelText: AppLocalizations.of(context)!.hazardDetails,
+                    hintText: AppLocalizations.of(context)!.hazardDescription,
                     formValue: description,
                     onValueChanged: (val) => setState(() {
                       description = val;
                     }),
                     validator: (val) {
                       if (val == null || val.trim().length < 10) {
-                        return 'Мэдээлэл хэт богино байна';
+                        return AppLocalizations.of(context)!.tooShort;
                       }
                       return null;
                     },
                   ),
                     SizedBox(height: 28),
                     HazardFormItem(
-                      labelText: 'Эрсдэлийг бууруулах, арилгах талаар санал',
-                      hintText: 'Ийм алдаа дахин давтагдахаас сэргийлж юу хийж болох талаар саналаа бичнэ үү.',
+                      labelText: AppLocalizations.of(context)!.suggession,
+                      hintText: AppLocalizations.of(context)!.suggessionLong,
                       formValue: solution,
                       onValueChanged: (val) => setState(() {
                         solution = val;
                       }),
                       validator: (val) {
                       if (val == null || val.trim().length < 10) {
-                        return 'Мэдээлэл хэт богино байна';
+                        return AppLocalizations.of(context)!.tooShort;
                       }
                       return null;
                     },
@@ -384,28 +384,28 @@ class _PostHazardPageState extends State<PostHazardPage> {
                   ],
                 )),
               SizedBox(height: 28),
-              Text('Зураг', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: black)),
+              Text(AppLocalizations.of(context)!.image, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: black)),
               SizedBox(height: 12),
               Row(
                 children: [
                   Flexible(
                     flex: 1,
                     child: AddImageButton(
-                      buttonText: 'Зураг дарах', 
+                      buttonText: AppLocalizations.of(context)!.takePicture, 
                       iconData: IconsaxPlusLinear.camera,)
                   ),
                   SizedBox(width: 16),
                   Flexible(
                     flex: 1,
                     child: AddImageButton(
-                      buttonText: 'Зураг оруулах', 
+                      buttonText: AppLocalizations.of(context)!.attachzPicture, 
                       iconData: IconsaxPlusLinear.paperclip_2,)
                   ),
 
                 ],
               ),
               SizedBox(height: 64),
-              BigButton(buttonText: 'Илгээх', isActive: isActive, onTap: _submitHazard, iconData: IconsaxPlusLinear.send_2),
+              BigButton(buttonText: AppLocalizations.of(context)!.send, isActive: isActive, onTap: _submitHazard, iconData: IconsaxPlusLinear.send_2),
               SizedBox(height: 100),
             ],
           ),

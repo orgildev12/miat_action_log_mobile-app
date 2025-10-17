@@ -2,6 +2,7 @@ import 'package:action_log_app/application/use_cases/hazard_use_cases/clear_haza
 import 'package:action_log_app/application/use_cases/hazard_use_cases/fetch_hazards_use_case.dart';
 import 'package:action_log_app/core/di/features/hazard_di.dart';
 import 'package:action_log_app/domain/entities/hazard.dart';
+import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/presentation/components/hazard_list_item.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,7 @@ class _MyHazardsPageState extends State<MyHazardsPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Миний илгээсэн хүсэлтүүд', style: TextStyle(fontSize:24, fontWeight: FontWeight.w600, color: black)),
+          Text(AppLocalizations.of(context)!.myReports, style: TextStyle(fontSize:24, fontWeight: FontWeight.w600, color: black)),
           Expanded(
             child: Center(
               child: Column(
@@ -74,7 +75,7 @@ class _MyHazardsPageState extends State<MyHazardsPage> {
                   SizedBox(
                     width: 250,
                     child: Text(
-                      'Танд одоогоор хүсэлт байхгүй байна.',
+                      AppLocalizations.of(context)!.youDontHaveReport,
                       textAlign: TextAlign.center, 
                       style: TextStyle(
                         fontSize:20, 
@@ -97,7 +98,7 @@ class _MyHazardsPageState extends State<MyHazardsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Миний илгээсэн хүсэлтүүд', style: TextStyle(fontSize:24, fontWeight: FontWeight.w600, color: black)),
+            Text(AppLocalizations.of(context)!.myReports, style: TextStyle(fontSize:24, fontWeight: FontWeight.w600, color: black)),
             SizedBox(height: 12),
             ...hazards.map((hazard) => HazardListItem(hazard: hazard)),
           ],

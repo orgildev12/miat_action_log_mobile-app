@@ -5,9 +5,10 @@ import 'package:action_log_app/core/di/features/hazard_di.dart';
 import 'package:action_log_app/core/di/features/hazard_type_di.dart';
 import 'package:action_log_app/core/di/features/user_di.dart';
 import 'package:action_log_app/domain/entities/hazard_type.dart';
+import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/presentation/components/hazard_type_selector.dart';
 import 'package:action_log_app/presentation/components/home_big_button.dart';
-import 'package:action_log_app/presentation/pages/other_resources_page.dart';
+import 'package:action_log_app/presentation/components/other_channels_model_item.dart';
 import 'package:action_log_app/presentation/pages/post_hazard_page.dart';
 import 'package:action_log_app/presentation/pages/secret_hazard_page_for_temp_user.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
@@ -108,6 +109,81 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+void showOtherChannels() {
+  showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    backgroundColor: backgroundColor,
+    builder: (BuildContext context) {
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal:  16, vertical: 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.hazardReportChannels,
+              style: TextStyle(
+                color: black,
+                fontSize: 16,
+                fontWeight: FontWeight.w800
+              ),
+            ),
+            SizedBox(height: 8,),
+            Container(
+              decoration: BoxDecoration(
+                color: white,
+                borderRadius: BorderRadius.circular(16)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    OtherChannelsModelItem(text1:  AppLocalizations.of(context)!.infomationCenter, text2: '+976 11284028', icon: IconsaxPlusLinear.call),
+                    OtherChannelsModelItem(text1: AppLocalizations.of(context)!.email, text2: 'aachnaba@miat.com', icon: IconsaxPlusLinear.sms),
+                    OtherChannelsModelItem(text1: AppLocalizations.of(context)!.web, text2: 'www.example.com', icon: IconsaxPlusLinear.global),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 36,),
+            Text(
+              AppLocalizations.of(context)!.confidentialReportChannels,
+              style: TextStyle(
+                color: black,
+                fontSize: 16,
+                fontWeight: FontWeight.w800
+              ),
+            ),
+            SizedBox(height: 8,),
+            Container(
+              decoration: BoxDecoration(
+                color: white,
+                borderRadius: BorderRadius.circular(16)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    OtherChannelsModelItem(text1: AppLocalizations.of(context)!.infomationCenter, text2: '+976 11284049', icon: IconsaxPlusLinear.call),
+                    OtherChannelsModelItem(text1: AppLocalizations.of(context)!.email, text2: 'tsogtgerel_d@miat.com', icon: IconsaxPlusLinear.sms),
+                    OtherChannelsModelItem(text1: AppLocalizations.of(context)!.web, text2: 'www.example.com', icon: IconsaxPlusLinear.global),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 24,
+            )
+          ],
+        ),
+      );
+    },
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -136,8 +212,8 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       TextSpan(
                         text: isExpanded
-                            ? 'МИАТ ХК нь нислэгийн аюулгүй ажиллагаа, чанар, нисэхийн аюулгүй байдалтай холбоотой аюул, эрсдэлийг цаг тухайд нь нээлттэй мэдээллэхийг дэмжих зорилгоор шийтгэлгүй мэдээллийн тогтолцоог хэрэгжүүлэн ажилладаг. Mэдээллийн дагуу бид зөрчил дутагдалд дүн шинжилгээ хийх, эрсдэлийг бууруулах, засч залруулах болон цаашид давтагдахаас урьдчилан сэргийлэх арга хэмжээ авч ажиллах ба нууцлалтай мэдээлэл ирүүлсэн тохиолдолд мэдээлэгчийн нууцлалыг чадндлан хадгална. Аюулгүй ажиллагааны мэдээлэл ирүүлж нислэгийн аюулгүй ажиллагааг сайжруулахад хувь нэмэр оруулж буй танд баярлалаа.'
-                            : 'МИАТ ХК нь нислэгийн аюулгүй ажиллагаа, чанар, нисэхийн аюулгүй байдалтай холбоотой аюул, эрсдэлийг цаг тухайд нь нээлттэй мэдээллэхийг дэмжих зорилгоор шийтгэлгүй мэдээллийн тогтолцоог хэрэгжүүлэн ажилладаг...',
+                            ? AppLocalizations.of(context)!.homeDescriptionMore
+                            : AppLocalizations.of(context)!.homeDescriptionLess,
                       ),
                       TextSpan(
                         text: isExpanded ? ' Less' : ' More',
@@ -159,29 +235,30 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 40),
               HomeBigButton(
-                isColored: true, buttonText: 'Мэдээлэл өгөх', buttonIcon: IconsaxPlusLinear.message, 
+                isColored: true, buttonText: AppLocalizations.of(context)!.reportHazard, buttonIcon: IconsaxPlusLinear.message, 
                 onTap: () => _handleHazardButtonTap(isPrivate: false),
               ),
               SizedBox(height: 12),
               HomeBigButton(
                 isColored: false, 
-                buttonText: 'Нэрээ нууцлаж мэдээллэх', 
+                buttonText: AppLocalizations.of(context)!.confidentialHazardReport, 
                 buttonIcon: IconsaxPlusLinear.shield,
                 onTap: () => _handleHazardButtonTap(isPrivate: true),
               ),
               SizedBox(height: 12),
               HomeBigButton(
                 isColored: false, 
-                buttonText: 'Бусад сувгууд', 
+                buttonText: AppLocalizations.of(context)!.otherChannels, 
                 buttonIcon: IconsaxPlusLinear.arrow_right_3, 
                 otherRecources: true,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => OtherChannelsPage()
-                    )
-                  );
-                },
+                onTap: showOtherChannels,
+                // onTap: () {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => OtherChannelsPage()
+                //     )
+                //   );
+                // },
                 
                 ),
             ],

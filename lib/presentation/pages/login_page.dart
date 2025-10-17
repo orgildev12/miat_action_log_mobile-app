@@ -58,8 +58,8 @@ class _LoginPageState extends State<LoginPage> {
         return PopUp(
           icon: IconsaxPlusLinear.close_circle,
           colorTheme: 'danger',
-          title: title ?? 'Уучлаарай',
-          content: description ?? 'Алдаа гарлаа. Дахин оролдоно уу',
+          title: title ?? AppLocalizations.of(context)!.sorry,
+          content: description ?? AppLocalizations.of(context)!.description500,
           onPress: () {
             Navigator.pop(context);
           },
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
           },
         ),
         title: Text(
-          'Нэвтрэх',
+          AppLocalizations.of(context)!.login,
           style: TextStyle(
             color: black,
             fontSize: 18,
@@ -164,14 +164,14 @@ class _LoginPageState extends State<LoginPage> {
                       textAlign: TextAlign.center,
                     ),
                   UserFormItem(
-                    labelText: 'Хэрэглэгчийн нэр',
+                    labelText: AppLocalizations.of(context)!.username,
                     iconData: IconsaxPlusLinear.user,
                     onValueChanged: (val) => setState(() => username = val),
                     formValue: username,
                   ),
                   SizedBox(height: 8),
                   UserFormItem(
-                    labelText: 'Нууц үг',
+                    labelText: AppLocalizations.of(context)!.password,
                     iconData: IconsaxPlusLinear.key,
                     onValueChanged: (val) => setState(() => password = val),
                     formValue: password,
@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                   isLoading
                       ? const CircularProgressIndicator()
                       : BigButton(
-                          buttonText: 'Нэвтрэх', 
+                          buttonText: AppLocalizations.of(context)!.login, 
                           isActive: isActive,
                           onTap: _login,
                           )

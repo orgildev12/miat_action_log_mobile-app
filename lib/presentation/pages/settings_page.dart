@@ -1,4 +1,5 @@
 import 'package:action_log_app/core/di/features/user_di.dart';
+import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/presentation/components/pop_up.dart';
 import 'package:action_log_app/presentation/components/settings_page_item.dart';
 import 'package:action_log_app/presentation/pages/main_navigator.dart';
@@ -32,7 +33,7 @@ class SettingsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Цэс', style: TextStyle(fontSize:24, fontWeight: FontWeight.w600, color: black)),
+          Text(AppLocalizations.of(context)!.menu, style: TextStyle(fontSize:24, fontWeight: FontWeight.w600, color: black)),
           SizedBox(height: 12),
           Container(
             decoration: BoxDecoration(
@@ -70,7 +71,7 @@ class SettingsPage extends StatelessWidget {
             child: Column(
               children: [
                 SettingsPageItem(
-                  title: 'Гарах',
+                  title: AppLocalizations.of(context)!.logout,
                   icon: IconsaxPlusBroken.logout,
                   isRed: true,
                   hasNoTrailingIcon: true,
@@ -81,7 +82,7 @@ class SettingsPage extends StatelessWidget {
                         return PopUp(
                           icon: IconsaxPlusLinear.logout,
                           colorTheme: 'danger',
-                          title: 'Та гарахдаа итгэлтэй байна уу?',
+                          title: AppLocalizations.of(context)!.areYouSureYouLogout,
                           // content: 'Үргэлжлүүлэхийн тулд нэвтрэх шаардлагатай.',
                           hasTwoButtons: true,
                           onPress: () => _logout(),
