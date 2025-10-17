@@ -34,7 +34,7 @@ class _MyHazardsPageState extends State<MyHazardsPage> {
 
   Future<void> _fetchHazards() async {
     try {
-      // _clearHazards();
+      // await clearHazardCacheUseCase.call();
       final result = await fetchHazardsUseCase.call();
       setState(() {
        
@@ -47,7 +47,51 @@ class _MyHazardsPageState extends State<MyHazardsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return 
+    hazards.isEmpty ?
+    Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Миний илгээсэн хүсэлтүүд', style: TextStyle(fontSize:24, fontWeight: FontWeight.w600, color: black)),
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 250,
+                    child: Image.asset(
+                        'lib/presentation/assets/images/empty_box.png',
+                        fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  SizedBox(
+                    width: 250,
+                    child: Text(
+                      'Танд одоогоор хүсэлт байхгүй байна.',
+                      textAlign: TextAlign.center, 
+                      style: TextStyle(
+                        fontSize:20, 
+                        fontWeight: FontWeight.w500, 
+                        color: hintText
+                      )
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      )
+    :
+    SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -55,7 +99,7 @@ class _MyHazardsPageState extends State<MyHazardsPage> {
           children: [
             Text('Миний илгээсэн хүсэлтүүд', style: TextStyle(fontSize:24, fontWeight: FontWeight.w600, color: black)),
             SizedBox(height: 12),
-            ...hazards.map((hazard) => HazardListItem(hazard: hazard)).toList(),
+            ...hazards.map((hazard) => HazardListItem(hazard: hazard)),
           ],
         )
       ),

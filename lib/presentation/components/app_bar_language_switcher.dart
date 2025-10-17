@@ -1,5 +1,4 @@
 import 'package:action_log_app/presentation/styles/colors.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:flutter/material.dart';
 
 class LanguageSwitcher extends StatefulWidget {
@@ -14,29 +13,32 @@ class _LanguageSwitcherState extends State<LanguageSwitcher> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Color(0xFFB2B2B2)),
-        borderRadius: BorderRadius.circular(10),
+        color: const Color.fromARGB(230, 255, 255, 255),
+        borderRadius: BorderRadius.circular(8),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-      child: Row(
-        mainAxisSize: MainAxisSize.min, // Prevent overflow
-        mainAxisAlignment: MainAxisAlignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child:  Row(
         children: [
-          SizedBox(
-            width: 32,
-            height: 16,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
             child: Image.asset(
-              'lib/presentation/assets/images/mongolia.png',
+              'lib/presentation/assets/images/mongolian_flag_circle.png',
+              width: 24,
+              height: 24,
+              fit: BoxFit.cover,
             ),
           ),
-          SizedBox(width: 8),
-          Icon(
-            IconsaxPlusLinear.arrow_down,
-            color: black, // Set icon color
-            size: 24.0, // Set icon size
+          SizedBox(width: 8,),
+          Text(
+            'MN',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: black,
+            ),
           ),
         ],
-      ),
+      )
     );
   }
 }

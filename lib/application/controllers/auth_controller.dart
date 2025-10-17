@@ -49,7 +49,7 @@ class AuthController {
     errorMessage.value = null;
 
     try {
-      await _loginUseCase(username, password);
+      await _loginUseCase.call(username, password);
       isLoggedIn.value = true;
       _idleManager.enable(); // Хэрэглэгч нэвтэрсэн тул idle хянах
       print('logged in');
@@ -65,7 +65,7 @@ class AuthController {
     errorMessage.value = null;
 
     try {
-      await _recoverTokenUseCase();
+      await _recoverTokenUseCase.call();
       final tokenExists = await _endConnectionUseCase.hasToken();
       if (tokenExists) {
         isLoggedIn.value = true;
@@ -125,7 +125,7 @@ class AuthController {
   Future<void> logout() async {
     isLoading.value = true;
     try {
-      await _logoutUseCase();
+      await _logoutUseCase.call();
       isLoggedIn.value = false;
       _idleManager.disable(); // Logout бол idle унтраана
       print('logged out');
@@ -136,7 +136,7 @@ class AuthController {
 
   
   Future<void> autoLogout() async {
-    await _endConnectionUseCase();
+    await _endConnectionUseCase.call();
     isLoggedIn.value = false;
     _idleManager.disable();
   }

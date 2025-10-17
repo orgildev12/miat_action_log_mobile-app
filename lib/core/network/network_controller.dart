@@ -4,6 +4,7 @@ import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 
 class NetworkController extends GetxController {
   final Connectivity _connectivity = Connectivity();
@@ -56,8 +57,8 @@ class NetworkController extends GetxController {
         Get.closeCurrentSnackbar();
         UserDI.controller.userActivityDetected();
         Get.rawSnackbar(
-          messageText: const Text(
-            'Онлайн боллоо',
+          messageText:  Text(
+            AppLocalizations.of(Get.context!)!.connectionRecovered,
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
@@ -65,7 +66,10 @@ class NetworkController extends GetxController {
             ),
           ),
           backgroundColor: success,
-          // icon: const Icon(Icons.wifi, color: Colors.white),
+          icon: const KeyedSubtree(
+            key: ValueKey('wifiIcon'),
+            child: Icon(IconsaxPlusLinear.wifi, color: white),
+          ),
           snackStyle: SnackStyle.FLOATING,
           borderRadius: 16,
           margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
