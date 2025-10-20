@@ -54,7 +54,7 @@ class AppLocalizationsMn extends AppLocalizations {
   String get confidentialHazardReport => 'Нэрээ нууцлаж мэдээллэх';
 
   @override
-  String get otherChannels => 'Хүсэлтийн дугаар';
+  String get otherChannels => 'Бусад сувгууд';
 
   @override
   String get hazardDetails => 'Хүсэлтийн дэлгэрэнгүй';
@@ -184,4 +184,22 @@ class AppLocalizationsMn extends AppLocalizations {
 
   @override
   String get continueee => 'Үргэлжлүүлэх';
+
+  @override
+  String get loginPopUpDesc1 => 'Нэвтрэхийн тулд танд байгууллагын дотоод системийн бүртгэл шаардлагатайг анхаарна уу';
+
+  @override
+  String get loginPopUpDesc2 => 'Та гадаад хэрэглэгч байсан ч манай системийг нэвтрэхгүйгээр ашиглах боломжтой ❤️';
+
+  @override
+  String get ok => 'Ойлголоо';
+
+  @override
+  String get yes => 'Тийм';
+
+  @override
+  String get no => 'Үгүй';
+
+  @override
+  String get welcome => 'Тавтай морил';
 }

@@ -32,7 +32,7 @@
     "homeDescriptionLess": "MIAT operates a non-punitive reporting system to encourage timely and open reporting of hazards and risks related to flight safety, quality, and aviation security...",
     "homeDescriptionMore": "MIAT operates a non-punitive reporting system to encourage timely and open reporting of hazards and risks related to flight safety, quality, and aviation security. Based on the information, we analyze the violations, take measures to reduce the risk, correct it, and prevent future occurrences. In the event of confidential information being submitted, the confidentiality of the informant will be strictly maintained. Thank you for contributing to improving flight safety by submitting safety information.",
     "reportHazard": "Hazard report",
-    "confidentialHazardReport": "Confidential hazard report",
+    "confidentialHazardReport": "Confidential safety report",
     "otherChannels": "Other channels",
     "hazardDetails": "Hazard details",
     "hazardCode": "Hazard code",
@@ -80,7 +80,14 @@
     "fullName": "Full name",
     "phone": "Phone number",
     "or": "Or",
-    "continueee": "Continue"
+    "continueee": "Continue",
 
+    "loginPopUpDesc1": "Please note that you will need to register with your organization's internal system to log in.",
+    "loginPopUpDesc2": "Even if you are a foreign user, you can use our system without logging in ❤️",
+    "ok": "Ok",
 
+    "yes": "Yes",
+    "no": "No",
+
+    "welcome": "Welcome"
 }

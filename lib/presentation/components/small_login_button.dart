@@ -1,13 +1,29 @@
+import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/presentation/components/login_pop_up.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 // import 'package:action_log_app/presentation/components/pop_up.dart';
 
-class SmallLoginButton extends StatelessWidget {
+class SmallLoginButton extends StatefulWidget {
   const SmallLoginButton({
     super.key,
   });
+
+  @override
+  State<SmallLoginButton> createState() => _SmallLoginButtonState();
+}
+
+class _SmallLoginButtonState extends State<SmallLoginButton> {
+  String? languageCode = 'mn';
+
+  @override
+  void initState() {
+    super.initState();
+    final currentLocale = Get.locale ;
+    languageCode = currentLocale?.languageCode ?? 'mn';
+  }    
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +50,9 @@ class SmallLoginButton extends StatelessWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center, // Center content
-            children: const [
+            children: [
               Text(
-                'Нэвтрэх',
+                AppLocalizations.of(context)!.login,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

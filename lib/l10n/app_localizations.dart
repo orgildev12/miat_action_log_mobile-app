@@ -182,7 +182,7 @@ abstract class AppLocalizations {
   /// No description provided for @confidentialHazardReport.
   ///
   /// In en, this message translates to:
-  /// **'Confidential hazard report'**
+  /// **'Confidential safety report'**
   String get confidentialHazardReport;
 
   /// No description provided for @otherChannels.
@@ -448,6 +448,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue'**
   String get continueee;
+
+  /// No description provided for @loginPopUpDesc1.
+  ///
+  /// In en, this message translates to:
+  /// **'Please note that you will need to register with your organization\'s internal system to log in.'**
+  String get loginPopUpDesc1;
+
+  /// No description provided for @loginPopUpDesc2.
+  ///
+  /// In en, this message translates to:
+  /// **'Even if you are a foreign user, you can use our system without logging in ❤️'**
+  String get loginPopUpDesc2;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'Ok'**
+  String get ok;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get welcome;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

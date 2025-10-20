@@ -1,4 +1,5 @@
 import 'package:action_log_app/core/di/features/user_di.dart';
+import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/presentation/components/big_button.dart';
 import 'package:action_log_app/presentation/pages/login_page.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
@@ -41,7 +42,7 @@ class LoginPopUp extends StatelessWidget {
               const SizedBox(width: 8),
               SizedBox(
                 child: Text(
-                  'Санамж',
+                  AppLocalizations.of(context)!.warning,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 16,
@@ -59,13 +60,13 @@ class LoginPopUp extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Нэвтрэхийн тулд танд байгууллагын дотоод системийн бүртгэл шаардлагатайг анхаарна уу',
+                AppLocalizations.of(context)!.loginPopUpDesc1,
                 style: const TextStyle(fontSize: 14),
                 textAlign: TextAlign.start,
               ),
               SizedBox(height: 8),
               Text(
-                'Та гадаад хэрэглэгч байсан ч манай системийг нэвтрэхгүйгээр ашиглах боломжтой ❤️',
+                AppLocalizations.of(context)!.loginPopUpDesc1,
                 style: const TextStyle(fontSize: 14),
                 textAlign: TextAlign.start,
               ),
@@ -77,14 +78,14 @@ class LoginPopUp extends StatelessWidget {
             children: [
               SizedBox(height: 16),
               BigButton(
-                  buttonText: 'Ойлголоо', 
+                  buttonText: AppLocalizations.of(context)!.ok, 
                   isActive: true, 
                   onTap: () => Navigator.of(context).pop()
               ),
               SizedBox(height: 8),
               TextButton(
                 onPressed: () => _pushToLogin(context),
-                child: Text('Нэвтрэх',
+                child: Text(AppLocalizations.of(context)!.login,
                     style: TextStyle(
                     color: primaryColor,
                     fontSize: 16,

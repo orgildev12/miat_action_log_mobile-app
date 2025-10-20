@@ -26,7 +26,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 //         "is_private": 0,
 //         "date_updated": "2025-10-02T06:19:32.000Z"
 //     },
-class HazardListItem extends StatelessWidget {
+class HazardListItem extends StatefulWidget {
   final Hazard hazard;
   const HazardListItem({
     super.key,
@@ -34,16 +34,26 @@ class HazardListItem extends StatelessWidget {
     });
 
   @override
-  Widget build(BuildContext context) {
+  State<HazardListItem> createState() => _HazardListItemState();
+}
 
-    void _pushToDetails(BuildContext context) async {
-    Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => (HazardDetailsPage(hazard: hazard)),
-      ),
-    );
+class _HazardListItemState extends State<HazardListItem> {
+
+  @override
+  void initState(){
+    super.initState();
   }
+
+  @override
+  Widget build(BuildContext context) {
+    void _pushToDetails(BuildContext context) async {
+      Navigator.push(
+        context, 
+        MaterialPageRoute(
+          builder: (context) => (HazardDetailsPage(hazard: widget.hazard)),
+        ),
+      );
+    }
     return Column(
       children: [
         InkWell(
@@ -57,7 +67,7 @@ class HazardListItem extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.2),
                   spreadRadius: 2,
                   blurRadius: 5,
-                  offset: Offset(0, 3), // changes position of shadow
+                  offset: Offset(0, 3),
                 ),
               ],
             ),
@@ -71,7 +81,7 @@ class HazardListItem extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          hazard.isPrivate == 0 ? Icon(IconsaxPlusLinear.message, color: black, size: 24) : Icon(IconsaxPlusLinear.security_user, color: black, size: 24),
+                          widget.hazard.isPrivate == 0 ? Icon(IconsaxPlusLinear.message, color: black, size: 24) : Icon(IconsaxPlusLinear.security_user, color: primaryColor, size: 24),
                           SizedBox(width: 8),
                           Container(
                             width: 2,
@@ -85,7 +95,7 @@ class HazardListItem extends StatelessWidget {
                           SizedBox(
                             width: 144,
                             child: Text(
-                              hazard.typeNameMn.toString(),
+                              Localizations.localeOf(context).languageCode == 'mn' ? widget.hazard.typeNameMn.toString() : widget.hazard.typeNameEn.toString(),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -99,7 +109,7 @@ class HazardListItem extends StatelessWidget {
                       Row(
                         children: [
                            Text(
-                              hazard.statusMn,
+                              Localizations.localeOf(context).languageCode == 'mn' ? widget.hazard.statusMn : widget.hazard.statusEn,
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -110,9 +120,9 @@ class HazardListItem extends StatelessWidget {
                             width: 10,
                             height: 10,
                             decoration: BoxDecoration(
-                              color: hazard.statusMn == "Шийдэгдсэн" ?  Colors.green :
-                                     hazard.statusMn == "Ажиллаж байна" ? Colors.orange :
-                                     hazard.statusMn == "Буцаагдсан" ? Colors.red :
+                              color: widget.hazard.statusMn == "Шийдэгдсэн" ?  Colors.green :
+                                     widget.hazard.statusMn == "Ажиллаж байна" ? Colors.orange :
+                                     widget.hazard.statusMn == "Буцаагдсан" ? Colors.red :
                                      Colors.grey,
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -125,7 +135,7 @@ class HazardListItem extends StatelessWidget {
                   SizedBox(
                     height: 40,
                     child: Text(
-                      hazard.description,
+                      widget.hazard.description,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.normal,

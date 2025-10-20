@@ -5,9 +5,11 @@ import 'package:action_log_app/domain/entities/hazard_type.dart';
 import 'package:action_log_app/presentation/pages/post_hazard_page.dart';
 import 'package:action_log_app/presentation/pages/user_info_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/route_manager.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 
-class HazardTypeSelector extends StatelessWidget {
+class HazardTypeSelector extends StatefulWidget {
   final HazardType hazardType;
   final bool isUserLoggedIn;
 
@@ -18,12 +20,19 @@ class HazardTypeSelector extends StatelessWidget {
     });
 
   @override
+  State<HazardTypeSelector> createState() => _HazardTypeSelectorState();
+}
+
+class _HazardTypeSelectorState extends State<HazardTypeSelector> {
+  bool isMongolian = Get.locale?.languageCode == 'mn';
+
+  @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(hazardType.nameMn),
+      title: Text(isMongolian ? widget.hazardType.nameMn : widget.hazardType.nameEn),
       trailing: Icon(IconsaxPlusLinear.arrow_right_3), // Add icon to the right side
       onTap: () {
-        isUserLoggedIn
+        widget.isUserLoggedIn
             ? Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -33,8 +42,8 @@ class HazardTypeSelector extends StatelessWidget {
                       userLocalDataSource: UserDI.localDataSource,
                     ),
                     fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
-                    hazardTypeId: hazardType.id,
-                    hazardTypeName: hazardType.nameMn,
+                    hazardTypeId: widget.hazardType.id,
+                    hazardTypeName: isMongolian ? widget.hazardType.nameMn : widget.hazardType.nameEn,
                   ),
                 ),
               )
@@ -45,8 +54,8 @@ class HazardTypeSelector extends StatelessWidget {
                     fetchUserInfoUseCase: UserDI.fetchUserInfoUseCase,
                     saveUserInfoFromInputUseCase: UserDI.saveUserInfoFromInput,
                     clearUserInfoCacheUseCase: UserDI.clearUserInfoCacheUsecase,
-                    hazardTypeId: hazardType.id,
-                    hazardTypeName: hazardType.nameMn,
+                    hazardTypeId: widget.hazardType.id,
+                    hazardTypeName: isMongolian ? widget.hazardType.nameMn : widget.hazardType.nameEn,
                   ),
                 ),
               );

@@ -2,6 +2,7 @@ import 'package:action_log_app/core/di/app_di.dart';
 import 'package:action_log_app/core/di/features/hazard_di.dart';
 import 'package:action_log_app/core/di/features/hazard_type_di.dart';
 import 'package:action_log_app/core/di/features/location_di.dart';
+import 'package:action_log_app/data/data_sources/language_code.dart';
 import 'package:action_log_app/l10n/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:action_log_app/l10n/app_localizations.dart';
@@ -22,11 +23,17 @@ void main() async {
   HazardDI.setup();
   AppDI.setup();
   UserDI.controller.recoverToken(true);
-  runApp(const MainApp());
+
+  String savedLang = await loadLanguage();
+  runApp(MainApp(initialLanguage: savedLang));
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final String initialLanguage;
+  const MainApp({
+    super.key,
+    required this.initialLanguage
+    });
   
   @override
   Widget build(BuildContext context) {
@@ -56,7 +63,8 @@ class MainApp extends StatelessWidget {
               ),
             ),
             supportedLocales: L10n.all,
-            locale: const Locale('en'),
+            locale: Locale(initialLanguage),
+            fallbackLocale: Locale('mn'),
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,

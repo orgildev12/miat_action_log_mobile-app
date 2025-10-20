@@ -8,7 +8,7 @@ import 'package:action_log_app/presentation/components/hazart_details_item.dart'
 import 'package:intl/intl.dart';
 import 'package:action_log_app/l10n/app_localizations.dart';
 
-class HazardDetailsPage extends StatelessWidget {
+class HazardDetailsPage extends StatefulWidget {
   final Hazard hazard;
   const HazardDetailsPage({
     super.key,
@@ -16,7 +16,20 @@ class HazardDetailsPage extends StatelessWidget {
     });
 
   @override
+  State<HazardDetailsPage> createState() => _HazardDetailsPageState();
+}
+
+class _HazardDetailsPageState extends State<HazardDetailsPage> {
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // final currentLanguage = Localizations.localeOf(context).languageCode;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -38,23 +51,26 @@ class HazardDetailsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HazartDetailsItem(text1: AppLocalizations.of(context)!.hazardCode, text2: hazard.code),
+              HazartDetailsItem(text1: AppLocalizations.of(context)!.hazardCode, text2: widget.hazard.code),
               SizedBox(height: 8),
               HazartDetailsItem(
                 text1: AppLocalizations.of(context)!.sentDate,
-                text2: DateFormat('yyyy.MM.dd').format(hazard.dateCreated),
+                text2: DateFormat('yyyy.MM.dd').format(widget.hazard.dateCreated),
               ),
               SizedBox(height: 8),
-              HazartDetailsItem(text1: AppLocalizations.of(context)!.status, text2: hazard.statusMn),
+              HazartDetailsItem(
+                text1: AppLocalizations.of(context)!.status, 
+                text2: Localizations.localeOf(context).languageCode == 'mn' ? widget.hazard.statusMn : widget.hazard.statusEn
+              ),
               SizedBox(height: 24),
               InfoPanel(content: AppLocalizations.of(context)!.yourRequestWasSent),
               SizedBox(height: 56),
               Text(AppLocalizations.of(context)!.content, style: TextStyle(fontSize:20, fontWeight: FontWeight.w600, color: black)),
               SizedBox(height: 12),
-              Text(hazard.description, style: TextStyle(fontSize:14,  color: black)),
+              Text(widget.hazard.description, style: TextStyle(fontSize:14,  color: black)),
               SizedBox(height: 8),
               Text(AppLocalizations.of(context)!.solution, style: TextStyle(fontSize:16,  color: black, fontWeight: FontWeight.w500)),
-              Text(hazard.solution, style: TextStyle(fontSize:14,  color: black)),
+              Text(widget.hazard.solution, style: TextStyle(fontSize:14,  color: black)),
               SizedBox(height: 32),
               HazardImage()
             ],

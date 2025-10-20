@@ -16,6 +16,8 @@ import 'package:action_log_app/presentation/components/pop_up.dart';
 import 'package:action_log_app/presentation/pages/main_navigator.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 
 class PostHazardPage extends StatefulWidget {
@@ -50,6 +52,8 @@ class _PostHazardPageState extends State<PostHazardPage> {
   String secondLocationFormValue = '';
   String selectedLocationGroupName = '';
 
+  String? languageCode = 'mn';
+
   late String username;
   late String email;
   late String phoneNumber;
@@ -60,6 +64,8 @@ class _PostHazardPageState extends State<PostHazardPage> {
   @override
   void initState() {
     super.initState();
+    final currentLocale = Get.locale;
+    languageCode = currentLocale?.languageCode ?? 'mn';
     _loadUserInfo();
     _fetchLocations();
   }
@@ -171,7 +177,9 @@ class _PostHazardPageState extends State<PostHazardPage> {
         firstLocationFormValue = '';
         secondLocationFormValue = '';
         selectedLocationGroupId = null;
-        firstLocationFormValue = selectedLocation.nameMn;
+        languageCode == 'mn'
+          ? firstLocationFormValue = selectedLocation.nameMn
+          : firstLocationFormValue = selectedLocation.nameEn;
         locationId = selectedLocation.id;
       });
     }else{
@@ -179,9 +187,13 @@ class _PostHazardPageState extends State<PostHazardPage> {
         firstLocationFormValue = '';
         secondLocationFormValue = '';
         locationId = null;
-        firstLocationFormValue = selectedLocation.groupNameMn!;
+        languageCode == 'mn'
+          ? firstLocationFormValue = selectedLocation.groupNameMn!
+          : firstLocationFormValue = selectedLocation.groupNameEn!;
         selectedLocationGroupId = selectedLocation.locationGroupId;
-        selectedLocationGroupName = selectedLocation.groupNameMn!;
+        languageCode == 'mn' 
+          ? selectedLocationGroupName = selectedLocation.groupNameMn!
+          : selectedLocationGroupName = selectedLocation.groupNameEn!;
         isSelectedLocationGroup = true;
       });
     }
@@ -190,7 +202,9 @@ class _PostHazardPageState extends State<PostHazardPage> {
 
   void _setSecondLocationFormValue(Location selectedLocation) {
       setState(() {
-        secondLocationFormValue = selectedLocation.nameMn;
+        languageCode == 'mn'
+        ? secondLocationFormValue = selectedLocation.nameMn
+        : secondLocationFormValue = selectedLocation.nameEn;
         locationId = selectedLocation.id;
       });
   }
@@ -274,14 +288,14 @@ class _PostHazardPageState extends State<PostHazardPage> {
                         ...locations
                             .where((location) => location.locationGroupId == null)
                             .map((location) => {
-                                  'label': location.nameMn,
+                                  'label': languageCode == 'mn' ? location.nameMn : location.nameEn,
                                   'isGroup': false,
                                 })
                             ,
 
                         ...locations
                             .where((location) => location.locationGroupId != null)
-                            .map((location) => location.groupNameMn ?? '')
+                            .map((location) => languageCode == 'mn' ? location.groupNameMn ?? '' : location.groupNameEn ?? '')
                             .toSet() // deduplicate group names
                             .map((groupName) => {
                                   'label': groupName,
@@ -291,12 +305,14 @@ class _PostHazardPageState extends State<PostHazardPage> {
                       ],
                       onValueChanged: (val) {
                         final selectedLocation = locations.firstWhere(
-                          (location) => location.nameMn == val || location.groupNameMn == val,
-                          orElse: () => Location(
-                            id: -1,
-                            nameMn: val,
-                            nameEn: val,
-                          ),
+                          (location) {
+                            if (languageCode == 'mn') {
+                              return location.nameMn == val || (location.groupNameMn != null && location.groupNameMn == val);
+                            } else {
+                              return location.nameEn == val || (location.groupNameEn != null && location.groupNameEn == val);
+                            }
+                          },
+                          orElse: () => Location(id: -1, nameMn: val, nameEn: val),
                         );
 
                         if (selectedLocation.id != -1) {
@@ -312,34 +328,27 @@ class _PostHazardPageState extends State<PostHazardPage> {
                         children: [
                           SizedBox(height: 8),
                           HazardDropDownForm(
-                            hintText: '$selectedLocationGroupName сонгох', //fix it later
+                            hintText: languageCode == 'mn' ? '$selectedLocationGroupName сонгох' : 'Select $selectedLocationGroupName',
                             formValue: locationId != null
-                                ? (locations.firstWhere(
-                                    (location) => location.id == locationId,
-                                    orElse: () => Location(
-                                      id: -1,
-                                      nameMn: '',
-                                      nameEn: '',
-                                    ),
-                                  ).nameMn)
-                                : '',
+                              ? (languageCode == 'mn'
+                                  ? locations.firstWhere((location) => location.id == locationId).nameMn
+                                  : locations.firstWhere((location) => location.id == locationId).nameEn)
+                              : '',
 
                             dropDownItems: locations
                                 .where((location) => location.locationGroupId == selectedLocationGroupId)
                                 .map((location) => {
-                                      'label': location.nameMn,
+                                      'label': languageCode == 'mn' ? location.nameMn : location.nameEn,
                                       'isGroup': false,
                                     })
                                 .toList(),
 
                             onValueChanged: (val) {
                               final selectedLocation = locations.firstWhere(
-                                (location) => location.nameMn == val,
-                                orElse: () => Location(
-                                  id: -1,
-                                  nameMn: val,
-                                  nameEn: val,
-                                ),
+                                (location) =>
+                                    location.locationGroupId == selectedLocationGroupId && // filter by group
+                                    (languageCode == 'mn' ? location.nameMn == val : location.nameEn == val), // language check
+                                orElse: () => Location(id: -1, nameMn: val, nameEn: val),
                               );
 
                               if (selectedLocation.id != -1) {

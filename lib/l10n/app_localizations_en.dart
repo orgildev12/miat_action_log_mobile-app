@@ -51,7 +51,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportHazard => 'Hazard report';
 
   @override
-  String get confidentialHazardReport => 'Confidential hazard report';
+  String get confidentialHazardReport => 'Confidential safety report';
 
   @override
   String get otherChannels => 'Other channels';
@@ -184,4 +184,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get continueee => 'Continue';
+
+  @override
+  String get loginPopUpDesc1 => 'Please note that you will need to register with your organization\'s internal system to log in.';
+
+  @override
+  String get loginPopUpDesc2 => 'Even if you are a foreign user, you can use our system without logging in ❤️';
+
+  @override
+  String get ok => 'Ok';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get welcome => 'Welcome';
 }

@@ -7,7 +7,7 @@ class HazardDropDownForm extends StatelessWidget {
   final String labelText;
   final Function(String) onValueChanged;
   final String formValue;
-  final List<Map<String, dynamic>> dropDownItems; // Updated to include metadata
+  final List<Map<String, dynamic>> dropDownItems; // include 'isGroup'
 
   const HazardDropDownForm({
     super.key,
@@ -23,70 +23,70 @@ class HazardDropDownForm extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-          if(labelText.isNotEmpty) // Only show label if it's not empty
-        Column(
-          children: [
-            Text(labelText, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: black)),
-            SizedBox(height: 12),
-          ],
-        ),
-        // Wrap DropdownButtonFormField in a ConstrainedBox to ensure proper dropdown placement
+        if (labelText.isNotEmpty)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                labelText,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: black,
+                ),
+              ),
+              SizedBox(height: 12),
+            ],
+          ),
         ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: 60), // Ensure dropdown field height is constrained
+          constraints: BoxConstraints(maxHeight: 60),
           child: Material(
             color: Colors.transparent,
             child: DropdownButtonHideUnderline(
               child: DropdownButtonFormField<String>(
-                initialValue: formValue.isNotEmpty ? formValue : null, // <-- null shows hint
+                value: formValue.isNotEmpty ? formValue : null,
                 isExpanded: true,
                 borderRadius: BorderRadius.circular(20),
-                menuMaxHeight: 300, // Ensure dropdown menu height is limited
-                dropdownColor: Colors.white, // Optional: Set dropdown background color
-                items: dropDownItems.map((item) => DropdownMenuItem<String>(
-                      value: item['label'],
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                        child: SizedBox(
-                          width: double.infinity, 
-                          child: Row(
-                            children: [
-                              item['isGroup'] // Check if the item is a group
-                                  ? Icon(IconsaxPlusLinear.routing, size: 16, color: black)
-                                  : Icon(IconsaxPlusLinear.location, size: 16, color: black),
-
-                              SizedBox(width: 8),
-                              Text(
-                                item['label'],
-                                style: TextStyle(fontSize: 14)
-                              ),
-                            ],
-                          )
+                menuMaxHeight: 300,
+                dropdownColor: Colors.white,
+                items: dropDownItems.map((item) {
+                  final isGroup = item['isGroup'] as bool? ?? false;
+                  final label = item['label'] as String? ?? '';
+                  return DropdownMenuItem<String>(
+                    value: label,
+                    child: Row(
+                      children: [
+                        Icon(
+                          isGroup
+                              ? IconsaxPlusLinear.routing
+                              : IconsaxPlusLinear.location,
+                          size: 16,
+                          color: black,
                         ),
-                      ),
-                    ))
-                .toList(),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            label,
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
                 onChanged: (val) {
-                  if (val != null) {
-                    onValueChanged(val);
-                  }
+                  if (val != null) onValueChanged(val);
                 },
                 decoration: InputDecoration(
                   hintText: hintText,
-                  hintStyle: TextStyle(
-                    color: Colors.grey, // Corrected to use a valid color
-                    fontSize: 14,
-                  ),
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
+                    borderSide: BorderSide(color: Colors.transparent),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(
-                      color: primaryColor,
-                    ),
+                    borderSide: BorderSide(color: primaryColor),
                   ),
                   filled: true,
                   fillColor: white,
@@ -94,8 +94,7 @@ class HazardDropDownForm extends StatelessWidget {
               ),
             ),
           ),
-        )
-
+        ),
       ],
     );
   }

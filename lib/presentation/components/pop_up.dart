@@ -1,6 +1,7 @@
 import 'package:action_log_app/presentation/components/big_button.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:action_log_app/l10n/app_localizations.dart';
 
 class PopUp extends StatelessWidget {
   final IconData icon;
@@ -113,9 +114,9 @@ class PopUp extends StatelessWidget {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical:  16.0),
-                              child: const Center(
+                              child: Center(
                                 child: Text(
-                                  'Үгүй',
+                                  AppLocalizations.of(context)!.no,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 14,
@@ -153,9 +154,9 @@ class PopUp extends StatelessWidget {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical:  16.0),
-                              child: const Center(
+                              child: Center(
                                 child: Text(
-                                  'Тийм',
+                                  AppLocalizations.of(context)!.yes,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -177,7 +178,7 @@ class PopUp extends StatelessWidget {
                 children: [
                   SizedBox(height: 16),
                   BigButton(
-                    buttonText: 'Ойлголоо',
+                    buttonText: AppLocalizations.of(context)!.ok,
                     isActive: true,
                     onTap: onPress
                   ),
