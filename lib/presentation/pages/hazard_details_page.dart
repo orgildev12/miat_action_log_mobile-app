@@ -1,5 +1,5 @@
 import 'package:action_log_app/domain/entities/hazard.dart';
-import 'package:action_log_app/presentation/components/hazard_image.dart';
+// import 'package:action_log_app/presentation/components/hazard_image.dart';
 import 'package:action_log_app/presentation/components/info_panel.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +72,7 @@ class _HazardDetailsPageState extends State<HazardDetailsPage> {
               Text(AppLocalizations.of(context)!.solution, style: TextStyle(fontSize:16,  color: black, fontWeight: FontWeight.w500)),
               Text(widget.hazard.solution, style: TextStyle(fontSize:14,  color: black)),
               SizedBox(height: 32),
-              HazardImage()
+              // HazardImage()
             ],
           ),
         ),

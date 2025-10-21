@@ -39,7 +39,11 @@ class HazardRemoteDataSource {
     }
   }
 
-  Future<bool> postHazard(PostHazardModel hazard, String? token, bool isUserLoggedIn) async {
+  Future<bool> postHazard({
+    required PostHazardModel hazard, 
+    String? token, 
+    required bool isUserLoggedIn
+    }) async {
     if (!await connectivityChecker.isConnected) {
       throw Exception('No internet connection');
     }
@@ -72,11 +76,57 @@ class HazardRemoteDataSource {
     }
   }
 
-  Future<void> uploadHazardImages(int hazardId, List<File> images, String token) async {
-    final headers = {
+  Future<bool> postHazardWithImage({
+    required PostHazardModel hazard, 
+    required List<File> images, 
+    String? token, 
+    required bool isUserLoggedIn,
+    
+    }) async {
+    if (!await connectivityChecker.isConnected) {
+      throw Exception('No internet connection');
+    }
+
+    if (isUserLoggedIn) {
+      final headers = {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      };
+      try{
+        final responseJson = await apiClient.post('/hazard/', hazard.toJson(true), headers: headers);
+        int resultId = responseJson['id'];
+        await uploadHazardImages(resultId, images, token);
+        return true;
+        // response 300-аас дээш status code-той ирвэл expection болоод handle хийгдэнэ.
+      } catch(e){
+        if(e is ServerException){
+          rethrow;
+        }
+        print('error from remote data source');
+        throw Exception(e);
+      }
+    }
+
+    try{
+      final responseJson = await apiClient.post('/hazard/noLogin', hazard.toJson(false));
+      int resultId = responseJson['id'];
+      await uploadHazardImages(resultId, images, token);
+      return true;
+    } catch(e){
+      if(e is ServerException){
+        rethrow;
+      }
+      throw Exception('Failed to post hazard');
+    }
+  }
+
+
+  Future<void> uploadHazardImages(int hazardId, List<File> images, String? token) async {
+    try{
+      final headers = {
       'Authorization': 'Bearer $token',
     };
-
+    print('just before call upload image');
     final result = await apiClient.postMultipart(
       '/hazard/$hazardId/images',
       files: images,
@@ -84,5 +134,11 @@ class HazardRemoteDataSource {
     );
 
     print('Upload result: $result');
+    }catch(e){
+      if(e is ServerException){
+        rethrow;
+      }
+      throw Exception('Failed to post hazard');
+    }
   }
 }

@@ -17,7 +17,6 @@ class HazardRepositoryImpl implements HazardRepository {
     required this.remote
   });
 
-  // Hazard operations
 @override
 Future<List<Hazard>> fetchHazards(int userId, String token) async {
   try {
@@ -37,7 +36,17 @@ Future<List<Hazard>> fetchHazards(int userId, String token) async {
   @override
   Future<bool> postHazard(PostHazardModel hazard, String? token, {required bool isUserLoggedIn}) async {
     try {
-      final result = await remote.postHazard(hazard, token, isUserLoggedIn);
+      final result = await remote.postHazard(hazard: hazard, token:  token, isUserLoggedIn:  isUserLoggedIn);
+      return result;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> postHazardWithImage(PostHazardModel hazard, List<File> images, String? token, {required bool isUserLoggedIn}) async {
+    try {
+      final result = await remote.postHazardWithImage(hazard: hazard, images: images, token: token, isUserLoggedIn: isUserLoggedIn);
       return result;
     } catch (e) {
       rethrow;

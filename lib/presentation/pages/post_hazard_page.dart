@@ -7,12 +7,13 @@ import 'package:action_log_app/presentation/components/add_image_button.dart';
 import 'package:action_log_app/presentation/components/big_button.dart';
 import 'package:action_log_app/presentation/components/hazard_drop_down_form.dart';
 import 'package:action_log_app/presentation/components/hazard_form_item.dart';
+import 'package:action_log_app/presentation/components/hazard_image.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 
-class PostHazardPage extends StatelessWidget {
+class PostHazardPage extends StatefulWidget {
   final PostHazardUseCase postHazardUseCase;
   final FetchUserInfoUseCase fetchUserInfoUseCase;
   final int hazardTypeId;
@@ -27,6 +28,11 @@ class PostHazardPage extends StatelessWidget {
   });
 
   @override
+  State<PostHazardPage> createState() => _PostHazardPageState();
+}
+
+class _PostHazardPageState extends State<PostHazardPage> {
+  @override
   Widget build(BuildContext context) {
     final controller = Get.put(PostHazardController());
     controller.languageCode = Get.locale?.languageCode ?? 'mn';
@@ -37,7 +43,10 @@ class PostHazardPage extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(IconsaxPlusLinear.arrow_left_1, color: black),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: (){
+            Navigator.of(context).pop();
+            controller.resetForm();
+          }
         ),
         title: Text(
           AppLocalizations.of(context)!.reportHazard,
@@ -51,7 +60,7 @@ class PostHazardPage extends StatelessWidget {
           children: [
             const SizedBox(height: 32),
             Text(
-              hazardTypeName,
+              widget.hazardTypeName,
               style: TextStyle(color: primaryColor, fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 16),
@@ -65,7 +74,6 @@ class PostHazardPage extends StatelessWidget {
               key: controller.formKey,
               child: Obx(() => Column(
                 children: [
-                  // First location dropdown
                   HazardDropDownForm(
                     hintText: AppLocalizations.of(context)!.selectLocation,
                     labelText: AppLocalizations.of(context)!.location,
@@ -101,7 +109,6 @@ class PostHazardPage extends StatelessWidget {
                     },
                   ),
 
-                  // Second dropdown if group selected
                   if (controller.isSelectedLocationGroup.value)
                     Column(
                       children: [
@@ -144,7 +151,6 @@ class PostHazardPage extends StatelessWidget {
 
                   const SizedBox(height: 28),
 
-                  // Hazard details
                   HazardFormItem(
                     labelText: AppLocalizations.of(context)!.hazardDetails,
                     hintText: AppLocalizations.of(context)!.hazardDescription,
@@ -160,7 +166,6 @@ class PostHazardPage extends StatelessWidget {
 
                   const SizedBox(height: 28),
 
-                  // Suggestion
                   HazardFormItem(
                     labelText: AppLocalizations.of(context)!.suggession,
                     hintText: AppLocalizations.of(context)!.suggessionLong,
@@ -183,6 +188,15 @@ class PostHazardPage extends StatelessWidget {
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: black),
             ),
             const SizedBox(height: 12),
+            Obx(() {
+              if (controller.selectedImages.isEmpty) return const SizedBox.shrink();
+              return Column(
+                children: controller.selectedImages
+                    .map((file) => HazardImage(imageFile: file))
+                    .toList(),
+              );
+            }),
+            SizedBox(height: 8,),
             Row(
               children: [
                 Flexible(
@@ -198,6 +212,9 @@ class PostHazardPage extends StatelessWidget {
                   child: AddImageButton(
                     buttonText: AppLocalizations.of(context)!.attachzPicture,
                     iconData: IconsaxPlusLinear.paperclip_2,
+                    onTap: () {
+                      controller.pickImage();
+                    },
                   ),
                 ),
               ],
@@ -207,7 +224,7 @@ class PostHazardPage extends StatelessWidget {
             Obx(() => BigButton(
                   buttonText: AppLocalizations.of(context)!.send,
                   isActive: controller.isActive,
-                  onTap: () => controller.submitHazard(hazardTypeId, context),
+                  onTap: () => controller.submitHazard(hazardTypeId: widget.hazardTypeId, context: context),
                   iconData: IconsaxPlusLinear.send_2,
                 )),
             const SizedBox(height: 100),

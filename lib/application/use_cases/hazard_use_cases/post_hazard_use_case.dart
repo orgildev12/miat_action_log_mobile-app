@@ -14,12 +14,19 @@ class PostHazardUseCase {
     required this.userLocalDataSource,
   });
 
-  Future<bool> call(PostHazardModel hazard, {required bool isUserLoggedIn}) async {
+  Future<bool> call(PostHazardModel hazard, List<File> images, {required bool isUserLoggedIn}) async {
     try {
       String? token;
       if (isUserLoggedIn) {
         token = await userLocalDataSource.getToken();
       }
+      print('calling the use case');
+      if(images.isNotEmpty){
+        print('there is an image');
+        final result = await repository.postHazardWithImage(hazard, images, token, isUserLoggedIn: isUserLoggedIn);
+        return result;
+      }
+      print('executing no image');
       final result = await repository.postHazard(hazard, token, isUserLoggedIn: isUserLoggedIn);
       return result;
     } catch (e) {

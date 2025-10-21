@@ -15,12 +15,15 @@ import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PostHazardController extends GetxController {
-  // Reactive state
+
+  var selectedImages = <File>[].obs;
   var isUploading = false.obs;
   var errorMessage = RxnString();
   var uploadedCount = 0.obs;
+  final ImagePicker _picker = ImagePicker();
 
   var locations = <Location>[].obs;
   var firstLocationFormValue = ''.obs;
@@ -50,8 +53,6 @@ class PostHazardController extends GetxController {
       description.value.trim().isNotEmpty &&
       solution.value.trim().isNotEmpty;
 
-  // ------------------------------
-  // Image Upload
   Future<void> uploadImages({
     required int hazardId,
     required List<File> images,
@@ -73,12 +74,26 @@ class PostHazardController extends GetxController {
       await HazardDI.postHazardUseCase.uploadHazardImages(hazardId, images, isUserLoggedIn: isUserLoggedIn);
       uploadedCount.value = images.length;
       showUploadSuccessSnackBar();
-      // print('Uploaded images result: $result');
     } catch (e) {
       errorMessage.value = e.toString();
       print('Image upload failed: $e');
     } finally {
       isUploading.value = false;
+    }
+  }
+
+  void pickImage({bool multiple = true}) async {
+    List<XFile> newImages = [];
+    if (multiple) {
+      newImages = await _picker.pickMultiImage();
+    } else {
+      final file = await _picker.pickImage(source: ImageSource.gallery);
+      if (file != null) newImages = [file];
+    }
+
+    if (newImages.isNotEmpty) {
+      final files = newImages.map((x) => File(x.path)).toList();
+      selectedImages.assignAll(files.length > 3 ? files.sublist(0, 3) : files);
     }
   }
 
@@ -103,8 +118,6 @@ class PostHazardController extends GetxController {
     );
   }
 
-  // ------------------------------
-  // Load user
   Future<void> loadUserInfo(context) async {
     try {
       final fetchedUser = await UserDI.fetchUserInfoUseCase.call();
@@ -115,8 +128,6 @@ class PostHazardController extends GetxController {
     }
   }
 
-  // ------------------------------
-  // Fetch locations
   Future<void> fetchLocations(BuildContext context) async {
     try {
       await clearLocationCacheUseCase.call();
@@ -129,8 +140,6 @@ class PostHazardController extends GetxController {
     }
   }
 
-  // ------------------------------
-  // Location selection
   void setFirstLocationFormValue(Location selectedLocation) {
     if (selectedLocation.locationGroupId == null) {
       isSelectedLocationGroup.value = false;
@@ -160,38 +169,36 @@ class PostHazardController extends GetxController {
     locationId.value = selectedLocation.id;
   }
 
-  // ------------------------------
-  // Submit hazard
-  Future<void> submitHazard(int hazardTypeId, context) async {
-    if (formKey.currentState!.validate()) {
-      try {
-        final hazardModel = PostHazardModel(
-          userId: user.id,
-          userName: user.username,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          typeId: hazardTypeId,
-          locationId: locationId.value!,
-          description: description.value,
-          solution: solution.value,
-        );
+  Future<void> submitHazard({
+    required int hazardTypeId,
+    required BuildContext context,
+  }) async {
+    try {
+      final hazardModel = PostHazardModel(
+        userId: user.id,
+        userName: user.username,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        typeId: hazardTypeId,
+        locationId: locationId.value!,
+        description: description.value,
+        solution: solution.value,
+      );
 
-        final result = await HazardDI.postHazardUseCase
-            .call(hazardModel, isUserLoggedIn: user.id != null);
+      final result = await HazardDI.postHazardUseCase
+          .call(hazardModel, selectedImages, isUserLoggedIn: user.id != null);
 
-        if (result == true) {
-          _openSuccessDialog(context, AppLocalizations.of(context)!.sentSuccessfully);
-        }
-      } on ServerException catch (e) {
-        _openErrorDialog(context, statusCode: e.statusCode);
-      } catch (e) {
-        _openErrorDialog(context);
+      if (result == true) {
+        _openSuccessDialog(context, AppLocalizations.of(context)!.sentSuccessfully);
+        resetForm();
       }
+    } on ServerException catch (e) {
+      _openErrorDialog(context, statusCode: e.statusCode);
+    } catch (e) {
+      _openErrorDialog(context);
     }
   }
 
-  // ------------------------------
-  // Dialogs
   Future<void> _openErrorDialog(
     BuildContext context, {
     int? statusCode,
@@ -251,4 +258,15 @@ class PostHazardController extends GetxController {
       },
     );
   }
+
+    void resetForm() { 
+        firstLocationFormValue.value = ''; 
+        secondLocationFormValue.value = ''; 
+        description.value = ''; 
+        solution.value = ''; 
+        isSelectedLocationGroup.value = false; 
+        selectedLocationGroupId.value = null; 
+        selectedLocationGroupName.value = ''; 
+        selectedImages.clear(); 
+   }
 }
