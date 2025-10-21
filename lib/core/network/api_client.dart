@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:action_log_app/core/error/exceptions.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 
 class ApiClient {
   final String baseUrl;
@@ -9,14 +12,14 @@ class ApiClient {
 
   Future<dynamic> get(
     String endpoint, {
-      Map<String, String>? headers,
-    }) async {
-      print('ApiClient: Making GET request to: $baseUrl$endpoint');
-      final response = await http.get(Uri.parse('$baseUrl$endpoint'), headers: headers);
-      print('ApiClient: Response status: ${response.statusCode}');
-      print('ApiClient: Raw response body: ${response.body}');
-      return _handleResponse(response);
-    }
+    Map<String, String>? headers,
+  }) async {
+    print('ApiClient: Making GET request to: $baseUrl$endpoint');
+    final response = await http.get(Uri.parse('$baseUrl$endpoint'), headers: headers);
+    print('ApiClient: Response status: ${response.statusCode}');
+    print('ApiClient: Raw response body: ${response.body}');
+    return _handleResponse(response);
+  }
 
   Future<dynamic> post(
     String endpoint,
@@ -35,25 +38,61 @@ class ApiClient {
       headers: mergedHeaders,
       body: jsonEncode(body),
     );
+
+    print('ApiClient: Response status: ${response.statusCode}');
+    print('ApiClient: Raw response body: ${response.body}');
+    return _handleResponse(response);
+  }
+
+  /// ✅ For uploading up to 3 images (multipart/form-data)
+  Future<dynamic> postMultipart(
+    String endpoint, {
+    required List<File> files,
+    Map<String, String>? headers,
+  }) async {
+    final uri = Uri.parse('$baseUrl$endpoint');
+    final request = http.MultipartRequest('POST', uri);
+
+    if (headers != null) {
+      request.headers.addAll(headers);
+    }
+
+    for (final file in files) {
+      final mimeType = lookupMimeType(file.path) ?? 'image/jpeg';
+      final mimeParts = mimeType.split('/');
+
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'images',
+          file.path,
+          contentType: MediaType(mimeParts[0], mimeParts[1]),
+        ),
+      );
+    }
+
+    print('ApiClient: Uploading ${files.length} image(s) to: $uri');
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
     print('ApiClient: Response status: ${response.statusCode}');
     print('ApiClient: Raw response body: ${response.body}');
     return _handleResponse(response);
   }
 
   dynamic _handleResponse(http.Response response) {
-    final data = jsonDecode(response.body);
+    if (response.body.isEmpty) return null;
 
+    final data = jsonDecode(response.body);
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return data;
-      
     } else {
       throw ServerException(
         statusCode: response.statusCode,
-        // daraa ni helnees hamaarch uurchilj ugnu
         title: '',
-        message: '',
+        message: data is Map && data['message'] != null
+            ? data['message']
+            : 'Server error',
       );
     }
   }
-
 }

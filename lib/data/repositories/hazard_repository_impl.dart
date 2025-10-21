@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:action_log_app/application/mappers/hazard_mapper.dart';
 import 'package:action_log_app/data/data_sources/hazard/hazard_local_data.dart';
 import 'package:action_log_app/data/data_sources/hazard/hazard_remote_data.dart';
@@ -50,5 +52,14 @@ Future<List<Hazard>> fetchHazards(int userId, String token) async {
       rethrow;
     }
   }
-  // ...existing code...
+  
+  
+  Future<void> uploadHazardImages(int hazardId, List<File> images, String token) async{
+    try{
+      final result = await remote.uploadHazardImages(hazardId, images, token);
+      return result;
+    }catch(e){
+      rethrow;
+    }
+  }
 }

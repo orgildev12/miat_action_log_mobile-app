@@ -1,8 +1,10 @@
 import 'package:action_log_app/core/di/features/user_di.dart';
+import 'package:action_log_app/core/network/api_client.dart';
 import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/presentation/components/pop_up.dart';
 import 'package:action_log_app/presentation/components/settings_page_item.dart';
 import 'package:action_log_app/presentation/pages/main_navigator.dart';
+import 'package:action_log_app/presentation/pages/upload_image_temp_page.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
@@ -42,7 +44,18 @@ class SettingsPage extends StatelessWidget {
             ),
             child: Column(
               children: [
-                SettingsPageItem(title: 'Энд өөр зүйлс нэмж болно', icon: IconsaxPlusBold.quote_down, onTap: (){}),
+                SettingsPageItem(title: 'upload image temp page', icon: IconsaxPlusBold.quote_down, onTap: (){
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (context) => HazardImageUploadPage(
+                        apiClient: ApiClient(baseUrl: 'http://10.0.2.2:3000/api'),
+                        userToken: 'asdfasdlfkj ljasdf',
+                        hazardId: 281,
+                      ),
+                    ),
+                  );
+                }),
                 SettingsPageItem(title: 'Энд өөр зүйлс нэмж болно', icon: IconsaxPlusBold.heart, onTap: (){}),
                 SettingsPageItem(title: 'Энд өөр зүйлс нэмж болно', icon: IconsaxPlusBold.sms_notification, onTap: (){}),
               ],

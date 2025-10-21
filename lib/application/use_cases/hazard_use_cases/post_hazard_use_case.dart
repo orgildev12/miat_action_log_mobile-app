@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:action_log_app/core/error/exceptions.dart';
 import 'package:action_log_app/data/data_sources/user/user_local_data.dart';
 import 'package:action_log_app/domain/repositories/hazard_repository.dart';
@@ -27,4 +29,22 @@ class PostHazardUseCase {
       throw Exception('Failed to post hazard: $e');
     }
   }
+  
+  Future<void> uploadHazardImages(int hazardId, List<File> images, {required bool isUserLoggedIn}) async{
+    try{
+      String? token;
+      if (isUserLoggedIn) {    // TODO: add aditional logic later
+        token = await userLocalDataSource.getToken();
+      }
+      final result = await repository.uploadHazardImages(hazardId, images, token!);
+      return result;
+    }catch (e){
+      if(e is ServerException){
+        rethrow;
+      }
+      throw Exception('Failed to post hazard: $e');
+    }
+  }
+
+  
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:action_log_app/core/error/exceptions.dart';
 import 'package:action_log_app/core/network/api_client.dart';
 import 'package:action_log_app/core/network/connectivity_checker.dart';
@@ -68,5 +70,19 @@ class HazardRemoteDataSource {
       }
       throw Exception('Failed to post hazard');
     }
+  }
+
+  Future<void> uploadHazardImages(int hazardId, List<File> images, String token) async {
+    final headers = {
+      'Authorization': 'Bearer $token',
+    };
+
+    final result = await apiClient.postMultipart(
+      '/hazard/$hazardId/images',
+      files: images,
+      headers: headers,
+    );
+
+    print('Upload result: $result');
   }
 }
