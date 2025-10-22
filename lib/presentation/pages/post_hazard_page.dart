@@ -46,6 +46,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
           onPressed: (){
             Navigator.of(context).pop();
             controller.resetForm();
+            controller.removeImageWarning();
           }
         ),
         title: Text(

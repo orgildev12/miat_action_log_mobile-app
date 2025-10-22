@@ -103,6 +103,10 @@ class PostHazardController extends GetxController {
     }
   }
 
+  void removeImageWarning(){
+    hasGreaterThat3Image.value = false;
+  }
+
   void showUploadSuccessSnackBar() {
     Get.showSnackbar(
       GetSnackBar(
@@ -199,6 +203,7 @@ class PostHazardController extends GetxController {
       if (result == true) {
         _openSuccessDialog(context, AppLocalizations.of(context)!.sentSuccessfully);
         resetForm();
+        removeImageWarning();
       }
     } on ServerException catch (e) {
       _openErrorDialog(context, statusCode: e.statusCode);
@@ -288,7 +293,7 @@ class PostHazardController extends GetxController {
   void removeImage(File image) {
     selectedImages.remove(image);
     if(selectedImages.isEmpty){
-      hasGreaterThat3Image.value = false;
+      removeImageWarning();
     }
   }
   
