@@ -34,7 +34,7 @@ class _BigButtonState extends State<BigButton> {
             boxShadow: widget.isActive
                 ? [
                     BoxShadow(
-                      color: Color(0xFF292D32).withOpacity(0.15),
+                      color: Color(0xFF292D32).withOpacity(0.5),
                       spreadRadius: 0,
                       blurRadius: 6,
                       offset: Offset(0, 2),

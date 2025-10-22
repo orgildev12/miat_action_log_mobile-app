@@ -484,6 +484,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome'**
   String get welcome;
+
+  /// No description provided for @areYouSureDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you deleting the image'**
+  String get areYouSureDelete;
+
+  /// No description provided for @youCanOnlyAdd3image.
+  ///
+  /// In en, this message translates to:
+  /// **'You can add up to 3 images'**
+  String get youCanOnlyAdd3image;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

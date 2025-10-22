@@ -21,6 +21,7 @@ class PostHazardController extends GetxController {
 
   var selectedImages = <File>[].obs;
   var isUploading = false.obs;
+  var hasGreaterThat3Image = false.obs;
   var errorMessage = RxnString();
   var uploadedCount = 0.obs;
   final ImagePicker _picker = ImagePicker();
@@ -93,7 +94,12 @@ class PostHazardController extends GetxController {
 
     if (newImages.isNotEmpty) {
       final files = newImages.map((x) => File(x.path)).toList();
-      selectedImages.assignAll(files.length > 3 ? files.sublist(0, 3) : files);
+
+      selectedImages.addAll(files);
+      if (selectedImages.length > 3) {
+        selectedImages.assignAll(selectedImages.sublist(0, 3));
+        hasGreaterThat3Image.value = true;
+      }
     }
   }
 
@@ -130,7 +136,7 @@ class PostHazardController extends GetxController {
 
   Future<void> fetchLocations(BuildContext context) async {
     try {
-      await clearLocationCacheUseCase.call();
+      // await clearLocationCacheUseCase.call();
       final result = await fetchLocationUseCase.call(includeLocationsWithLGroup: true);
       locations.value = result;
     } on ServerException catch (e) {
@@ -174,6 +180,8 @@ class PostHazardController extends GetxController {
     required BuildContext context,
   }) async {
     try {
+      final isValid = formKey.currentState?.validate() ?? false;
+      if (!isValid) return;
       final hazardModel = PostHazardModel(
         userId: user.id,
         userName: user.username,
@@ -259,14 +267,39 @@ class PostHazardController extends GetxController {
     );
   }
 
-    void resetForm() { 
-        firstLocationFormValue.value = ''; 
-        secondLocationFormValue.value = ''; 
-        description.value = ''; 
-        solution.value = ''; 
-        isSelectedLocationGroup.value = false; 
-        selectedLocationGroupId.value = null; 
-        selectedLocationGroupName.value = ''; 
-        selectedImages.clear(); 
-   }
+  void showDeleteDialog(BuildContext context, File image){
+      showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PopUp(
+          icon: IconsaxPlusLinear.trash,
+          colorTheme: 'danger',
+          title: AppLocalizations.of(context)!.areYouSureDelete,
+          hasTwoButtons: true,
+          onPress: () {
+            removeImage(image);
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+  }
+
+  void removeImage(File image) {
+    selectedImages.remove(image);
+    if(selectedImages.isEmpty){
+      hasGreaterThat3Image.value = false;
+    }
+  }
+  
+  void resetForm() { 
+      firstLocationFormValue.value = ''; 
+      secondLocationFormValue.value = ''; 
+      description.value = ''; 
+      solution.value = ''; 
+      isSelectedLocationGroup.value = false; 
+      selectedLocationGroupId.value = null; 
+      selectedLocationGroupName.value = ''; 
+      selectedImages.clear(); 
+  }
 }

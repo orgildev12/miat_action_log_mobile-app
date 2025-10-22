@@ -89,5 +89,7 @@
     "yes": "Yes",
     "no": "No",
 
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "areYouSureDelete": "Are you sure you deleting the image",
+    "youCanOnlyAdd3image": "You can add up to 3 images"
 }

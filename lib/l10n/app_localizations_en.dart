@@ -202,4 +202,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcome => 'Welcome';
+
+  @override
+  String get areYouSureDelete => 'Are you sure you deleting the image';
+
+  @override
+  String get youCanOnlyAdd3image => 'You can add up to 3 images';
 }

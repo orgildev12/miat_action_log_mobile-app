@@ -202,4 +202,10 @@ class AppLocalizationsMn extends AppLocalizations {
 
   @override
   String get welcome => 'Тавтай морил';
+
+  @override
+  String get areYouSureDelete => 'Зургийг устгах уу?';
+
+  @override
+  String get youCanOnlyAdd3image => 'Санамж: Та ихдээ 3-н зураг илгээх боломжтой';
 }
