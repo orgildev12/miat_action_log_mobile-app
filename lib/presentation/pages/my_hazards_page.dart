@@ -25,17 +25,9 @@ class _MyHazardsPageState extends State<MyHazardsPage> {
     _fetchHazards();
   }
 
-  // Future<void> _clearHazards() async {
-  //   try {
-  //     await clearHazardCacheUseCase.call();
-  //   } catch (e) {
-  //     print('Error clearing hazards: $e');
-  //   }
-  // }
-
   Future<void> _fetchHazards() async {
     try {
-      // await clearHazardCacheUseCase.call();
+      await clearHazardCacheUseCase.call();
       final result = await fetchHazardsUseCase.call();
       setState(() {
        

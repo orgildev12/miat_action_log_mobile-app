@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 class HazardImage extends StatefulWidget {
   final File imageFile;
   final VoidCallback onPress;
-  final bool isLongPress;
+  final VoidCallback onLongPress;
+  final bool hasDeleteAction;
   const HazardImage({
     super.key, 
     required this.imageFile,
     required this.onPress,
-    required this.isLongPress
+    required this.onLongPress,
+    this.hasDeleteAction = false
     });
 
   @override
@@ -18,18 +20,18 @@ class HazardImage extends StatefulWidget {
 }
 
 class _HazardImageState extends State<HazardImage> {
-  bool isPressed = false;
+  bool isLongPressed = false;
 
   void _handleLongPressStart(_) async {
-    setState(() => isPressed = true);
+    setState(() => isLongPressed = true);
     await Future.delayed(const Duration(milliseconds: 300));
-    widget.onPress();
+    widget.onLongPress();
     await Future.delayed(const Duration(milliseconds: 500));
-    setState(() => isPressed = false);
+    setState(() => isLongPressed = false);
   }
 
   void _handleLongPressEnd(_) {
-    setState(() => isPressed = false);
+    setState(() => isLongPressed = false);
   }
   void doNothing(_){} 
   void showImage() {} 
@@ -39,15 +41,15 @@ class _HazardImageState extends State<HazardImage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: GestureDetector(
-        onLongPressStart: widget.isLongPress ? _handleLongPressStart : (_){},
-        onLongPressEnd: widget.isLongPress ? _handleLongPressEnd : (_){},
-        onTap: widget.isLongPress ? (){} : widget.onPress,
+        onLongPressStart: widget.hasDeleteAction ? _handleLongPressStart : (_){},
+        onLongPressEnd: widget.hasDeleteAction ? _handleLongPressEnd : (_){},
+        onTap: widget.onPress,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
-            boxShadow: isPressed
+            boxShadow: isLongPressed
                 ? [
                     BoxShadow(
                       color: const Color.fromARGB(80, 41, 45, 50),

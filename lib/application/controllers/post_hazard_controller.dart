@@ -10,6 +10,7 @@ import 'package:action_log_app/domain/entities/user.dart';
 import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/models/post_hazard_model.dart';
 import 'package:action_log_app/presentation/components/pop_up.dart';
+import 'package:action_log_app/presentation/pages/full_screen_gallary.dart';
 import 'package:action_log_app/presentation/pages/main_navigator.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -186,6 +187,10 @@ class PostHazardController extends GetxController {
     try {
       final isValid = formKey.currentState?.validate() ?? false;
       if (!isValid) return;
+
+      int hasImage = 0;
+      if(selectedImages.isNotEmpty) hasImage = 1;
+
       final hazardModel = PostHazardModel(
         userId: user.id,
         userName: user.username,
@@ -195,6 +200,7 @@ class PostHazardController extends GetxController {
         locationId: locationId.value!,
         description: description.value,
         solution: solution.value,
+        hasImage: hasImage
       );
 
       final result = await HazardDI.postHazardUseCase
@@ -306,5 +312,29 @@ class PostHazardController extends GetxController {
       selectedLocationGroupId.value = null; 
       selectedLocationGroupName.value = ''; 
       selectedImages.clear(); 
+      print(selectedImages.length);
   }
+
+  void openGallery(BuildContext context, int initialIndex) {
+    showGeneralDialog(
+      context: context,
+      barrierLabel: "Gallery",
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.3), // soft background fade
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (context, anim1, anim2) {
+        return  FullScreenGallery(
+          images: selectedImages,
+          initialIndex: initialIndex,
+        );
+      },
+      transitionBuilder: (context, anim1, anim2, child) {
+        return FadeTransition(
+          opacity: CurvedAnimation(parent: anim1, curve: Curves.easeOut),
+          child: child,
+        );
+      },
+    );
+  }
+
 }

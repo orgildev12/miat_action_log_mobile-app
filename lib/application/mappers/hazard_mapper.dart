@@ -19,6 +19,7 @@ extension HazardMapper on HazardModel {
       responseBody: responseBody,
       isPrivate: isPrivate,
       dateUpdated: dateUpdated,
+      hasImage: hasImage
     );
   }
 }

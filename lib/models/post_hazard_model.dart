@@ -7,6 +7,7 @@ class PostHazardModel {
   final int locationId;
   final String description;
   final String solution;
+  final int hasImage;
 
   PostHazardModel({
     this.userId,
@@ -17,11 +18,12 @@ class PostHazardModel {
     required this.locationId,
     required this.description,
     required this.solution,
+    required this.hasImage
   });
 
   @override
   String toString() {
-    return 'PostHazardModel(userId: $userId, userName: $userName, email: $email, phoneNumber: $phoneNumber, typeId: $typeId, locationId: $locationId, description: $description, solution: $solution)';
+    return 'PostHazardModel(userId: $userId, userName: $userName, email: $email, phoneNumber: $phoneNumber, typeId: $typeId, locationId: $locationId, description: $description, solution: $solution, hasImage: $hasImage)';
   }
   
   Map<String, Object?> toJson(bool isUserLoggedIn) {
@@ -33,6 +35,7 @@ class PostHazardModel {
         'location_id': locationId,
         'description': description,
         'solution': solution,
+        'has_image': hasImage
       };
     }
 
@@ -44,6 +47,7 @@ class PostHazardModel {
       'location_id': locationId,
       'description': description,
       'solution': solution,
+      'has_image': hasImage
     };
   }
 }

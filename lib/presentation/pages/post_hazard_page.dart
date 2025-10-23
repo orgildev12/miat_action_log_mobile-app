@@ -201,13 +201,17 @@ class _PostHazardPageState extends State<PostHazardPage> {
                       if (controller.selectedImages.isEmpty) return const SizedBox.shrink();
                       return Column(
                         children: controller.selectedImages
-                            .map((file) => 
-                              HazardImage(
+                          .asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final file = entry.value;
+                              return HazardImage(
+                                key: ValueKey(file.path),
                                 imageFile: file,
-                                isLongPress: true,
-                                onPress: () => controller.showDeleteDialog(context, file),
-                                ))
-                            .toList(),
+                                hasDeleteAction: true,
+                                onPress: () => controller.openGallery(context, index), // ✅ use the correct index
+                                onLongPress: () => controller.showDeleteDialog(context, file),
+                              );
+                          }).toList(),
                       );
                     }),
                     controller.hasGreaterThat3Image == true.obs ?

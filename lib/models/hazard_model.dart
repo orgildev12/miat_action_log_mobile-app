@@ -20,6 +20,7 @@ class HazardModel {
   final String? responseBody;
   final int isPrivate;
   final DateTime? dateUpdated;
+  final int hasImage;
 
   HazardModel({
     required this.id,
@@ -35,6 +36,7 @@ class HazardModel {
     required this.description,
     required this.solution,
     required this.dateCreated,
+    required this.hasImage,
     required this.typeNameEn,
     required this.typeNameMn,
     required this.locationNameEn,
@@ -62,6 +64,7 @@ class HazardModel {
     dateCreated: json['date_created'] != null
       ? DateTime.parse(json['date_created'].toString())
       : DateTime.now(),
+    hasImage: json['has_image'],
     typeNameEn: json['type_name_en'],
     typeNameMn: json['type_name_mn'],
     locationNameEn: json['location_name_en'],
@@ -91,6 +94,7 @@ class HazardModel {
       'description': description,
       'solution': solution,
       'date_created': dateCreated.toIso8601String(),
+      'has_image': hasImage,
       'type_name_en': typeNameEn,
       'type_name_mn': typeNameMn,
       'location_name_en': locationNameEn,

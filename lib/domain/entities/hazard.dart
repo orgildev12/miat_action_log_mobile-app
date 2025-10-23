@@ -14,6 +14,7 @@ class Hazard {
   final String? responseBody;
   final int isPrivate;
   final DateTime? dateUpdated;
+  final int hasImage;
 
   Hazard({
   required this.id,
@@ -31,5 +32,6 @@ class Hazard {
   this.responseBody,
   required this.isPrivate,
   this.dateUpdated,
+  required this.hasImage
   });
 }

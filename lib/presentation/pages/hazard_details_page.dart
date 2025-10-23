@@ -1,7 +1,6 @@
 import 'package:action_log_app/application/controllers/hazard_controller.dart';
 import 'package:action_log_app/domain/entities/hazard.dart';
 import 'package:action_log_app/presentation/components/hazard_image.dart';
-// import 'package:action_log_app/presentation/components/hazard_image.dart';
 import 'package:action_log_app/presentation/components/info_panel.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +23,11 @@ class HazardDetailsPage extends StatefulWidget {
 
 class _HazardDetailsPageState extends State<HazardDetailsPage> {
   final controller = Get.put(HazardController());
-  
+
   @override
   void initState(){
     super.initState();
-    controller.fetchHazardImages(widget.hazard.id);
+    controller.fetchHazardImages(widget.hazard);
   }
 
   @override
@@ -38,7 +37,10 @@ class _HazardDetailsPageState extends State<HazardDetailsPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(IconsaxPlusLinear.arrow_left_1, color: black),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.of(context).pop();
+            controller.clearImages();
+          }
         ),
         title: Text(
           AppLocalizations.of(context)!.hazardDetails,
@@ -80,16 +82,23 @@ class _HazardDetailsPageState extends State<HazardDetailsPage> {
                 if (controller.hazardImages.isEmpty) return const SizedBox.shrink();
                   return Column(
                     children: controller.hazardImages
-                      .map((file) => 
-                        HazardImage(
-                          imageFile: file,
-                          isLongPress: false,
-                          onPress: (){},
-                        ))
+                        .asMap()
+                        .entries
+                        .map((entry) {
+                          final index = entry.key;
+                          final file = entry.value;
+                          return HazardImage(
+                            imageFile: file,
+                            hasDeleteAction: false,
+                            onLongPress: (){},
+                            onPress: () {
+                              controller.openGallery(context, index);
+                            },
+                          );
+                        })
                         .toList(),
-                      );
-                    }),
-              // HazardImage()
+                  );
+              }),
             ],
           ),
         ),
