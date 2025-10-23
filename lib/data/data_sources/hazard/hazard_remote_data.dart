@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:action_log_app/core/error/exceptions.dart';
 import 'package:action_log_app/core/network/api_client.dart';
 import 'package:action_log_app/core/network/connectivity_checker.dart';
+import 'package:action_log_app/models/hazard_image_model.dart';
 import 'package:action_log_app/models/hazard_model.dart';
 import 'package:action_log_app/models/post_hazard_model.dart';
 
@@ -139,6 +140,30 @@ class HazardRemoteDataSource {
         rethrow;
       }
       throw Exception('Failed to post hazard');
+    }
+  }
+
+  Future<List<HazardImageModel>> fetchHazardImages(int hazardId, String token) async {
+    if (!await connectivityChecker.isConnected) {
+      throw SocketException();
+    }
+    final headers = {
+      'Authorization': 'Bearer $token',
+    };
+    print(headers);
+
+    try{
+      final result = await apiClient.get('/hazard/$hazardId/image/forUser', headers: headers);
+      if(result is! List){
+        throw Exception('Invalid data format received');
+      }
+      return result.map((json) => HazardImageModel.fromJson(json as Map<String, dynamic>)).toList();
+      
+    }catch(e){
+      if(e is ServerException){
+        rethrow;
+      }
+      throw Exception('Unexpected error occurred: $e');
     }
   }
 }

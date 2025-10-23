@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 
 class HazardImage extends StatefulWidget {
   final File imageFile;
-  final VoidCallback onLongPress;
+  final VoidCallback onPress;
+  final bool isLongPress;
   const HazardImage({
     super.key, 
     required this.imageFile,
-    required this.onLongPress
+    required this.onPress,
+    required this.isLongPress
     });
 
   @override
@@ -21,7 +23,7 @@ class _HazardImageState extends State<HazardImage> {
   void _handleLongPressStart(_) async {
     setState(() => isPressed = true);
     await Future.delayed(const Duration(milliseconds: 300));
-    widget.onLongPress();
+    widget.onPress();
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() => isPressed = false);
   }
@@ -29,14 +31,17 @@ class _HazardImageState extends State<HazardImage> {
   void _handleLongPressEnd(_) {
     setState(() => isPressed = false);
   }
+  void doNothing(_){} 
+  void showImage() {} 
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: GestureDetector(
-        onLongPressStart: _handleLongPressStart,
-        onLongPressEnd: _handleLongPressEnd,
+        onLongPressStart: widget.isLongPress ? _handleLongPressStart : (_){},
+        onLongPressEnd: widget.isLongPress ? _handleLongPressEnd : (_){},
+        onTap: widget.isLongPress ? (){} : widget.onPress,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           decoration: BoxDecoration(

@@ -204,7 +204,8 @@ class _PostHazardPageState extends State<PostHazardPage> {
                             .map((file) => 
                               HazardImage(
                                 imageFile: file,
-                                onLongPress: () => controller.showDeleteDialog(context, file),
+                                isLongPress: true,
+                                onPress: () => controller.showDeleteDialog(context, file),
                                 ))
                             .toList(),
                       );

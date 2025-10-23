@@ -1,3 +1,5 @@
+import 'package:action_log_app/application/use_cases/hazard_use_cases/clear_hazard_image_cache.dart';
+import 'package:action_log_app/application/use_cases/hazard_use_cases/fetch_hazard_image_use_case.dart';
 import 'package:action_log_app/application/use_cases/hazard_use_cases/fetch_hazards_use_case.dart';
 import 'package:action_log_app/application/use_cases/hazard_use_cases/post_hazard_use_case.dart';
 import 'package:action_log_app/application/use_cases/hazard_use_cases/clear_hazard_cache_use_case.dart';
@@ -19,7 +21,9 @@ class HazardDI {
   static late final FetchHazardsUseCase _fetchHazardsUseCase;
   static late final PostHazardUseCase _postHazardUseCase;
   static late final ClearHazardCacheUseCase _clearHazardCacheUseCase;
-  
+  static late final FetchHazardImageUseCase _fetchHazardImageUseCase;
+  static late final ClearHazardImageCache _clearHazardImageCache;
+
 static void setup() {
   // Data sources
   _localDataSource = HazardLocalDataSource();
@@ -43,14 +47,23 @@ static void setup() {
     userRepository: _userRepository,
     userLocalDataSource: UserDI.localDataSource
   );
+  _fetchHazardImageUseCase = FetchHazardImageUseCase(
+    repository: _repository,
+    userRepository: _userRepository,
+    userLocalDataSource: UserDI.localDataSource,
+  );
   
-_postHazardUseCase = PostHazardUseCase(
-  repository: _repository,
-  userLocalDataSource: UserDI.localDataSource,
-);
+  _postHazardUseCase = PostHazardUseCase(
+    repository: _repository,
+    userLocalDataSource: UserDI.localDataSource,
+  );
   
   _clearHazardCacheUseCase = ClearHazardCacheUseCase(
     repository: _repository,
+  );
+
+  _clearHazardImageCache = ClearHazardImageCache(
+    hazardRepository: _repository,
   );
 }
 
@@ -62,6 +75,8 @@ _postHazardUseCase = PostHazardUseCase(
   
   // Hazard use case getters
   static FetchHazardsUseCase get fetchHazardsUseCase => _fetchHazardsUseCase;
+  static FetchHazardImageUseCase get fetchHazardImageUseCase => _fetchHazardImageUseCase;
   static PostHazardUseCase get postHazardUseCase => _postHazardUseCase;
   static ClearHazardCacheUseCase get clearHazardCacheUseCase => _clearHazardCacheUseCase;
+  static ClearHazardImageCache get clearHazardImageCacheUseCase => _clearHazardImageCache;
 }

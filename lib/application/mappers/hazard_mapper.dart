@@ -4,6 +4,7 @@ import 'package:action_log_app/models/hazard_model.dart';
 extension HazardMapper on HazardModel {
   Hazard toEntity() {
     return Hazard(
+      id: id,
       code: code,
       statusEn: statusEn,
       statusMn: statusMn,

@@ -1,4 +1,5 @@
 class Hazard {
+  final int id;
   final String code;
   final String statusEn;
   final String statusMn;
@@ -15,6 +16,7 @@ class Hazard {
   final DateTime? dateUpdated;
 
   Hazard({
+  required this.id,
   required this.code,
   required this.statusEn,
   required this.statusMn,

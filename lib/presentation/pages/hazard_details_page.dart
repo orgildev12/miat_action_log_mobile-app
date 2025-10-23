@@ -1,8 +1,11 @@
+import 'package:action_log_app/application/controllers/hazard_controller.dart';
 import 'package:action_log_app/domain/entities/hazard.dart';
+import 'package:action_log_app/presentation/components/hazard_image.dart';
 // import 'package:action_log_app/presentation/components/hazard_image.dart';
 import 'package:action_log_app/presentation/components/info_panel.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:action_log_app/presentation/components/hazart_details_item.dart';
 import 'package:intl/intl.dart';
@@ -20,15 +23,16 @@ class HazardDetailsPage extends StatefulWidget {
 }
 
 class _HazardDetailsPageState extends State<HazardDetailsPage> {
-
+  final controller = Get.put(HazardController());
+  
   @override
   void initState(){
     super.initState();
+    controller.fetchHazardImages(widget.hazard.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    // final currentLanguage = Localizations.localeOf(context).languageCode;
 
     return Scaffold(
       appBar: AppBar(
@@ -72,6 +76,19 @@ class _HazardDetailsPageState extends State<HazardDetailsPage> {
               Text(AppLocalizations.of(context)!.solution, style: TextStyle(fontSize:16,  color: black, fontWeight: FontWeight.w500)),
               Text(widget.hazard.solution, style: TextStyle(fontSize:14,  color: black)),
               SizedBox(height: 32),
+              Obx(() {
+                if (controller.hazardImages.isEmpty) return const SizedBox.shrink();
+                  return Column(
+                    children: controller.hazardImages
+                      .map((file) => 
+                        HazardImage(
+                          imageFile: file,
+                          isLongPress: false,
+                          onPress: (){},
+                        ))
+                        .toList(),
+                      );
+                    }),
               // HazardImage()
             ],
           ),
