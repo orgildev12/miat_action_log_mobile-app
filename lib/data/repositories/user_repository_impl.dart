@@ -1,3 +1,5 @@
+import 'package:action_log_app/core/di/features/hazard_type_di.dart';
+import 'package:action_log_app/core/di/features/location_di.dart';
 import 'package:action_log_app/data/data_sources/hazard/hazard_local_data.dart';
 import 'package:action_log_app/data/data_sources/user/user_local_data.dart';
 import 'package:action_log_app/data/data_sources/user/user_remote_data.dart';
@@ -72,7 +74,12 @@ class UserRepositoryImpl implements UserRepository {
     try {
       await local.clearUserInfo();
       await local.clearToken();
-      await hazardLocal.clearHazards();
+      await hazardLocal.clearAllHazardCache();
+
+      // Хөгжүүлэлтийн явцад locations болон hazard_types-д өөрчлөлт орох тул 
+      // хөгжүүлэлт дуустал дараах 2 мөрийг үлдээе.
+      await HazardTypeDI.clearHazardTypeCacheUseCase.call();
+      await LocationDI.clearLocationCacheUseCase.call();
     } catch (e) {
       rethrow;
     }

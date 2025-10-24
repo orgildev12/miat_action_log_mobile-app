@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:action_log_app/application/use_cases/user_use_cases/recover_token_use_case.dart';
+import 'package:action_log_app/core/di/features/hazard_di.dart';
 import 'package:action_log_app/l10n/app_localizations.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,7 @@ class AuthController {
       print('logged in');
     } catch (e) {
       errorMessage.value = e.toString();
+      rethrow;
     } finally {
       isLoading.value = false;
     }
@@ -125,6 +127,7 @@ class AuthController {
   Future<void> logout() async {
     isLoading.value = true;
     try {
+      await HazardDI.clearHazardCacheUseCase.clearAllCacheRelatedToHazard();
       await _logoutUseCase.call();
       isLoggedIn.value = false;
       _idleManager.disable(); // Logout бол idle унтраана

@@ -65,7 +65,7 @@ Future<List<Hazard>> fetchHazards(int userId, String token) async {
     }
   }
   
-  
+  @override
   Future<void> uploadHazardImages(int hazardId, List<File> images, String token) async{
     try{
       final result = await remote.uploadHazardImages(hazardId, images, token);
@@ -75,6 +75,7 @@ Future<List<Hazard>> fetchHazards(int userId, String token) async {
     }
   }
 
+  @override
   Future<List<HazardImageEntity>> fetchHazardImages (int hazardId, String token) async {
     try{
       final List<HazardImageModel> localModels = await local.getHazardImages(hazardId);  
@@ -90,10 +91,20 @@ Future<List<Hazard>> fetchHazards(int userId, String token) async {
     }
   }
 
+  @override
   Future<void> clearHazardImageCache() async {
     try {
       await local.clearHazardImages();
       await local.deleteAllHazardImagesOnDevice();
+    } catch (e) {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<void> clearAllCacheRelatedToHazard() async {
+    try {
+      await local.clearAllHazardCache();
     } catch (e) {
       rethrow;
     }

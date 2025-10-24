@@ -12,4 +12,12 @@ class ClearHazardCacheUseCase {
       throw Exception('Failed to clear hazard cache: $e');
     }
   }
+
+  Future<void> clearAllCacheRelatedToHazard() async {
+    try {
+      await repository.clearAllCacheRelatedToHazard();
+    } catch (e) {
+      throw Exception('Failed to clear hazard cache: $e');
+    }
+  }
 }

@@ -105,10 +105,12 @@ class HazardLocalDataSource {
     }
   }
 
-  Future<void> clearAllCache() async {
+  Future<void> clearAllHazardCache() async {
     try {
       await clearHazards();
       await clearResponseCache();
+      await clearHazardImages();
+      await deleteAllHazardImagesOnDevice();
     } catch (e) {
       throw Exception('Failed to clear all cache: $e');
     }
@@ -195,7 +197,6 @@ Future<void> saveHazardImages(List<HazardImageModel> newImages) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_hazardImageKey);
-      // await prefs.remove(_responsesKey);
     } catch (e) {
       throw Exception('Failed to clear hazards: $e');
     }
@@ -218,7 +219,5 @@ Future<void> saveHazardImages(List<HazardImageModel> newImages) async {
         }
       }
     }
-
-    print('✅ All hazard images deleted.');
   }
 }
