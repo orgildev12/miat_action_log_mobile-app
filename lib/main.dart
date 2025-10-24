@@ -49,6 +49,7 @@ class MainApp extends StatelessWidget {
         builder: (context, isLoggedIn, child) {
           return GetMaterialApp(
             title: 'Action Log App',
+            debugShowCheckedModeBanner: false, // ← This removes the debug banner
             theme: ThemeData(
               primaryColor: primaryColor,
               useMaterial3: true,

@@ -81,7 +81,7 @@ class _HazardListItemState extends State<HazardListItem> {
                     children: [
                       Row(
                         children: [
-                          widget.hazard.isPrivate == 0 ? Icon(IconsaxPlusLinear.message, color: black, size: 24) : Icon(IconsaxPlusLinear.security_user, color: primaryColor, size: 24),
+                          widget.hazard.isPrivate == 0 ? Icon(IconsaxPlusLinear.message, color: black, size: 24) : Icon(IconsaxPlusLinear.security_user, color: black, size: 24),
                           SizedBox(width: 8),
                           Container(
                             width: 2,
