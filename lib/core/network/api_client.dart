@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:async';
 import 'package:action_log_app/core/error/exceptions.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -10,17 +11,31 @@ class ApiClient {
 
   ApiClient({required this.baseUrl});
 
+  /// GET request with 1-minute timeout
   Future<dynamic> get(
     String endpoint, {
     Map<String, String>? headers,
   }) async {
     print('ApiClient: Making GET request to: $baseUrl$endpoint');
-    final response = await http.get(Uri.parse('$baseUrl$endpoint'), headers: headers);
-    print('ApiClient: Response status: ${response.statusCode}');
-    print('ApiClient: Raw response body: ${response.body}');
-    return _handleResponse(response);
+
+    try {
+      final response = await http
+          .get(Uri.parse('$baseUrl$endpoint'), headers: headers)
+          .timeout(const Duration(seconds: 30));
+
+      print('ApiClient: Response status: ${response.statusCode}');
+      print('ApiClient: Raw response body: ${response.body}');
+      return _handleResponse(response);
+    } on TimeoutException {
+      throw ServerException(
+        statusCode: 408,
+        title: 'Request Timeout',
+        message: 'The GET request to $endpoint timed out after 1 minute.',
+      );
+    }
   }
 
+  /// POST request with 1-minute timeout
   Future<dynamic> post(
     String endpoint,
     Map<String, dynamic> body, {
@@ -33,18 +48,28 @@ class ApiClient {
     print('ApiClient: Request headers: $mergedHeaders');
     print('ApiClient: Request body: ${jsonEncode(body)}');
 
-    final response = await http.post(
-      Uri.parse('$baseUrl$endpoint'),
-      headers: mergedHeaders,
-      body: jsonEncode(body),
-    );
+    try {
+      final response = await http
+          .post(
+            Uri.parse('$baseUrl$endpoint'),
+            headers: mergedHeaders,
+            body: jsonEncode(body),
+          )
+          .timeout(const Duration(minutes: 1));
 
-    print('ApiClient: Response status: ${response.statusCode}');
-    print('ApiClient: Raw response body: ${response.body}');
-    return _handleResponse(response);
+      print('ApiClient: Response status: ${response.statusCode}');
+      print('ApiClient: Raw response body: ${response.body}');
+      return _handleResponse(response);
+    } on TimeoutException {
+      throw ServerException(
+        statusCode: 408,
+        title: 'Request Timeout',
+        message: 'The POST request to $endpoint timed out after 1 minute.',
+      );
+    }
   }
 
-  /// ✅ For uploading up to 3 images (multipart/form-data)
+  /// Multipart POST for uploading images with 1-minute timeout
   Future<dynamic> postMultipart(
     String endpoint, {
     required List<File> files,
@@ -71,14 +96,24 @@ class ApiClient {
     }
 
     print('ApiClient: Uploading ${files.length} image(s) to: $uri');
-    final streamedResponse = await request.send();
-    final response = await http.Response.fromStream(streamedResponse);
 
-    print('ApiClient: Response status: ${response.statusCode}');
-    print('ApiClient: Raw response body: ${response.body}');
-    return _handleResponse(response);
+    try {
+      final streamedResponse = await request.send().timeout(const Duration(minutes: 1));
+      final response = await http.Response.fromStream(streamedResponse);
+
+      print('ApiClient: Response status: ${response.statusCode}');
+      print('ApiClient: Raw response body: ${response.body}');
+      return _handleResponse(response);
+    } on TimeoutException {
+      throw ServerException(
+        statusCode: 408,
+        title: 'Request Timeout',
+        message: 'The multipart POST request to $endpoint timed out after 1 minute.',
+      );
+    }
   }
 
+  /// Handles decoding and error checking
   dynamic _handleResponse(http.Response response) {
     if (response.body.isEmpty) return null;
 

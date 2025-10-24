@@ -32,6 +32,7 @@ class _MyHazardsPageState extends State<MyHazardsPage> {
     setState(() => _isLoading = true);
     try {
       if (clearCache) await clearHazardCacheUseCase.call();
+      // await clearHazardCacheUseCase.call();
       final result = await fetchHazardsUseCase.call();
       setState(() {
         hazards
@@ -81,7 +82,6 @@ class _MyHazardsPageState extends State<MyHazardsPage> {
                   child: Center(
                     child: Transform(
                       alignment: Alignment.center,
-                      // 👇 Flip horizontally only while disappearing
                       transform: Matrix4.identity()..scale(isDisappearing ? -1.0 : 1.0, 1.0, 1.0),
                       child: ColorFiltered(
                         colorFilter: const ColorFilter.mode(primaryColor, BlendMode.srcIn),
@@ -105,11 +105,20 @@ class _MyHazardsPageState extends State<MyHazardsPage> {
                 ),
               ),
             ),
-
             if (_isLoading && hazards.isEmpty)
-              const SliverFillRemaining(
+              SliverFillRemaining(
                 hasScrollBody: false,
-                child: Center(child: CupertinoActivityIndicator(radius: 16)),
+                child: Center(
+                  child: SizedBox(
+                    width: 32,
+                    height: 32,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      color: Theme.of(context).primaryColor,
+                      backgroundColor: Colors.grey[200],
+                    ),
+                  ),
+                ),
               )
             else if (hazards.isEmpty)
               SliverFillRemaining(

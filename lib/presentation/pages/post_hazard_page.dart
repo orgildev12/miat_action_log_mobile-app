@@ -263,6 +263,7 @@ class _PostHazardPageState extends State<PostHazardPage> {
                           isActive: controller.isActive,
                           onTap: () => controller.submitHazard(hazardTypeId: widget.hazardTypeId, context: context),
                           iconData: IconsaxPlusLinear.send_2,
+                          isLoadingIndicatorActive: controller.isUploading.value,
                         )),
                     const SizedBox(height: 100),
                   ],

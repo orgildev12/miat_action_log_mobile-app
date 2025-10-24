@@ -202,18 +202,22 @@ class PostHazardController extends GetxController {
         solution: solution.value,
         hasImage: hasImage
       );
-
+      isUploading.value = true;
       final result = await HazardDI.postHazardUseCase
           .call(hazardModel, selectedImages, isUserLoggedIn: user.id != null);
 
       if (result == true) {
+        isUploading.value = false;
         _openSuccessDialog(context, AppLocalizations.of(context)!.sentSuccessfully);
         resetForm();
         removeImageWarning();
+        HazardDI.clearHazardCacheUseCase.call();
       }
     } on ServerException catch (e) {
+      isUploading.value = false;
       _openErrorDialog(context, statusCode: e.statusCode);
     } catch (e) {
+      isUploading.value = false;
       _openErrorDialog(context);
     }
   }
