@@ -1,5 +1,4 @@
 import 'package:action_log_app/l10n/app_localizations.dart';
-import 'package:action_log_app/presentation/components/info_panel.dart';
 import 'package:action_log_app/presentation/components/small_login_button.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -44,10 +43,39 @@ class SecretHazardPageForTempUser extends StatelessWidget {
                   fontSize: 14,
                 )
               ),
-              SizedBox(height: 32), //TODO: sanamjiig yu gej orchuulah we
-              InfoPanel(
-                heading: AppLocalizations.of(context)!.attention, 
-                content: AppLocalizations.of(context)!.thisReportCanOnly
+              SizedBox(height: 32),
+
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                            color: backgroundColor,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: primaryColor
+                  )
+
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                      Text(
+                        AppLocalizations.of(context)!.attention,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: black
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                    Text(
+                      AppLocalizations.of(context)!.thisReportCanOnly,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: black
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 16),
               Row(

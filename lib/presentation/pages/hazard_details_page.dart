@@ -1,5 +1,7 @@
 import 'package:action_log_app/application/controllers/hazard_controller.dart';
+import 'package:action_log_app/core/di/features/user_di.dart';
 import 'package:action_log_app/domain/entities/hazard.dart';
+import 'package:action_log_app/domain/entities/user.dart';
 import 'package:action_log_app/presentation/components/hazard_image.dart';
 import 'package:action_log_app/presentation/components/info_panel.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
@@ -23,11 +25,27 @@ class HazardDetailsPage extends StatefulWidget {
 
 class _HazardDetailsPageState extends State<HazardDetailsPage> {
   final controller = Get.put(HazardController());
-
+  User user = User();
+  String email = '';
   @override
   void initState(){
     super.initState();
     controller.fetchHazardImages(widget.hazard);
+    if(widget.hazard.statusMn != 'Илгээгдсэн'){
+      fetchUserEmail();
+      print(email);
+    }
+  }
+
+  void fetchUserEmail() async {
+    user = await UserDI.fetchUserInfoUseCase.call();
+    if (mounted) {
+      setState(() {
+        print('the email is ${user.email}');
+        email = user.email ?? '';
+        print(email);
+      });
+    }
   }
 
   @override
@@ -69,7 +87,11 @@ class _HazardDetailsPageState extends State<HazardDetailsPage> {
                 text2: Localizations.localeOf(context).languageCode == 'mn' ? widget.hazard.statusMn : widget.hazard.statusEn
               ),
               SizedBox(height: 24),
-              InfoPanel(content: AppLocalizations.of(context)!.yourRequestWasSent),
+              InfoPanel(
+                hazardStatusMn: widget.hazard.statusMn,
+                hazardCode: widget.hazard.code,
+                email: email,
+                ),
               SizedBox(height: 56),
               Text(AppLocalizations.of(context)!.content, style: TextStyle(fontSize:20, fontWeight: FontWeight.w600, color: black)),
               SizedBox(height: 12),

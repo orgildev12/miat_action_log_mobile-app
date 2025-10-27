@@ -208,4 +208,22 @@ class AppLocalizationsMn extends AppLocalizations {
 
   @override
   String get youCanOnlyAdd3image => 'Санамж: Та ихдээ 3-н зураг илгээх боломжтой';
+
+  @override
+  String get startOfStatusWorking => 'Бид таны ';
+
+  @override
+  String get endOfStatusWorking => ' дугаартай хүсэлт дээр ажиллаж эхэлсэн бөгөөд танд цаашид үйл явцын талаар мэдээлэх болно.';
+
+  @override
+  String get startOfStatusSolved => 'Бид таны хүсэлтийг шийдвэрлэсэн бөгөөд хүсэлтийн хариултыг ';
+
+  @override
+  String get endOfStatusSolved => ' хаяг руу тань илгээсэн болно.';
+
+  @override
+  String get startOfStatusRejected => 'Бид таны хүсэлтийг зөвшөөрөөгүй бөгөөд хүсэлтийн хариултыг ';
+
+  @override
+  String get endOfStatusRejected => ' хаяг руу илгээлээ.';
 }

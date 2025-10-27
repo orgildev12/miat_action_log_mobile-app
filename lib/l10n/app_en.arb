@@ -91,5 +91,14 @@
 
     "welcome": "Welcome",
     "areYouSureDelete": "Are you sure you deleting the image",
-    "youCanOnlyAdd3image": "You can add up to 3 images"
+    "youCanOnlyAdd3image": "You can add up to 3 images",
+
+    "startOfStatusWorking": "We just started working on your request ",
+    "endOfStatusWorking": ". We'll report about process soon",
+
+    "startOfStatusSolved": "We successfully solved your request & we sent the response to ",
+    "endOfStatusSolved": ".",
+
+    "startOfStatusRejected": "Unfortunately, we can't accept your request. We sent the respose to ",
+    "endOfStatusRejected": "."
 }

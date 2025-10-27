@@ -3,29 +3,7 @@ import 'package:action_log_app/presentation/pages/hazard_details_page.dart';
 import 'package:action_log_app/presentation/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-//  {
-//         "id": 121,
-//         "code": "HAZARD-7",
-//         "statusEn": "Sent",
-//         "statusMn": "Илгээгдсэн",
-//         "user_id": 5366,
-//         "user_name": null,
-//         "email": null,
-//         "phone_number": null,
-//         "type_id": 2,
-//         "location_id": 3,
-//         "description": "ASD TEST test test test test",
-//         "solution": "nice one, acceptanble, orgil is boring so much, I need some girl",
-//         "date_created": "2025-10-02T06:19:32.000Z",
-//         "type_name_en": "Hazard report",
-//         "type_name_mn": "Аюулыг илрүүлсэн мэдээлэл",
-//         "location_name_en": "B757",
-//         "location_name_mn": "B757",
-//         "is_response_confirmed": 0,
-//         "response_body": null,
-//         "is_private": 0,
-//         "date_updated": "2025-10-02T06:19:32.000Z"
-//     },
+
 class HazardListItem extends StatefulWidget {
   final Hazard hazard;
   const HazardListItem({
@@ -78,6 +56,7 @@ class _HazardListItemState extends State<HazardListItem> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                         children: [
@@ -85,7 +64,7 @@ class _HazardListItemState extends State<HazardListItem> {
                           SizedBox(width: 8),
                           Container(
                             width: 2,
-                            height: 32,
+                            height: 24,
                             decoration: BoxDecoration(
                               color: black,
                               borderRadius: BorderRadius.circular(1),
@@ -122,7 +101,7 @@ class _HazardListItemState extends State<HazardListItem> {
                             decoration: BoxDecoration(
                               color: widget.hazard.statusMn == "Шийдэгдсэн" ?  Colors.green :
                                      widget.hazard.statusMn == "Ажиллаж байна" ? Colors.orange :
-                                     widget.hazard.statusMn == "Буцаагдсан" ? Colors.red :
+                                     widget.hazard.statusMn == "Татгалзсан" ? Colors.red :
                                      Colors.grey,
                               borderRadius: BorderRadius.circular(5),
                             ),

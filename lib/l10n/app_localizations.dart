@@ -496,6 +496,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You can add up to 3 images'**
   String get youCanOnlyAdd3image;
+
+  /// No description provided for @startOfStatusWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'We just started working on your request '**
+  String get startOfStatusWorking;
+
+  /// No description provided for @endOfStatusWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'. We\'ll report about process soon'**
+  String get endOfStatusWorking;
+
+  /// No description provided for @startOfStatusSolved.
+  ///
+  /// In en, this message translates to:
+  /// **'We successfully solved your request & we sent the response to '**
+  String get startOfStatusSolved;
+
+  /// No description provided for @endOfStatusSolved.
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get endOfStatusSolved;
+
+  /// No description provided for @startOfStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfortunately, we can\'t accept your request. We sent the respose to '**
+  String get startOfStatusRejected;
+
+  /// No description provided for @endOfStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get endOfStatusRejected;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

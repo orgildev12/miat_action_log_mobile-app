@@ -208,4 +208,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get youCanOnlyAdd3image => 'You can add up to 3 images';
+
+  @override
+  String get startOfStatusWorking => 'We just started working on your request ';
+
+  @override
+  String get endOfStatusWorking => '. We\'ll report about process soon';
+
+  @override
+  String get startOfStatusSolved => 'We successfully solved your request & we sent the response to ';
+
+  @override
+  String get endOfStatusSolved => '.';
+
+  @override
+  String get startOfStatusRejected => 'Unfortunately, we can\'t accept your request. We sent the respose to ';
+
+  @override
+  String get endOfStatusRejected => '.';
 }
