@@ -12,10 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:action_log_app/core/di/core_di.dart';
 import 'package:action_log_app/core/di/features/user_di.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/foundation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await dotenv.load(fileName: kReleaseMode ? ".env.production" : ".env.development");
+  // print('Loaded API URL: ${dotenv.env['API_BASE_URL']}');
   CoreDI.setup();
   UserDI.setup();
   LocationDI.setup();

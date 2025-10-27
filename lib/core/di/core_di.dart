@@ -4,6 +4,7 @@ import 'package:action_log_app/core/network/connectivity_checker.dart';
 import 'package:action_log_app/core/network/network_controller.dart';
 import 'package:action_log_app/core/utils/idle_manager.dart';
 import 'package:get/get.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class CoreDI {
   static late final ConnectivityChecker _connectivityChecker;
@@ -14,7 +15,7 @@ class CoreDI {
   static void setup() {
     // Network
     _connectivityChecker = ConnectivityCheckerImpl();
-    _apiClient = ApiClient(baseUrl: 'http://10.0.2.2:3000/api');
+    _apiClient = ApiClient(baseUrl: dotenv.env['API_BASE_URL']!);
 
     // NetworkController via GetX
     _networkController = Get.put(NetworkController());
