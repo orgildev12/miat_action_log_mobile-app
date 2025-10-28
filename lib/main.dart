@@ -43,16 +43,13 @@ class MainApp extends StatelessWidget {
     final authController = UserDI.controller;
     
     return Listener(
-      // User activity → IdleManager reset
       onPointerDown: (_) => authController.userActivityDetected(),
-      // onPointerMove: (_) => authController.userActivityDetected(),
-      // onPointerUp: (_) => authController.userActivityDetected(),
       child: ValueListenableBuilder<bool>(
         valueListenable: authController.isLoggedIn,
         builder: (context, isLoggedIn, child) {
           return GetMaterialApp(
             title: 'Action Log App',
-            debugShowCheckedModeBanner: false, // ← This removes the debug banner
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(
               primaryColor: primaryColor,
               useMaterial3: true,

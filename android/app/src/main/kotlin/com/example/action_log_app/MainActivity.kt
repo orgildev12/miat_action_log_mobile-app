@@ -1,4 +1,4 @@
-package com.example.action_log_app
+package com.miat.action_log_app
 
 import io.flutter.embedding.android.FlutterActivity
 

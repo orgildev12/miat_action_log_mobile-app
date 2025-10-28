@@ -1,5 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+    package="com.miat.action_log_app">
+    
     <!-- Internet permission for API calls -->
     <uses-permission android:name="android.permission.INTERNET" />
 
