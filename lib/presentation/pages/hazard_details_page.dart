@@ -121,6 +121,7 @@ class _HazardDetailsPageState extends State<HazardDetailsPage> {
                         .toList(),
                   );
               }),
+              SizedBox(height: 32),
             ],
           ),
         ),

@@ -261,6 +261,7 @@ void showOtherChannels() {
                 // },
                 
                 ),
+                SizedBox(height: 64),
             ],
           ),
         );

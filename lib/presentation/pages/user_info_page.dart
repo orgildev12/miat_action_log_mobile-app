@@ -101,143 +101,146 @@ bool get isActive => username.trim().isNotEmpty && email.trim().isNotEmpty && ph
                   color: black, fontSize: 18, fontWeight: FontWeight.w500)),
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         ),
-        body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 32),
-                Text( 
-                  widget.hazardTypeName, 
-                  style: TextStyle(
-                    color: primaryColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                    )
-                ),
-                SizedBox(height: 16),
-                Text( 
-                  AppLocalizations.of(context)!.weWillUseThisForOnly,
-                  style: TextStyle(
-                    color: black,
-                    fontSize: 14,
-                    // fontWeight: FontWeight.w500
-                    )
-                ),
-                SizedBox(height: 32),
-                Text( 
-                  AppLocalizations.of(context)!.contactInfo, 
-                  style: TextStyle(
-                    color: black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                    )
-                ),
-                SizedBox(height: 8),
-                Text( 
-                  AppLocalizations.of(context)!.weNeedToAskYou, 
-                  style: TextStyle(
-                    color: black,
-                    fontSize: 14,
-                    // fontWeight: FontWeight.w500
-                    )
-                ),
-                SizedBox(height: 24),
-                Form(
-                    key: _userFormKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        UserFormItem(
-                          labelText: AppLocalizations.of(context)!.fullName,
-                          iconData: IconsaxPlusLinear.user,
-                          keyboardType: TextInputType.name,
-                          formValue: username,
-                          onValueChanged: (val) {
-                            setState(() {
-                              username = val.trim();
-                            });
-                          },
-                        ),
-                        SizedBox(height: 12),
-                        UserFormItem(
-                          labelText: AppLocalizations.of(context)!.email,
-                          iconData: IconsaxPlusLinear.sms,
-                          keyboardType: TextInputType.emailAddress,
-                          formValue: email,
-                          onValueChanged: (val) {
-                            setState(() {
-                              email = val.trim();
-                            });
-                          },
-                        ),
-                        SizedBox(height: 12),
-                        UserFormItem(
-                          labelText: AppLocalizations.of(context)!.phone,
-                          iconData: IconsaxPlusLinear.call,
-                          keyboardType: TextInputType.phone,
-                          formValue: phoneNumber,
-                          onValueChanged: (val) {
-                            setState(() {
-                              phoneNumber = val.trim();
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Divider(
-                                color: Color(0xFF949494),
-                                thickness: 2,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 32.0),
-                              child: Text(
-                                AppLocalizations.of(context)!.or,
-                                style: TextStyle(
+        body: SingleChildScrollView(
+          child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 32),
+                  Text( 
+                    widget.hazardTypeName, 
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500
+                      )
+                  ),
+                  SizedBox(height: 16),
+                  Text( 
+                    AppLocalizations.of(context)!.weWillUseThisForOnly,
+                    style: TextStyle(
+                      color: black,
+                      fontSize: 14,
+                      // fontWeight: FontWeight.w500
+                      )
+                  ),
+                  SizedBox(height: 32),
+                  Text( 
+                    AppLocalizations.of(context)!.contactInfo, 
+                    style: TextStyle(
+                      color: black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500
+                      )
+                  ),
+                  SizedBox(height: 8),
+                  Text( 
+                    AppLocalizations.of(context)!.weNeedToAskYou, 
+                    style: TextStyle(
+                      color: black,
+                      fontSize: 14,
+                      // fontWeight: FontWeight.w500
+                      )
+                  ),
+                  SizedBox(height: 24),
+                  Form(
+                      key: _userFormKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          UserFormItem(
+                            labelText: AppLocalizations.of(context)!.fullName,
+                            iconData: IconsaxPlusLinear.user,
+                            keyboardType: TextInputType.name,
+                            formValue: username,
+                            onValueChanged: (val) {
+                              setState(() {
+                                username = val.trim();
+                              });
+                            },
+                          ),
+                          SizedBox(height: 12),
+                          UserFormItem(
+                            labelText: AppLocalizations.of(context)!.email,
+                            iconData: IconsaxPlusLinear.sms,
+                            keyboardType: TextInputType.emailAddress,
+                            formValue: email,
+                            onValueChanged: (val) {
+                              setState(() {
+                                email = val.trim();
+                              });
+                            },
+                          ),
+                          SizedBox(height: 12),
+                          UserFormItem(
+                            labelText: AppLocalizations.of(context)!.phone,
+                            iconData: IconsaxPlusLinear.call,
+                            keyboardType: TextInputType.phone,
+                            formValue: phoneNumber,
+                            onValueChanged: (val) {
+                              setState(() {
+                                phoneNumber = val.trim();
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Divider(
                                   color: Color(0xFF949494),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                                  thickness: 2,
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: Divider(
-                                color: Color(0xFF949494),
-                                thickness: 2,
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 32.0),
+                                child: Text(
+                                  AppLocalizations.of(context)!.or,
+                                  style: TextStyle(
+                                    color: Color(0xFF949494),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Divider(
+                                  color: Color(0xFF949494),
+                                  thickness: 2,
+                                ),
+                              ),
+                            ],
+                          ),
+                          // const SizedBox(height: 16),
+                          TextButton(
+                            onPressed: (){
+                              showDialog(
+                                context: context, 
+                                builder: (BuildContext context) => const LoginPopUp(),
+                              );
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!.login,
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                decoration: TextDecoration.underline, 
+                                decorationColor: primaryColor,
                               ),
                             ),
-                          ],
-                        ),
-                        // const SizedBox(height: 16),
-                        TextButton(
-                          onPressed: (){
-                            showDialog(
-                              context: context, 
-                              builder: (BuildContext context) => const LoginPopUp(),
-                            );
-                          },
-                          child: Text(
-                            AppLocalizations.of(context)!.login,
-                            style: TextStyle(
-                              color: primaryColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              decoration: TextDecoration.underline, 
-                              decorationColor: primaryColor,
-                            ),
                           ),
-                        ),
-                        const SizedBox(height: 64),
-                        BigButton(buttonText: AppLocalizations.of(context)!.continueee, isActive: isActive, onTap: _continue,)
-                      ],
+                          const SizedBox(height: 32),
+                          BigButton(buttonText: AppLocalizations.of(context)!.continueee, isActive: isActive, onTap: _continue,),
+                          SizedBox(height: 64),
+                        ],
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
+        ),
         );
   }
 }

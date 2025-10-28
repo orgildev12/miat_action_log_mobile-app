@@ -136,59 +136,61 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            SizedBox(height: 32),
-            SizedBox(
-              width: double.infinity,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  'lib/presentation/assets/images/action_log_banner.png',
-                  fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              SizedBox(height: 32),
+              SizedBox(
+                width: double.infinity,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    'lib/presentation/assets/images/action_log_banner.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 64),
-            Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (errorMessage != null)
-                    Text(
-                      errorMessage!,
-                      style: const TextStyle(color: Colors.red),
-                      textAlign: TextAlign.center,
+              SizedBox(height: 64),
+              Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (errorMessage != null)
+                      Text(
+                        errorMessage!,
+                        style: const TextStyle(color: Colors.red),
+                        textAlign: TextAlign.center,
+                      ),
+                    UserFormItem(
+                      labelText: AppLocalizations.of(context)!.username,
+                      iconData: IconsaxPlusLinear.user,
+                      onValueChanged: (val) => setState(() => username = val),
+                      formValue: username,
                     ),
-                  UserFormItem(
-                    labelText: AppLocalizations.of(context)!.username,
-                    iconData: IconsaxPlusLinear.user,
-                    onValueChanged: (val) => setState(() => username = val),
-                    formValue: username,
-                  ),
-                  SizedBox(height: 8),
-                  UserFormItem(
-                    labelText: AppLocalizations.of(context)!.password,
-                    iconData: IconsaxPlusLinear.key,
-                    onValueChanged: (val) => setState(() => password = val),
-                    formValue: password,
-                    isPassword: true,
-                  ),
-                  const SizedBox(height: 64),
-                  isLoading
-                      ? const CircularProgressIndicator()
-                      : BigButton(
-                          buttonText: AppLocalizations.of(context)!.login, 
-                          isActive: isActive,
-                          onTap: _login,
-                          )
-                ],
+                    SizedBox(height: 8),
+                    UserFormItem(
+                      labelText: AppLocalizations.of(context)!.password,
+                      iconData: IconsaxPlusLinear.key,
+                      onValueChanged: (val) => setState(() => password = val),
+                      formValue: password,
+                      isPassword: true,
+                    ),
+                    const SizedBox(height: 64),
+                    isLoading
+                        ? const CircularProgressIndicator()
+                        : BigButton(
+                            buttonText: AppLocalizations.of(context)!.login, 
+                            isActive: isActive,
+                            onTap: _login,
+                            )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -64,15 +64,17 @@ class _MainNavigatorState extends State<MainNavigator> {
         : [
             BottomNavigationBarItem(
               icon: Icon(
-                _currentIndex == 0 ? IconsaxPlusBold.home_2 : IconsaxPlusLinear.home_2,
+                _currentIndex == 0 ? IconsaxPlusBold.home_2 : IconsaxPlusBold.home_2,
                 size: 28,
+                color: _currentIndex == 0 ? black : const Color.fromARGB(110, 41, 45, 50),
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                _currentIndex == 1 ? IconsaxPlusBold.category : IconsaxPlusLinear.category,
+                _currentIndex == 1 ? IconsaxPlusBold.category : IconsaxPlusBold.category,
                 size: 28,
+                color: _currentIndex == 1 ? black : const Color.fromARGB(110, 41, 45, 50),
               ),
               label: 'Settings',
             ),
